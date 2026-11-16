@@ -1,0 +1,6583 @@
+object Alta_PlanPagoAbogados: TAlta_PlanPagoAbogados
+  Left = 286
+  Top = 117
+  Caption = '...'
+  ClientHeight = 596
+  ClientWidth = 1075
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnActivate = FormActivate
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 14
+  object PC1: TRzPageControl
+    Left = 0
+    Top = 39
+    Width = 1075
+    Height = 557
+    Hint = ''
+    ActivePage = TabSheet2
+    Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    Images = ImageList1
+    ParentFont = False
+    TabIndex = 1
+    TabOrder = 0
+    OnChange = PC1Change
+    FixedDimension = 22
+    object TabSheet1: TRzTabSheet
+      ImageIndex = 0
+      Caption = 'B'#250'squeda, Selecci'#243'n y C'#225'lculo de Deuda'
+      object JvgGroupBox4: TJvGroupBox
+        Left = 475
+        Top = 0
+        Width = 596
+        Height = 531
+        Align = alClient
+        Caption = '2) Deudas de los Objetos'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
+        object Bevel1: TBevel
+          Left = 2
+          Top = 20
+          Width = 592
+          Height = 89
+          Align = alTop
+          Shape = bsFrame
+          ExplicitTop = 19
+          ExplicitWidth = 591
+        end
+        object Label25: TLabel
+          Left = 6
+          Top = 111
+          Width = 189
+          Height = 18
+          Caption = 'Fecha Actualizacion Deuda'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label31: TLabel
+          Left = 9
+          Top = 55
+          Width = 203
+          Height = 18
+          Caption = 'Fecha Presentaci'#243'n Judicial:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label33: TLabel
+          Left = 8
+          Top = 83
+          Width = 120
+          Height = 18
+          Caption = 'Expte. / Caratula:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object RE: TRichEdit
+          Left = 9
+          Top = 260
+          Width = 481
+          Height = 95
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -1
+          Font.Name = 'Arial'
+          Font.Style = []
+          Lines.Strings = (
+            'RE')
+          ParentFont = False
+          TabOrder = 3
+        end
+        object CALCULAR: TJvBitBtn
+          Left = 218
+          Top = 114
+          Width = 156
+          Height = 45
+          Hint = 'Calcula la deuda de los objetos seleccionados'
+          Caption = 'Calcular Deuda'
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Arial'
+          Font.Style = []
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000120B0000120B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+            33333FFFFFFFFFFFFFFF000000000000000077777777777777770FF7FF7FF7FF
+            7FF07FF7FF7FF7F37F3709F79F79F7FF7FF077F77F77F7FF7FF7077777777777
+            777077777777777777770FF7FF7FF7FF7FF07FF7FF7FF7FF7FF709F79F79F79F
+            79F077F77F77F77F77F7077777777777777077777777777777770FF7FF7FF7FF
+            7FF07FF7FF7FF7FF7FF709F79F79F79F79F077F77F77F77F77F7077777777777
+            777077777777777777770FFFFF7FF7FF7FF07F33337FF7FF7FF70FFFFF79F79F
+            79F07FFFFF77F77F77F700000000000000007777777777777777CCCCCC8888CC
+            CCCC777777FFFF777777CCCCCCCCCCCCCCCC7777777777777777}
+          NumGlyphs = 2
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+          OnClick = CALCULARClick
+        end
+        object PG1: TProgressBar
+          Left = 2
+          Top = 511
+          Width = 592
+          Height = 18
+          Align = alBottom
+          TabOrder = 2
+        end
+        object grilla2: TJvStringGrid
+          Left = 2
+          Top = 171
+          Width = 592
+          Height = 340
+          Hint = 
+            'Detalle de los Periodos de los ojetos con sus deudas actualizada' +
+            's.'
+          Align = alBottom
+          ColCount = 15
+          DefaultColWidth = 55
+          DefaultRowHeight = 20
+          FixedColor = clWhite
+          FixedCols = 0
+          RowCount = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          GradientEndColor = clInfoBk
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+          ParentFont = False
+          ParentShowHint = False
+          PopupMenu = PopupMenu1
+          ScrollBars = ssVertical
+          ShowHint = True
+          TabOrder = 0
+          OnDrawCell = grilla2DrawCell
+          Alignment = taLeftJustify
+          FixedFont.Charset = DEFAULT_CHARSET
+          FixedFont.Color = clNavy
+          FixedFont.Height = -12
+          FixedFont.Name = 'MS Sans Serif'
+          FixedFont.Style = [fsBold]
+          ColWidths = (
+            72
+            60
+            60
+            90
+            64
+            70
+            70
+            70
+            70
+            70
+            70
+            100
+            65
+            68
+            74)
+        end
+        object OFECRESU: TMaskEdit
+          Left = 45
+          Top = 132
+          Width = 108
+          Height = 26
+          EditMask = '!99/99/0000;1;_'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          MaxLength = 10
+          ParentFont = False
+          TabOrder = 4
+          Text = '  /  /    '
+          OnExit = OFECRESUExit
+          OnKeyPress = OFECRESUKeyPress
+        end
+        object FECJUDICIAL: TMaskEdit
+          Left = 229
+          Top = 45
+          Width = 108
+          Height = 26
+          EditMask = '!99/99/0000;1;_'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          MaxLength = 10
+          ParentFont = False
+          TabOrder = 5
+          Text = '  /  /    '
+          OnExit = FECJUDICIALExit
+          OnKeyPress = FECJUDICIALKeyPress
+        end
+        object CBJ: TCheckBox
+          Left = 6
+          Top = 28
+          Width = 221
+          Height = 18
+          Caption = 'CON PROCESO JUDICIAL'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 6
+          OnClick = CBJClick
+        end
+        object caratula: TEdit
+          Left = 142
+          Top = 78
+          Width = 448
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 50
+          ParentFont = False
+          TabOrder = 7
+          OnExit = caratulaExit
+          OnKeyPress = caratulaKeyPress
+        end
+      end
+      object RzPanel2: TRzPanel
+        Left = 0
+        Top = 0
+        Width = 475
+        Height = 531
+        Align = alLeft
+        TabOrder = 1
+        object JvGroupBox1: TJvGroupBox
+          Left = 2
+          Top = 2
+          Width = 471
+          Height = 527
+          Align = alClient
+          Caption = '1) Contribuyente Titular y sus Boletas de Deudas'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 0
+          PropagateEnable = True
+          object Label12: TLabel
+            Left = 61
+            Top = 60
+            Width = 76
+            Height = 15
+            Caption = 'Contribuyente'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label14: TLabel
+            Left = 62
+            Top = 25
+            Width = 100
+            Height = 16
+            Caption = 'Id. Boleta Deuda:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Label1: TLabel
+            Left = 171
+            Top = 25
+            Width = 106
+            Height = 16
+            Caption = 'Nro Boleta Deuda:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
+          end
+          object IDCONT: TEdit
+            Left = 6
+            Top = 75
+            Width = 89
+            Height = 23
+            CharCase = ecUpperCase
+            Color = 16641514
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            MaxLength = 10
+            ParentFont = False
+            TabOrder = 2
+            Visible = False
+          end
+          object NOMBRE: TEdit
+            Left = 61
+            Top = 75
+            Width = 397
+            Height = 23
+            CharCase = ecUpperCase
+            Color = clInfoBk
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            MaxLength = 50
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 0
+          end
+          object BUSCUIM1: TJvBitBtn
+            Left = 4
+            Top = 20
+            Width = 51
+            Height = 40
+            Hint = 'Buscar y Asignar el Cliente'
+            Glyph.Data = {
+              36080000424D3608000000000000360400002800000020000000200000000100
+              08000000000000040000CE0E0000D80E00000001000000000000000000004000
+              000080000000FF000000002000004020000080200000FF200000004000004040
+              000080400000FF400000006000004060000080600000FF600000008000004080
+              000080800000FF80000000A0000040A0000080A00000FFA0000000C0000040C0
+              000080C00000FFC0000000FF000040FF000080FF0000FFFF0000000020004000
+              200080002000FF002000002020004020200080202000FF202000004020004040
+              200080402000FF402000006020004060200080602000FF602000008020004080
+              200080802000FF80200000A0200040A0200080A02000FFA0200000C0200040C0
+              200080C02000FFC0200000FF200040FF200080FF2000FFFF2000000040004000
+              400080004000FF004000002040004020400080204000FF204000004040004040
+              400080404000FF404000006040004060400080604000FF604000008040004080
+              400080804000FF80400000A0400040A0400080A04000FFA0400000C0400040C0
+              400080C04000FFC0400000FF400040FF400080FF4000FFFF4000000060004000
+              600080006000FF006000002060004020600080206000FF206000004060004040
+              600080406000FF406000006060004060600080606000FF606000008060004080
+              600080806000FF80600000A0600040A0600080A06000FFA0600000C0600040C0
+              600080C06000FFC0600000FF600040FF600080FF6000FFFF6000000080004000
+              800080008000FF008000002080004020800080208000FF208000004080004040
+              800080408000FF408000006080004060800080608000FF608000008080004080
+              800080808000FF80800000A0800040A0800080A08000FFA0800000C0800040C0
+              800080C08000FFC0800000FF800040FF800080FF8000FFFF80000000A0004000
+              A0008000A000FF00A0000020A0004020A0008020A000FF20A0000040A0004040
+              A0008040A000FF40A0000060A0004060A0008060A000FF60A0000080A0004080
+              A0008080A000FF80A00000A0A00040A0A00080A0A000FFA0A00000C0A00040C0
+              A00080C0A000FFC0A00000FFA00040FFA00080FFA000FFFFA0000000C0004000
+              C0008000C000FF00C0000020C0004020C0008020C000FF20C0000040C0004040
+              C0008040C000FF40C0000060C0004060C0008060C000FF60C0000080C0004080
+              C0008080C000FF80C00000A0C00040A0C00080A0C000FFA0C00000C0C00040C0
+              C00080C0C000FFC0C00000FFC00040FFC00080FFC000FFFFC0000000FF004000
+              FF008000FF00FF00FF000020FF004020FF008020FF00FF20FF000040FF004040
+              FF008040FF00FF40FF000060FF004060FF008060FF00FF60FF000080FF004080
+              FF008080FF00FF80FF0000A0FF0040A0FF0080A0FF00FFA0FF0000C0FF0040C0
+              FF0080C0FF00FFC0FF0000FFFF0040FFFF0080FFFF00FFFFFF00FFFFFFFFFFFF
+              FFFFFF0000000000000000006D6D6DFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              000000DBDBDBDBFF93FF93930000006D6D6DFFFFFFFFFFFFFFFFFFFFFFFF0000
+              DBDBDBDBDBDBDBFF93FF939393939300006D6D6DFFFFFFFFFFFFFFFFFF009393
+              DBDBDBDBDBDBDBFF93FF93939393939393006D6D6DFFFFFFFFFFFFFF00939393
+              DBDBDBDBDBDBDBFF93FF9393939393939393006D6D6DFFFFFFFFFF0093939393
+              DBDBDB00000000000000000093939393939393006D6D6DFFFFFF009393939393
+              000000FFFFFFFFFFFFFFFFFF0000009393939393006D6DFFFFFF009393930000
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000939393006D6D6DFFFF00939300FFFF
+              FFFF00000000000000000000FFFFFFFFFF009393006D6D6DFFFF009300FFFFFF
+              000093939393939393939393000000FFFFFF0093006D6D6D6DFF0000FFFFFF00
+              93939393939393939393939393939300FFFFFF00006D6D6D6DFF00FFFFFF006E
+              939393939393939393FFFFFF9393939300FFFFFF006D6D6D6DFF00FFFF009393
+              6E9393939393939393939393FF93936E9300FFFF006D6D6DFFFF00FFFF009393
+              936E6EDB9393939393939393FF6E6E939300FFFF006D6D6DFFFF00FFFF009393
+              9393DBFFDB6E6E6E6E6E6E6E6E9393939300FFFF006D6DFFFFFF00FFFFFF0093
+              939393DB93939393939393939393B69300FFFFFF006DFFFFFFFFFF00FFFFFF00
+              93939393939393939393939393939300FFFFFF00FFFFFFFFFFFFFFFF00FFFFFF
+              000000939393939393939393930000FFFFFF00FFFFFFFFFFFFFFFFFFFF00FFFF
+              FFFFFF00000000000000000000FFFFFFFF006D6DFFFFFFFFFFFFFFFFFFFF0000
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000092006D6DFFFFFFFFFFFFFFFFFFFFFF
+              000000FFFFFFFFFFFFFFFFFFFF0000DBDBDB92006D6DFFFFFFFFFFFFFFFFFFFF
+              FFFFFF00000000000000000000DBFFFFDBDBDB00006D6DFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFF00DBFFFFDB000000006D6DFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFF0000000000000000006D6DFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00246D2400000000006D6DFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00246D2400000000006DFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00246D240000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00246D2400000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00246D24000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00246D240000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 1
+            OnClick = BUSCUIM1Click
+            HotTrackFont.Charset = DEFAULT_CHARSET
+            HotTrackFont.Color = clWindowText
+            HotTrackFont.Height = -15
+            HotTrackFont.Name = 'MS Sans Serif'
+            HotTrackFont.Style = []
+          end
+          object JvgGroupBox3: TJvgGroupBox
+            Left = 2
+            Top = 107
+            Width = 467
+            Height = 418
+            Align = alBottom
+            Caption = 'Boletas de Deuda Asociados al Contribuyente'
+            TabOrder = 3
+            Border.Inner = bvSpace
+            Border.Outer = bvNone
+            Border.Bold = False
+            CaptionAlignment = fcaCenter
+            CaptionBorder.Inner = bvSpace
+            CaptionBorder.Outer = bvNone
+            CaptionBorder.Bold = False
+            CaptionGradient.Active = False
+            CaptionGradient.Orientation = fgdHorizontal
+            CaptionShift.X = 8
+            CaptionShift.Y = 0
+            Colors.Text = clHighlightText
+            Colors.TextActive = clHighlightText
+            Colors.Caption = clBtnShadow
+            Colors.CaptionActive = clPurple
+            Colors.Client = clBtnFace
+            Colors.ClientActive = clBtnFace
+            Gradient.FromColor = clBlack
+            Gradient.ToColor = clGray
+            Gradient.Active = False
+            Gradient.Orientation = fgdHorizontal
+            Options = [fgoFilledCaption, fgoFluentlyCollapse, fgoFluentlyExpand, fgoHideChildrenWhenCollapsed, fgoSaveChildFocus]
+            FullHeight = 0
+            object grilla1: TJvStringGrid
+              Left = 2
+              Top = 21
+              Width = 463
+              Height = 395
+              Hint = 
+                'Rubros y Objetos involucarados en la Boleta de Deuda seleccionad' +
+                'a.'
+              Align = alClient
+              ColCount = 12
+              DefaultColWidth = 55
+              DefaultRowHeight = 20
+              FixedColor = clWhite
+              FixedCols = 0
+              RowCount = 2
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              GradientEndColor = clWhite
+              Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+              ParentFont = False
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 1
+              OnDrawCell = grilla1DrawCell
+              Alignment = taLeftJustify
+              FixedFont.Charset = DEFAULT_CHARSET
+              FixedFont.Color = clNavy
+              FixedFont.Height = -12
+              FixedFont.Name = 'MS Sans Serif'
+              FixedFont.Style = [fsBold]
+              ColWidths = (
+                72
+                83
+                81
+                79
+                61
+                53
+                70
+                70
+                70
+                70
+                70
+                55)
+            end
+            object ARBOL: TRzCheckTree
+              Left = 2
+              Top = 392
+              Width = 424
+              Height = 26
+              OnStateChange = ARBOLStateChange
+              OnUpdateChildren = ARBOLUpdateChildren
+              AutoExpand = True
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -12
+              Font.Name = 'Lucida Console'
+              Font.Style = []
+              Indent = 19
+              ItemHeight = 20
+              MultiSelect = True
+              ParentFont = False
+              SelectionPen.Color = clBtnShadow
+              StateImages = ARBOL.CheckImages
+              TabOrder = 0
+              Visible = False
+              OnClick = ARBOLClick
+            end
+          end
+          object idboleta: TEdit
+            Left = 61
+            Top = 38
+            Width = 89
+            Height = 23
+            CharCase = ecUpperCase
+            Color = clInfoBk
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            MaxLength = 10
+            ParentFont = False
+            TabOrder = 4
+          end
+          object nrodeboleta: TEdit
+            Left = 171
+            Top = 38
+            Width = 89
+            Height = 23
+            CharCase = ecUpperCase
+            Color = clInfoBk
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -12
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            MaxLength = 10
+            ParentFont = False
+            TabOrder = 5
+          end
+        end
+      end
+    end
+    object TabSheet2: TRzTabSheet
+      ImageIndex = 1
+      Caption = 'Configuraci'#243'n del Plan'
+      object CONDPLAN: TJvGroupBox
+        Left = 3
+        Top = 172
+        Width = 408
+        Height = 357
+        Caption = '3) Condiciones del Plan'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 1
+        object Label9: TLabel
+          Left = 9
+          Top = 19
+          Width = 60
+          Height = 15
+          Caption = 'N'#176' Cuotas:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label32: TLabel
+          Left = 117
+          Top = 19
+          Width = 75
+          Height = 15
+          Caption = 'Valor Sellado:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label18: TLabel
+          Left = 225
+          Top = 19
+          Width = 72
+          Height = 15
+          Caption = 'Primer Venc.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label19: TLabel
+          Left = 323
+          Top = 19
+          Width = 71
+          Height = 15
+          Caption = 'Ultimo Venc.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object CUOTAS: TComboBox
+          Left = 9
+          Top = 33
+          Width = 87
+          Height = 25
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 0
+          OnChange = CUOTASChange
+          OnExit = CUOTASExit
+          OnKeyPress = CUOTASKeyPress
+        end
+        object VALSELLADO: TEdit
+          Left = 113
+          Top = 33
+          Width = 87
+          Height = 25
+          Color = 16641514
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 1
+        end
+        object VENC1: TMaskEdit
+          Left = 220
+          Top = 33
+          Width = 83
+          Height = 25
+          EditMask = '!99/99/0000;1;_'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 10
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 2
+          Text = '  /  /    '
+          OnExit = VENC1Exit
+          OnKeyPress = VENC1KeyPress
+        end
+        object VENC2: TMaskEdit
+          Left = 309
+          Top = 33
+          Width = 88
+          Height = 25
+          EditMask = '!99/99/0000;1;_'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 10
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 3
+          Text = '  /  /    '
+          OnExit = VENC2Exit
+          OnKeyPress = VENC2KeyPress
+        end
+        object grilla5: TStringGrid
+          Left = 2
+          Top = 72
+          Width = 404
+          Height = 283
+          Hint = 'Detalle de la Financiacion en cuotas de la Deuda '
+          Align = alBottom
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          DefaultColWidth = 100
+          DefaultRowHeight = 20
+          FixedCols = 0
+          RowCount = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine]
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 4
+          ColWidths = (
+            48
+            83
+            85
+            72
+            74)
+        end
+      end
+      object CONTRPLAN: TJvGroupBox
+        Left = 418
+        Top = 0
+        Width = 650
+        Height = 404
+        Caption = '4) Datos del Contribuyente Titular y/o Responsable de pago'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 2
+        object Label3: TLabel
+          Left = 46
+          Top = 16
+          Width = 36
+          Height = 16
+          Caption = 'CUIM:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label4: TLabel
+          Left = 170
+          Top = 16
+          Width = 48
+          Height = 15
+          Caption = 'Nombre:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label13: TLabel
+          Left = 8
+          Top = 57
+          Width = 53
+          Height = 15
+          Caption = 'Provincia:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label38: TLabel
+          Left = 9
+          Top = 99
+          Width = 32
+          Height = 15
+          Caption = 'Calle:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label35: TLabel
+          Left = 228
+          Top = 57
+          Width = 36
+          Height = 15
+          Caption = 'Barrio:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label39: TLabel
+          Left = 9
+          Top = 140
+          Width = 34
+          Height = 15
+          Caption = 'Altura:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label20: TLabel
+          Left = 515
+          Top = 140
+          Width = 53
+          Height = 15
+          Caption = 'Telefono.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label16: TLabel
+          Left = 8
+          Top = 182
+          Width = 81
+          Height = 15
+          Caption = 'Otro Domicilio:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label42: TLabel
+          Left = 68
+          Top = 140
+          Width = 28
+          Height = 15
+          Caption = 'Piso:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label43: TLabel
+          Left = 123
+          Top = 140
+          Width = 29
+          Height = 15
+          Caption = 'Dpto:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label44: TLabel
+          Left = 178
+          Top = 140
+          Width = 20
+          Height = 15
+          Caption = 'Mz.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label45: TLabel
+          Left = 233
+          Top = 140
+          Width = 33
+          Height = 15
+          Caption = 'Casa:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label41: TLabel
+          Left = 288
+          Top = 140
+          Width = 31
+          Height = 15
+          Caption = 'Torre:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label40: TLabel
+          Left = 342
+          Top = 140
+          Width = 30
+          Height = 15
+          Caption = 'Sect.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label47: TLabel
+          Left = 397
+          Top = 140
+          Width = 34
+          Height = 15
+          Caption = 'Parcl.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label46: TLabel
+          Left = 452
+          Top = 140
+          Width = 41
+          Height = 15
+          Caption = 'Lt. Rur.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label27: TLabel
+          Left = 414
+          Top = 224
+          Width = 79
+          Height = 15
+          Alignment = taRightJustify
+          Caption = 'Tipo Caracter.:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label11: TLabel
+          Left = 572
+          Top = 98
+          Width = 42
+          Height = 14
+          AutoSize = False
+          Caption = 'Id Domi.'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label21: TLabel
+          Left = 9
+          Top = 224
+          Width = 39
+          Height = 15
+          Caption = 'E-mail:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object CUIM: TEdit
+          Left = 46
+          Top = 32
+          Width = 123
+          Height = 23
+          CharCase = ecUpperCase
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 3
+          ParentFont = False
+          TabOrder = 0
+        end
+        object CONTRIB: TEdit
+          Left = 170
+          Top = 32
+          Width = 475
+          Height = 23
+          CharCase = ecUpperCase
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 50
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 2
+          OnKeyPress = CONTRIBKeyPress
+        end
+        object PROVINCIA: TComboBox
+          Left = 9
+          Top = 73
+          Width = 205
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 3
+          OnExit = PROVINCIAExit
+          OnKeyPress = PROVINCIAKeyPress
+        end
+        object CALLE: TComboBox
+          Left = 8
+          Top = 115
+          Width = 557
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 5
+          OnExit = CALLEExit
+          OnKeyPress = CALLEKeyPress
+        end
+        object BARRIO: TComboBox
+          Left = 228
+          Top = 73
+          Width = 417
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 4
+          OnExit = BARRIOExit
+          OnKeyPress = BARRIOKeyPress
+        end
+        object ALTURA1: TMaskEdit
+          Left = 8
+          Top = 156
+          Width = 42
+          Height = 23
+          CharCase = ecUpperCase
+          EditMask = '99999;1; '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 5
+          ParentFont = False
+          TabOrder = 6
+          Text = '00000'
+          OnKeyPress = ALTURA1KeyPress
+        end
+        object TELEFONO: TEdit
+          Left = 519
+          Top = 156
+          Width = 128
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 15
+          ParentFont = False
+          TabOrder = 15
+          OnKeyPress = TELEFONOKeyPress
+        end
+        object DOMI1: TEdit
+          Left = 8
+          Top = 198
+          Width = 637
+          Height = 23
+          Hint = 
+            'Forma de escritura: Nombre Barrio - Nombre Calle - Altura - Dept' +
+            'o - etc. - MAX 80 Caracteres'
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 80
+          ParentFont = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 16
+          OnKeyPress = DOMI1KeyPress
+        end
+        object PISO1: TEdit
+          Left = 68
+          Top = 156
+          Width = 33
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 3
+          ParentFont = False
+          TabOrder = 7
+          OnKeyPress = PISO1KeyPress
+        end
+        object DPTO1: TEdit
+          Left = 123
+          Top = 156
+          Width = 29
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 3
+          ParentFont = False
+          TabOrder = 8
+          OnKeyPress = DPTO1KeyPress
+        end
+        object MANZANA1: TEdit
+          Left = 178
+          Top = 156
+          Width = 33
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 3
+          ParentFont = False
+          TabOrder = 9
+          OnKeyPress = MANZANA1KeyPress
+        end
+        object CASA1: TEdit
+          Left = 233
+          Top = 156
+          Width = 33
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 3
+          ParentFont = False
+          TabOrder = 10
+          OnKeyPress = CASA1KeyPress
+        end
+        object TORRE1: TEdit
+          Left = 288
+          Top = 156
+          Width = 33
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 10
+          ParentFont = False
+          TabOrder = 11
+          OnKeyPress = TORRE1KeyPress
+        end
+        object SECTOR1: TEdit
+          Left = 342
+          Top = 156
+          Width = 34
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 10
+          ParentFont = False
+          TabOrder = 12
+          OnKeyPress = SECTOR1KeyPress
+        end
+        object PARCELA1: TEdit
+          Left = 397
+          Top = 156
+          Width = 34
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 3
+          ParentFont = False
+          TabOrder = 13
+          OnKeyPress = PARCELA1KeyPress
+        end
+        object LOTERURAL1: TEdit
+          Left = 452
+          Top = 156
+          Width = 34
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 10
+          ParentFont = False
+          TabOrder = 14
+          OnKeyPress = LOTERURAL1KeyPress
+        end
+        object grilla4: TStringGrid
+          Left = 2
+          Top = 309
+          Width = 646
+          Height = 93
+          Align = alBottom
+          ColCount = 24
+          DefaultColWidth = 100
+          DefaultRowHeight = 20
+          FixedCols = 0
+          RowCount = 2
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goRowSelect]
+          ParentFont = False
+          TabOrder = 23
+          OnClick = grilla4Click
+          ColWidths = (
+            104
+            282
+            182
+            182
+            182
+            48
+            48
+            48
+            48
+            48
+            48
+            48
+            48
+            48
+            120
+            476
+            100
+            100
+            0
+            0
+            0
+            0
+            0
+            100)
+        end
+        object BUSCACUIM: TJvBitBtn
+          Left = 8
+          Top = 26
+          Width = 32
+          Height = 25
+          Hint = 'Buscar y Asignar el Cliente'
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+            0000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFF0000004040409F9F9F606060202020000000FFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000404040BFBFBFDFDFDFBF
+            BFBF808080909090606060202020000000FFFFFFFFFFFFFFFFFFFFFFFF000000
+            404040BFBFBFDFDFDFBFBFBF9F9F9F7F7F7F7F7F7F5050505050509090906060
+            60000000FFFFFFFFFFFF505050BFBFBFDFDFDFBFBFBF9F9F9F7F7F7F7F7F7F5F
+            5F5F9F5F5FFF3F00FF7F00606060505050000000FFFFFFFFFFFF404040A0A0A0
+            BFBFBF7F7F7F7F7F7F5F5F5F9F9F9FEFAFAFFF3F00FFBF00BF0000505050B0B0
+            B0202020FFFFFFFFFFFFFFFFFFFFFFFF404040A0A0A09F9F9FDFDFDFCF9090FF
+            3F00FFBF00BF00007F7F7FEFEFAFCFCFCF707070000000FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFF404040A0A0A0CF8F8FFFBF00BF00007F7F40FFFF00FFFF00EFEF
+            AFB0B0B0202020FFFFFFFFFFFF0000003F3F3F7F7F3F7F7F3F505050BFBFBF7F
+            40407F7F40BFBF007F7F3F7F7F00FFFF3FCFCFCF707070000000202020BFBFBF
+            FFFF7FFFFF7FFFFF7FAFAF705050507F7F40AFAF30BFBFBF7F7FDF7F7F7FFFFF
+            00EFEFAFB0B0B02020207F7F7FFFFF7FFFFF7FFFFF7FFFFFBFDFDF9F80808070
+            7070FFFF00DFDFDFEFEFEFDFDF9FBFBF00BFBF3FC0C0C0404040BFBF7FFFFF7F
+            FFFF7FFFFF7FFFFF7FFFFF7FAFAF70404040FFFF00EFEF30EFEF30BFBF006F6F
+            308080807070702020207F7F40FFFF7FFFFF7FFFFF7FFFFF7FFFFF7F9F9F5F70
+            70707F7F00BFBF006F6F30808080707070202020FFFFFFFFFFFF202020DFDF9F
+            FFFF7FFFFF7FFFFF7FFFFF7F5F5F5FA0A0A0909090808080707070202020FFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFF2020207F7F40BFBF7F9F9F5F50505020202020
+            2020707070202020FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 1
+          OnClick = BUSCACUIMClick
+          OnKeyPress = BUSCACUIMKeyPress
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -15
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object Agrega2: TJvBitBtn
+          Left = 104
+          Top = 269
+          Width = 121
+          Height = 34
+          Hint = 'Agrega Nueva Fila'
+          Caption = 'Agregar'
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000120B0000120B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333300000000
+            0000333377777777777733330FFFFFFFFFF033337F3FFF3F3FF733330F000F0F
+            00F033337F777373773733330FFFFFFFFFF033337F3FF3FF3FF733330F00F00F
+            00F033337F773773773733330FFFFFFFFFF033337FF3333FF3F7333300FFFF00
+            F0F03333773FF377F7373330FB00F0F0FFF0333733773737F3F7330FB0BF0FB0
+            F0F0337337337337373730FBFBF0FB0FFFF037F333373373333730BFBF0FB0FF
+            FFF037F3337337333FF700FBFBFB0FFF000077F333337FF37777E0BFBFB000FF
+            0FF077FF3337773F7F37EE0BFB0BFB0F0F03777FF3733F737F73EEE0BFBF00FF
+            00337777FFFF77FF7733EEEE0000000003337777777777777333}
+          NumGlyphs = 2
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 19
+          OnClick = Agrega2Click
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -15
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object Modifica2: TJvBitBtn
+          Left = 239
+          Top = 269
+          Width = 126
+          Height = 34
+          Hint = 'Modifica los Datos de la Fila'
+          Caption = 'Modificar'
+          Enabled = False
+          Glyph.Data = {
+            42010000424D4201000000000000760000002800000011000000110000000100
+            040000000000CC00000000000000000000001000000010000000000000000000
+            BF0000BF000000BFBF00BF000000BF00BF00BFBF0000C0C0C000808080000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00777777777777
+            7777700000007777777777777777700000007444444444444777700000007488
+            8888888847777000000074777777770747777000000074700700700047777000
+            000074777777770007777000000074700700700B80777000000074777777770B
+            707770000000744444444440B8077000000074F44F44F440B707700000007444
+            444444440B80700000007777777777770B807000000077777777777770050000
+            0000777777777777705500000000777777777777770070000000777777777777
+            777770000000}
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 20
+          OnClick = Modifica2Click
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -15
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object Borra2: TJvBitBtn
+          Left = 379
+          Top = 269
+          Width = 116
+          Height = 34
+          Hint = 'Borra la Fila Seleccionada'
+          Caption = 'Borrar'
+          Enabled = False
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000120B0000120B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
+            55555FFFFFFF5F55FFF5777777757559995777777775755777F7555555555550
+            305555555555FF57F7F555555550055BB0555555555775F777F55555550FB000
+            005555555575577777F5555550FB0BF0F05555555755755757F555550FBFBF0F
+            B05555557F55557557F555550BFBF0FB005555557F55575577F555500FBFBFB0
+            B05555577F555557F7F5550E0BFBFB00B055557575F55577F7F550EEE0BFB0B0
+            B05557FF575F5757F7F5000EEE0BFBF0B055777FF575FFF7F7F50000EEE00000
+            B0557777FF577777F7F500000E055550805577777F7555575755500000555555
+            05555777775555557F5555000555555505555577755555557555}
+          NumGlyphs = 2
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 21
+          OnClick = Borra2Click
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -15
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object Quita2: TJvBitBtn
+          Left = 520
+          Top = 269
+          Width = 111
+          Height = 34
+          Hint = 'Quita la Selecci'#243'n'
+          Caption = 'Quitar'
+          Enabled = False
+          Glyph.Data = {
+            42010000424D4201000000000000760000002800000013000000110000000100
+            040000000000CC0000000000000000000000100000001000000000000000A584
+            0000FFDE5200007B7B0000FFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFF
+            FF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00FFFFFF00111111111111
+            1111111000001111111111111111111000001111105111111111111000001111
+            1005111111111110000011111040511111111110000011111104051111111110
+            0000111111034051111111100000111111103405111111100000111555503440
+            5111111000001110000003440511111000001111034444333051111000001111
+            1034440000011110000011111103444051111110000011111110344405111110
+            0000111111110333305111100000111111111000000511100000111111111111
+            111111100000}
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 22
+          Visible = False
+          OnClick = Quita2Click
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -15
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object CARACTER: TComboBox
+          Left = 419
+          Top = 240
+          Width = 227
+          Height = 23
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          TabOrder = 18
+          OnExit = CARACTERExit
+          OnKeyPress = CARACTERKeyPress
+        end
+        object ContribId: TEdit
+          Left = 574
+          Top = 114
+          Width = 71
+          Height = 23
+          CharCase = ecUpperCase
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 3
+          ParentFont = False
+          TabOrder = 24
+        end
+        object mail: TEdit
+          Left = 8
+          Top = 240
+          Width = 353
+          Height = 23
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 100
+          ParentFont = False
+          TabOrder = 17
+          OnKeyPress = mailKeyPress
+        end
+      end
+      object FINPLAN: TJvGroupBox
+        Left = 412
+        Top = 406
+        Width = 663
+        Height = 125
+        Caption = '5) Finalizaci'#243'n del Plan'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 3
+        DesignSize = (
+          663
+          125)
+        object Label8: TLabel
+          Left = 9
+          Top = 29
+          Width = 86
+          Height = 15
+          Caption = 'Observaciones:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label17: TLabel
+          Left = 11
+          Top = 100
+          Width = 51
+          Height = 15
+          Caption = 'Progreso'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label24: TLabel
+          Left = 496
+          Top = 92
+          Width = 55
+          Height = 18
+          Caption = 'Label24'
+          Visible = False
+        end
+        object Sellado: TJvBitBtn
+          Left = 485
+          Top = 48
+          Width = 144
+          Height = 41
+          Caption = 'SELLADO'
+          Enabled = False
+          Glyph.Data = {
+            360C0000424D360C000000000000360000002800000020000000200000000100
+            180000000000000C0000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF8F8F8F4F4F4F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3
+            F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3
+            F3F3F3F3F3F5F5F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFEFEFEB6B6B6A7A7A7A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8
+            A8A8A8A8A7A7A7A4A4A4A8A8A8AAAAAAA8A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8
+            A8A8A7A7A7AFAFAFF1F1F1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFCCCCCCCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCB
+            CBCACACAD2D2D2E3E3E3BCBCBCC6C6C6CFCFCFCECECECECECECECECECECECECE
+            CECECECECEC7C7C7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEF
+            E3E3E3E3E3E3E8E8E8C2C2C2FAFAFAF0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0
+            F0F0F0F0F0F0F0EEEEEEF4F4F4F1F1F1F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0
+            F0F0F8F8F8C5C5C5E9E9E9E3E3E3E4E4E4E2E2E2F3F3F3FFFFFFDFDFDF9F9F9F
+            9F9F9FA0A0A09F9F9FA2A2A2B8B8B8D1D1D1CECECECECECECECECECECECECECE
+            CECECECECECECECECECECDCDCDCECECECECECECECECECECECECECECECECECECE
+            CECED7D7D7878787A2A2A2A0A0A0A0A0A0A0A0A09F9F9FEAEAEAD9D9D9C8C8C8
+            C9C9C9C9C9C9C8C8C8E2E2E27B7B7BFAFAFAE9E9E9E9E9E9E9E9E9E9E9E9E9E9
+            E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9F2
+            F2F29E9E9EB9B9B9CCCCCCC9C9C9C9C9C9C8C8C8CACACADCDCDCD4D4D4CFCFCF
+            CECECECECECECCCCCCFAFAFA0000005959595858585757575656565656565656
+            5657575757575757575757575757575757575757575757575757575756565667
+            67670000009C9C9CD5D5D5D2D2D2CCCCCCD3D3D3CBCBCBDFDFDFD5D5D5D6D6D6
+            D4D4D4D5D5D5D3D3D3FDFDFD0000000000000000000000000000000000000000
+            0000000000000000000000000000000000000000000000000000000000000000
+            0000000000C2C2C2D8D8D8DDDDDDDFDFDFD8D8D8D5D5D5DDDDDDD2D2D2DCDCDC
+            DADADADADADADADADADFDFDFC3C3C37676767D7D7D7D7D7D7D7D7D7D7D7D7D7D
+            7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7A
+            7A7A979797EFEFEFD9D9D9E1E1E1E3E3E3DDDDDDDBDBDBDADADAD2D2D2E5E5E5
+            E2E2E2E2E2E2E2E2E2E2E2E2E7E7E7EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            EEEEEBEBEBE2E2E2E4E4E4D2D2D2CCCCCCDEDEDEE5E5E5D8D8D8D1D1D1ECECEC
+            E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E9EAE7EBF0E8EBF0E8EBF0E8EB
+            EFE8EBEFE8EBEFE8EBEFE8EBF0E8EBF0E8ECF1E8EDF3E8EEF3E8EFF4E8EDEFE7
+            E7E7E7E7E7E7E7E7E7E7E7E9E9E9E9E9E9E8E8E8ECECECD6D6D6D0D0D0F5F5F5
+            EFEFEFF1F1F1F1F1F1F1F1F1F1F1F0F0F5FAFAF5E9F7DFBCF2DEBFF3E1C5F3E2
+            CBF3E4CBF3E3CBF3E2C7F3E0C4F3DDBDF3D9B8F3D3B1F3CBABF3C4A2F7DAC6ED
+            F5FAF1F1F1F1F1F1F1F1F1F1F1F1F2F2F2EEEEEEF5F5F5D6D6D6CFCFCFFDFDFD
+            FFFFFFFEFEFEFEFEFEFEFEFEFEFFFFFFFCF5D28340AD5F1AB26C2AB26F31B273
+            35B27438B27337B27235B26E2EB26B28B26420B25C18B2510EB14502BC3F00FA
+            D1BCFFFFFFFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFBFBFBD4D4D4CECECEFFFFFF
+            FCFCFCFCFCFCFCFCFCFCFCFCFCFFFFFFF4E9C97030C98247CA8A4FCA9054CA91
+            58CA9159CA9159C99055CA8E52CA884DCA8046CA783ECA7037CA662EC1490BF0
+            BAA0FFFFFFFCFCFCFCFCFCFCFCFCFCFCFCFDFDFDFFFFFFD2D2D2D0D0D0FFFFFF
+            FEFEFEFEFEFEFEFEFEFEFEFEFEFFFFFAE5D8EDA16EF2B485ECB17DECB983EBBD
+            88EBBE8AEABC87F6CC9DEDBA88EBB17FEBAB7AEBA374EA9B6AF19C70F08B5DE9
+            AE92FFFFFFFEFEFEFEFEFEFEFEFEFEFEFEFDFDFDFFFFFFD1D1D1D2D2D2FFFFFF
+            FDFDFDFEFEFEFEFEFEFEFEFEFEFFFFFCE2D5CB723AB86F3CB7733DBB753BBF73
+            33BE7535BD7332C78248BC6D2CBE6C2DBE6527BE5F21BD5519BD4B0ECA5723E8
+            AB8FFFFFFFFDFDFDFEFEFEFEFEFEFEFEFEFEFEFEFFFFFFD8D8D8E4E4E4F6F6F6
+            FFFFFFFEFEFEFEFEFEFEFEFEFFFFFFF7D6C5E29066C09C85C3A086CEA384E5AA
+            7DE2AB7FE2AA7FE1A77CE2A67BE1A277E09D72DF976CE59972EFA585F19E7CE1
+            9E7BFFFFFFFDFDFDFEFEFEFDFDFDFDFDFDFFFFFFDDDDDDF8F8F8FFFFFFCACACA
+            FFFFFFFFFFFFFFFFFFFDFDFDFFFFFFEFC6B3ECB097EDAF99ECAF99EFBAA4ECBD
+            A4E9B89DE7B799E7B497E7B395E7B296EAB396EDB39BEBAF94E9AA8FEBAF94DE
+            A183FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCECECEFFFFFFFFFFFFFEFEFE
+            D9D9D9DEDEDEE4E4E4FFFFFFFFFFFFEFB79EF3C7B4F6CDBAF6CCB8F2C7B1F1C5
+            AFF1C6B0F2C4AFF2C3ADF1C2ABF0BFA9F0BCA4F0BCA5F0BCA5F0BEA5F5C5B0DB
+            9D7DFFFFFFF0F0F0E1E1E1CECECEDFDFDFDADADAFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFB4B4B4D4DADCCD9B86E49572F7CEBCFADCD0FFEBE1FFF5
+            F0FFEFE7FFEEE3FFEEE4FFEDE3FFECE3FFF4EDFFE7DBFDDAC9F9CAB5EFA98BC6
+            7D5AE5ECF0B8B8B8ECECECFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFCACACAF9F9F9A8B0B4FFFFFFEBD7CEE4BBAADEA58BDFA3
+            89E0B29DE0B8A4DDB5A3DBB4A3DAB2A0D29C85D2AB99D3B3A5D4C2BAD8E2E6D1
+            DDE3F2F1F1C8C8C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFC7C7C7FFFFFFB9B8B8FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFCFFFFF9FEFFF5F9FBF2F6F8EFF3F5ECF1F4E9EDEFE5E9EBE2E4E5E0E0E0D0
+            D0CFF0F0F0C7C7C7FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFC9C9C9FFFFFFC0C0C0FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+            FEFDFDFDF8F8F8F6F6F6F2F2F2EFEFEFEBEBEBE8E8E8E5E5E5E3E3E3E1E1E1D0
+            D0D0EFEFEFC6C6C6FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFCBCBCBFFFFFFC6C6C6FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+            FEFDFDFDFBFBFBF8F8F8F4F4F4F0F0F0EEEEEEEBEBEBE8E8E8E4E4E4E4E4E4D1
+            D1D1EFEFEFC6C6C6FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFC7C7C7FFFFFFCBCBCBFFFFFFFDFDFDFEFEFEFEFEFEFEFE
+            FEFEFEFEFEFEFEF9F9F9F6F6F6F3F3F3EFEFEFEDEDEDE9E9E9E7E7E7E4E4E4D2
+            D2D2EFEFEFC5C5C5FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFBDBDBDFFFFFFCFCFCFFFFFFFFDFDFDFEFEFEFEFEFEFEFE
+            FEFEFEFEFEFEFEFCFCFCF8F8F8F5F5F5F1F1F1EEEEEEEBEBEBE8E8E8E6E6E6D2
+            D2D2EFEFEFC5C5C5FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFBDBDBDFFFFFFD7D7D7FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+            FEFEFEFEFEFEFEFEFEFEFAFAFAF7F7F7F3F3F3F0F0F0EDEDEDEAEAEAE9E9E9D4
+            D4D4EEEEEEC4C4C4FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF6F6F6D0D0D0BDBDBDFFFFFFFDFDFDFEFEFEFEFEFEFEFE
+            FEFEFEFEFEFEFEFEFEFEFCFCFCF8F8F8F6F6F6F2F2F2EEEEEEECECECEAEAEAD4
+            D4D4EEEEEEC3C3C3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC9C9C9FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+            FEFEFEFEFEFEFEFEFEFEFDFDFDFBFBFBF7F7F7F4F4F4F1F1F1EEEEEEECECECD4
+            D4D4EEEEEEC4C4C4FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFAFAFACFCFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBFBFBF7F7F7F3F3F3F0F0F0EFEFEFD6
+            D6D6EEEEEEC3C3C3FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE2E2E2EBEBEBEAEAEAEAEAEAEAEAEAEAEA
+            EAEAEAEAEAEAEAEAEAEAEAEAEAEAEAEAEBEBEBEBEBEBEBEBEBECECECEEEEEED3
+            D3D3F0F0F0CDCDCDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFEFEFEFFEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          TabOrder = 0
+          OnClick = SelladoClick
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -15
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object OBSERV: TEdit
+          Left = 90
+          Top = 19
+          Width = 555
+          Height = 23
+          Anchors = [akLeft, akTop, akRight]
+          CharCase = ecUpperCase
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          MaxLength = 90
+          ParentFont = False
+          TabOrder = 1
+        end
+        object Imprime: TJvBitBtn
+          Left = 171
+          Top = 48
+          Width = 143
+          Height = 41
+          Caption = 'PLANILLA'
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          Glyph.Data = {
+            360C0000424D360C000000000000360000002800000020000000200000000100
+            180000000000000C0000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF1F5F6E1E4E6E2E5E8DEE0E2E2E4E7E1E2E6E1E2E6E1E2
+            E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E3E6E1
+            E3E6E1E3E6E1E4E6E2E4E7E2E5E7E2E5E7E2E6E7F4F6F6FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFDFFFFAF8F849A877CA18F7B97868EA6977EA59980A59881A59B
+            81A59B81A59B82A59B82A59B82A59B82A59B82A59C82A59B81A59981A59881A5
+            9880A39480A18F7F9E8B7E9D887D9A837C937875B3A5A5FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFF6F7F7CB5F21E1883AEB9C3FFFB840FEBE47FDC44AFDCB4BFDCE
+            4FFDD251FDD651FDD852FDD853FDD752FDD651FDD451FDD14FFDCD4EFDC84BFE
+            C248FBBA45F2A942E8943CDC7F38CF6732C34A29BB8985FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFDFFFFCE9068D0E6F8D8E6E99CA8F6D0DAE9CCD5E9CCD4E9CCD3
+            E8CCD3E8CCD2E8CCD2E8CCD1E8CCD1E8CCD2E8CCD2E8CCD3E8CCD4E9CCD4E9CC
+            D6E9CCD7EACDD9EBCFDDEBD1E1ECD4E7F1D4D5D5BD6C5AFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFCFFFFEBA563FFFFFFFFFFFFCFCFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3C2A9C7A08EFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFEEB165FFFFFFFFFFFFC7C7FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9A272D2C8C2FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF2BA62FFFFFFFFFFFFCFD2FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEB985FDAE8F3FFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF5C162EEE3F0F4E4DABAADDFEFDFD6E4D6D4E2D3D2E1D2
+            D0DED1CEDFD2CCDDD3CBDDD3C9DAD1C5D7CEC3D1C7C0D0C4BED6C7C3DFCFCEF3
+            E3E2F6E7E7F5E6E6F5E6E6F5E6E6F8F1FAE18D3AE6F6FFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF7C760FAFFFFFEFFF8C4C5F6FAFBF3F0F2F2EEF0F0ECED
+            EEE8EAEAE6E7E8E4E5E5E1E2E3DEDFE0DCDDDEDADBDCE4E5E5FCFAF6D5D4CD3B
+            3B3BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDF973FF1FCFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF6D179FFFFFFFFFFFFCFD2FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9BBBE06398E1FF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDA9538F8FFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFAE3A4F3D9C0F6E7E3C0B3E6FBEBDFF1E0E1F1E0E0F3E2
+            E0F5E6E2F6E9E2F8ECE3FAF0E3FBF1E5FFFCEBD1D1D81F69C7739FE1E8EAEFFB
+            EAE7F4E7E6F4E7E6F5E7E6F5E7E6F9F2FDD9A148FEFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF7E8C4FCEAB1FFFFFFCACBFDFFFFFCFAFBFCF9FCFCFAFC
+            FCFAFCFCFAFBFDFAFBFCFAFCFDFFFFFE57C9F70087E2B4BCE6F1F4F8FFFFFDFC
+            FDFDFCFDFDFCFDFDFCFDFDFCFFFFFFF9E5D7B071FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF7F4EEFCDE8BFBFFFFCCCDFAFFFFF8F8F9FAF8FAFAF8FA
+            FAF8F9FAF9FAFAF7F8FAFFFFFA59C7F5008CE200B1F865EAFFEFF2F6FCFCFBF9
+            FBFBFAFCFCF9FBFBFAFCFCF9FDFFFFE9B5D6C0A0FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFF8FFFFF6C756F1E7EDC3B7E7F7E9DFEDE0E0EDE1E0EFE1
+            E0F1E4E1F1E7E3FFF7DF58C5F0008CE300B3F873EFFF8ED8EDFFE3DBEDDDDCEE
+            DDDCEEDDDCEEDDDCEDDCDCEDE0E7F9C879D8D4CCFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFBFFFFF9CF68F7FFFFCBCDF9FDFFF6F4F6F7F4F7F8F4F7
+            F7F3F6F7FFFFF859C9F8008DE300B4FA78EFFF90E3FBFFFCF5F5F8FAF6FAFAF6
+            F9FAF7FBFBF7FAFAF7FBFBF7FFFFFFC960D7E2F7FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFEFFFFF7CC64F4FCFFD3D5F6F3F4F4F3F4F4F3F5F5F2F4
+            F5FFFFF358C6F2008DE300B5FC7BEFFF8AE3FEFFF9F3F2F4F5F3F5F5F4F5F6F3
+            F5F5F3F5F5F3F5F5F3F4F4F3FCFFF3B955E6F0FFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFF7C85DE6DBE8D4C4DAE0D1D8E8D6D5E5D6D5FFE1
+            D356C2ED008DE400B7FC80F1FF86DAEDFFE8D6EDE1D9EBDDD8E9DAD7E9D8D7E9
+            D8D7E9D9D8E9D8D7E9D8D7E9E0ECE4AA4BF2FBFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFAC960EEFCFFE3E6F3E3E6F5F0F4F3FFFFF359C9
+            F6008FE600B8FC85F2FF86DFF8FFF4EEEEF1F3EFF2F3F0F3F3F0F3F3F0F3F4F1
+            F4F4F0F3F3F0F4F4F0F3F3F3FFFFDEA147F9FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFF9CB65EAF3FFE8E9EED8DAEFFFFBEB58C3EF008E
+            E400BAFC89F5FF86DFF9FFF1EBEBEDEFEDEDEFEDEEEFEDEEEFEEEFF0EEEFEFEE
+            F0F0EEF0F0EFF0F1EFF0EFF1FCFFD69A4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFAD487E5D1C5E3D8D8F8CEDA58BEE80090E600BC
+            FE8FF5FF87D5EBFFE2D3E9E1D8EBE3D8EAE1D7E8DDD7E7DAD6E5D8D6E4D7D6E5
+            D8D7E4D8D6E4D8D6E4D8DBEAD3C7D4AA79FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFF6D8AAEAD7B6FFFEEE45AFF70092E500BDFF92F5
+            FF87DBF4FFF3EDEFF2F6E9EAECE9EBECE9EAECF0F2F5F0F3F5E9ECECEAECECEA
+            ECEDF3F6F6EFF2F4EAF0F4EDD0AED0B8A3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFAECDAFFC47D57C5F70093E400BDFF98F5FF86DA
+            F2FFECE8C5BFADB3B197EBECF1E4E4E4EBEDF0BAB4A0BEBCA7EAEBEEE5E5E6F2
+            EFE5A4A3A0CECBB4EAF0F7DD9B67EAEAEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFE9E144A9CF0093E900BFFFA0F9FF7EDDF5FFF1
+            EAF1F2F2DFDFE3A9A9AEF3F2F2EEEEEEF3F3F3DBDCE0A9A9ADF4F4F4EFEFEFF5
+            F5F7BABBBCC8C8CCF4F5F6F0E4DAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFE5D630A4D10097ED00C1FFA5FCFF73C8DDFFF4EDFFFF
+            FFFFFFFFC4C4C4D6D6D6FFFFFFFFFFFFFFFFFFC8C8C7CDCDCDFFFFFFFFFFFFFF
+            FFFFC9C9C9C3C3C3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFE5D630A4D10097EB00C3FFA9FAFF6CC2D9F9E7E2F2F2F2FFFF
+            FFFFFFFFD4D4D4DFDFDFFCFCFCFFFFFFFFFFFFD7D7D7D9D9D9FFFFFFFFFFFFFF
+            FFFFD5D5D5D4D4D4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFDE5DC30A3D10098EC00C4FFACF7FF7EDEF7FFF7F0F7F7F7FFFFFFFFFF
+            FFFFFFFFF1F1F1F6F6F6FFFFFFFFFFFFFFFFFFEFEFEFF8F8F8FFFFFFFFFFFFFF
+            FFFFEEEEEEF8F8F8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            ECEAE9717C7F009BF500C5FFAFF9FF7DDBF5FFFFFEFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEE
+            5F5F5FA8A19ED1E1E791F9FF7FDBF4FFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEF1757779
+            A1A09EEFEFEFE1DAD8C3D4D9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9CB1EA4D7BFF
+            ECE9E3DBDAD8CCCDCDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9BB4FB88B3FF
+            96C5FFD2D1D9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD2DDFECDDFFE
+            CBD4FCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          ParentFont = False
+          TabOrder = 2
+          OnClick = ImprimeClick
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -17
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object GUARDA: TJvBitBtn
+          Left = 11
+          Top = 48
+          Width = 152
+          Height = 41
+          Anchors = [akTop, akRight]
+          Caption = 'GUARDAR'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          Glyph.Data = {
+            360C0000424D360C000000000000360000002800000020000000200000000100
+            180000000000000C0000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFEFEFEC2C2C2ADADADACACACACACAC9393938484848585858686868787
+            878787878989898A8A8A8A8A8A8C8C8C8D8D8D8E8E8E8F8F8F8F8F8F9C9C9CB2
+            B2B2B3B3B3B5B5B5B7B7B7BABABABBBBBBD3D3D3FFFFFFFFFFFFFFFFFFFFFFFF
+            F4F4F46666663B3B3B5B5B5B6A6A6A6C6C6CEDEDEDFBFBFBFAFAFAF4F4F4EFEF
+            EFE6E6E6E0E0E0DADADAD5D5D5CFCFCFC8C8C8C2C2C2BBBBBBB7B7B7ABABAB42
+            4242383838282828181818060606000000000000C1C1C1FFFFFFFFFFFFDFDFDF
+            3434345757579494948F8F8F8F8F8F858585FCFCFCE9E9E9CDCDCDD3D3D3D6D6
+            D6F2F2F2ECECECECECECEDEDEDEFEFEFF1F1F1F2F2F2F2F2F2F1F1F1FFFFFFB6
+            B6B6BABABABFBFBFC4C4C4C8C8C8CECECEBEBEBE7F7F7FFFFFFFFFFFFF131313
+            656565787878666666676767676767505050F6F6F6A9A9A94F4F4F4F4F4F2D2D
+            2DD9D9D9D1D1D1D4D4D4D4D4D4D3D3D3CFCFCFD0D0D0D3D3D3D5D5D5ECECEC5E
+            5E5E636363636363636363636363626262595959AEAEAEFFFFFFFFFFFF373737
+            676767606060616161616161626262505050ECECECA6A6A64040405050503939
+            39D6D6D6D7D7D7D9D9D9DCDCDCDFDFDFE3E3E3DEDEDED1D1D1CFCFCFEBEBEB46
+            4646696969646464666666616161626262515151C8C8C8FFFFFFFFFFFF373737
+            5858585757575757575959595757572F2F2FE4E4E4B4B4B44747475555553E3E
+            3EDADADADBDBDBDDDDDDE0E0E0E1E1E1E5E5E5E8E8E8EEEEEEDCDCDCE4E4E438
+            3838545454676767686868555555595959333333F3F3F3FFFFFFFFFFFF3E3E3E
+            4C4C4C4D4D4D4E4E4E4A4A4A3B3B3B2E2E2EDCDCDCB2B2B24848485656564040
+            40D9D9D9DFDFDFE0E0E0E2E2E2E5E5E5E7E7E7E9E9E9ECECECF4F4F4E7E7E742
+            42425A5A5A5656566464644A4A4A4E4E4E292929FFFFFFFFFFFFFFFFFF4D4D4D
+            414141454545454545343434373737292929DDDDDDD9D9D97979798686867878
+            78EAEAEAE9E9E9EBEBEBEEEEEEF1F1F1F4F4F4F6F6F6F8F8F8FFFFFFEDEDED49
+            49495E5E5E5F5F5F535353424242444444383838FFFFFFFFFFFFFFFFFF5F5F5F
+            3636363E3E3E2E2E2E2E2E2E2F2F2F3333338D8D8DB1B1B1B8B8B8B9B9B9BBBB
+            BBADADADADADADADADADADADADAEAEAEAFAFAFAFAFAFAFAFAFB7B7B781818165
+            65656969696B6B6B5555552D2D2D3939394C4C4CFFFFFFFFFFFFFFFFFF747474
+            2C2C2C3232322525251F1F1F2121210909093E3E3E3939393939393838383838
+            383838383636363434343434343535353535353535352B2B2B2B2B2B32323237
+            37373838383B3B3B2121212525252D2D2D676767FFFFFFFFFFFFFFFFFF8E8E8E
+            2222223131313E3E3E8484847C7C7C8181817C7C7C7D7D7D7D7D7D7E7E7E7E7E
+            7E7F7F7F7D7D7D8383837D7D7D7979797A7A7A7B7B7B7D7D7D7E7E7E7F7F7F7F
+            7F7F8080808A8A8A2D2D2D1D1D1D191919848484FFFFFFFFFFFFFFFFFFACACAC
+            121212313131888888FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC
+            FCFCF5F5F5FFFFFF4C4C4C111111070707AAAAAAFFFFFFFFFFFFFFFFFFCCCCCC
+            0000003A3A3A6D6D6DF3F3F3DFDFDFE2E2E2E3E3E3E4E4E4E6E6E6E7E7E7E6E6
+            E6E6E6E6E7E7E7E7E7E7E6E6E6E7E7E7E7E7E7E6E6E6E5E5E5DEDEDEDBDBDBDA
+            DADAD5D5D5F5F5F52929290D0D0D000000D0D0D0FFFFFFFFFFFFFFFFFFF5F5F5
+            000000484848606060FFFFFFF1F1F1F4F4F4F8F8F8FBFBFBFCFCFCFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCFCFCFAFAFAF8F8F8F4F4F4EC
+            ECECE7E7E7FAFAFA070707090909000000FDFDFDFFFFFFFFFFFFFFFFFFFFFFFF
+            000000565656555555FCFCFCE2E2E2E4E4E4E7E7E7E9E9E9E9E9E9EAEAEAEAEA
+            EAEAEAEAEAEAEAEAEAEAEAEAEAE9E9E9E8E8E8E8E8E8E8E8E8E5E5E5E4E4E4E3
+            E3E3D2D2D2F9F9F9000000020202000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            000000555555525252FFFFFFF0F0F0F4F4F4F6F6F6F9F9F9FCFCFCFDFDFDFDFD
+            FDFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEFDFDFDFBFBFBFAFAFAF8F8F8F3F3F3F1
+            F1F1EEEEEEEAEAEA000000000000080808FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            0C0C0C535353575757FBFBFBE9E9E9EBEBEBEDEDEDEFEFEFF2F2F2F1F1F1F2F2
+            F2F2F2F2F2F2F2F2F2F2F2F2F2F2F2F2F1F1F1F2F2F2EEEEEEEDEDEDEBEBEBE9
+            E9E9EAEAEAD2D2D2000000000000323232FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            2C2C2C4D4D4D5D5D5DFAFAFAE8E8E8EBEBEBEDEDEDEEEEEEEFEFEFF2F2F2F2F2
+            F2F1F1F1F1F1F1F1F1F1F1F1F1F2F2F2F1F1F1EFEFEFEFEFEFEDEDEDEBEBEBE9
+            E9E9EAEAEADEDEDE0404040000005E5E5EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            545454414141707070E9E9E9EEEEEEEEEEEEF0F0F0F3F3F3F3F3F3F5F5F5F6F6
+            F6F7F7F7F7F7F7F7F7F7F7F7F7F5F5F5F5F5F5F3F3F3F3F3F3F0F0F0EEEEEEEC
+            ECECEFEFEFBFBFBF6262620000007C7C7CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            6A6A6A3D3D3D858585DDDDDDEAEAEAEAEAEAEBEBEBEDEDEDEDEDEDEEEEEEEEEE
+            EEEEEEEEEFEFEFEFEFEFEEEEEEEFEFEFEDEDEDEEEEEEECECECEBEBEBEAEAEAE8
+            E8E8EEEEEEB3B3B39C9C9C000000A3A3A3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            8888882828289B9B9BD5D5D5ECECECEBEBEBECECECECECECEEEEEEEDEDEDEEEE
+            EEEEEEEEEEEEEEEEEEEEEEEEEEEDEDEDEDEDEDEDEDEDEBEBEBEBEBEBEAEAEAE9
+            E9E9EFEFEFAEAEAEA4A4A4000000CDCDCDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            B0B0B0141414C6C6C6E1E1E1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFC4C4C4DDDDDD000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FEFEFE0000003B3B3B2E2E2E2F2F2F3030303030303030303232322222221F1F
+            1F1818181717171717171717171919190C0C0C04040403030300000000000000
+            0000000000000000000000090909FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFE8E8E88585858F8F8F9999999B9B9B9B9B9B9B9B9B9A9A9AA1A1A1A9A9
+            A9B3B3B3B6B6B6B6B6B6B6B6B6B5B5B5BCBCBCC3C3C3CBCBCBD1D1D1D1D1D1D1
+            D1D1D0D0D0D4D4D4DDDDDDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          ParentFont = False
+          TabOrder = 3
+          OnClick = GUARDAClick
+          HotTrackFont.Charset = ANSI_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -17
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+        object PB2: TProgressBar
+          Left = 62
+          Top = 94
+          Width = 568
+          Height = 18
+          TabOrder = 4
+        end
+        object ReciboBtn: TJvBitBtn
+          Left = 320
+          Top = 48
+          Width = 153
+          Height = 41
+          BiDiMode = bdLeftToRight
+          Caption = 'RECIBO'
+          Enabled = False
+          Glyph.Data = {
+            36120000424D3612000000000000360000002800000030000000200000000100
+            18000000000000120000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFE4DDD8A69280AA9686AA9686AA9686AA9686AA96
+            86AA9686AA9686B2A091AE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE
+            9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8B
+            AE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAE9B8BAA9686E3DCD7FFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9E8775E6
+            E0DCF0EDEAEFEBE8EFEBE8EFEBE8EFEBE8EFEBE8F7F5F39D8877CAC0BAC6BCB5
+            C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BC
+            B5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6BCB5C6
+            BCB5C7BDB6BEB2AA9F8976FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFA18B7AFAF9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFF896F5ADED9D7D7D1CDDEDAD7E0DCDAE0DCDAE0DCDAE0DCDAE0
+            DCDAE0DCDAE0DCDAE0DCDAE0DCDAE0DCDAE0DCDAE0DCDAE0DCDAE0DCDAE0DCDA
+            DAD5D2D7D1CDD7D1CDD7D1CDD7D1CDD7D1CDD9D2CFD1C9C4A38E7CFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA18B7AF8
+            F6F6FFFFFF9B837099816E9A836F907761F9F7F7FFFFFFB3A497D9D3D0DCD7D5
+            927A67876C56886E59886E59886E59886E59886E59886E59886E59886E59886E
+            59886E59886E59886E59886E59836751BDAFA6D9D2CFD6CFCBD6CFCBD6CFCBD6
+            CFCBD7D0CCCFC7C2A38E7CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFA18B7AF8F6F6FFFFFFA5907EA48F7DA5907F9B84
+            71FAF9F9FFFFFF9F8B7ADAD5D2DCD7D59982718F776391796591796591796591
+            79659179659179659179659179659179659179659179659179659179658B725D
+            C0B3AAD9D2CFD6CFCBD6CFCBD6CFCBD6CFCBD7D0CCCFC7C2A38E7CFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA5907FF8
+            F6F6FFFFFF9B837099816E9A836F907761F9F7F7FFFFFF8E7461DCD6D4DCD7D5
+            927A67876C56886E59886E59886E59886E59886E59886E59886E59886E59886E
+            59886E59886E59886E59886E59836751BDAFA6D9D2CFD6CFCBD6CFCBD6CFCBD6
+            CFCBD7D0CCCFC7C2A38E7CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            EAE5E1BEAFA2C1B2A6C7BBB07D5F46FCFBFBFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFB3A497D9D3D0D6CFCBDCD7D5DED9D7DED9D7DED9D7DED9D7DE
+            D9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7
+            D9D2CFD6CFCBD6CFCBD6CFCBDBD5D2DED9D7DAD4D1CFC7C2A38E7CFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF957B67D7CFC7D8CFC8DFD8D28A6F59FA
+            F9F9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9A8473DBD5D2D6CFCB
+            D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CF
+            CBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBDBD5D2A6938480
+            634CB7A99ED2CBC7A38E7CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            987F6BFFFFFFFFFFFFFFFFFFAA9687F8F6F6FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFF937B68DBD6D3D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6
+            CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCB
+            D6CFCBD6CFCBD6CFCBDBD5D2AB998C896E59BBAEA3D2CBC7A38E7CFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF987F6BFFFFFFFFFFFF9A826F664225FE
+            FEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB3A497D9D3D0D6CFCB
+            D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CF
+            CBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBDBD5D2AF9D8490
+            744CBEB09ED2CBC7A38E7CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            987F6BFFFFFFFFFFFFA48F7E6C4A2EFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFF957D6BDBD6D3D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6
+            CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCB
+            D6CFCBD6CFCBD6CFCBDFD8CA827CD33F3BD9A09BD2D6CEC2A38E7CFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF987F6BFFFFFFFFFFFF9A826F664225FE
+            FEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF988270DBD5D3D6CFCB
+            D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CF
+            CBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBE3DCCA5A53CC00
+            00CD8680CDD8D0C2A38E7CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            987F6BFFFFFFFFFFFFFFFFFFA69180FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFB8AA9EE2DEDCDED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DE
+            D9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7
+            DED9D7DED9D7DED9D7E2DDD8C5C0D9AEA9D6CEC9D8D8D2CCA18C79FFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF987F6BFFFFFFFFFFFFFFFFFFB7A69987
+            6B548F75608F755F9076609076628A6F598A6F598E745F66422682665080634C
+            80634C80634C80634C80634C80634C80634C80634C80634C80634C80634C8063
+            4C80634C80634C80634C80634C80634C856A54886E598368517E614A7E60448C
+            7154876C527D5F47B7A698FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            987F6BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9D8776E2DE
+            DDDDD7D5DDD7D5E0DCDBDED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DE
+            D9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7E4E0DF
+            AA988A896E59C5BAB2D2CAC6B4A192FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF987F6BFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFB2A194D9D3D0D6CFCBD6CFCBD6CFCBD6CFCBD6CFCB
+            D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CF
+            CBD6CFCBD6CFCBD6CFCBD6CFCBDBD5D3AB967E8E724CC2B4A5CBC1BBAE9A8BFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            987F6BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF896E58DCD7
+            D5D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6
+            CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBDFD8CA
+            8884D35652D9B0AAD3CDC2B6AE9A8BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF987F6BFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFA18D7CDAD5D2D6CFCBD6CFCBD6CFCBD6CFCBD6CFCB
+            D6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CFCBD6CF
+            CBD6CFCBD6CFCBD6CFCBD6CFCBE4DDCA4F4ACC0000CD928BCED0C5B6AE9A8BFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            977D69FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFB6A69AE1DD
+            DCDED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DE
+            D9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7DED9D7E3DED6
+            B3AFD79793D7CAC5D9D2C9C1AD9989FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA48E7C8A6F598F75608F755F8F755F8F
+            755F8F755F8F755F947B665C351683675180634C80634C80634C80634C80634C
+            80634C80634C80634C80634C80634C80634C80634C80634C80634C80634C8063
+            4C80634C80634C80634C80634C80634C85684C886B4C83674D74543BB6A497FF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          NumGlyphs = 2
+          ParentBiDiMode = False
+          TabOrder = 5
+          OnClick = ReciboBtnClick
+          HotTrackFont.Charset = DEFAULT_CHARSET
+          HotTrackFont.Color = clWindowText
+          HotTrackFont.Height = -15
+          HotTrackFont.Name = 'MS Sans Serif'
+          HotTrackFont.Style = []
+        end
+      end
+      object JvGroupBox9: TJvGroupBox
+        Left = 3
+        Top = 0
+        Width = 409
+        Height = 169
+        Caption = 'Importe de Deuda Calculado'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
+        object Label5: TLabel
+          Left = 9
+          Top = 117
+          Width = 42
+          Height = 15
+          Caption = 'Capital:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label6: TLabel
+          Left = 13
+          Top = 20
+          Width = 62
+          Height = 15
+          Caption = 'Capital BD:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label7: TLabel
+          Left = 278
+          Top = 120
+          Width = 95
+          Height = 15
+          Caption = 'Total a Financiar:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label15: TLabel
+          Left = 134
+          Top = 118
+          Width = 55
+          Height = 15
+          Caption = 'Intereses '
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label10: TLabel
+          Left = 278
+          Top = 20
+          Width = 105
+          Height = 15
+          Caption = 'Interes Actualizado:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label23: TLabel
+          Left = 134
+          Top = 20
+          Width = 106
+          Height = 15
+          Caption = 'Capital Actualizado:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label26: TLabel
+          Left = 278
+          Top = 69
+          Width = 86
+          Height = 15
+          Caption = 'Interes Judicial:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+        end
+        object CAPITAL: TRzNumericEdit
+          Left = 9
+          Top = 134
+          Width = 94
+          Height = 27
+          Color = clInfoBk
+          DoubleBuffered = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = []
+          FocusColor = clBtnFace
+          MaxLength = 16
+          ParentDoubleBuffered = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 0
+          IntegersOnly = False
+          DisplayFormat = '.00'
+        end
+        object INTERESREM: TRzNumericEdit
+          Left = 13
+          Top = 34
+          Width = 95
+          Height = 27
+          Color = clInfoBk
+          DoubleBuffered = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = []
+          FocusColor = clBtnFace
+          MaxLength = 16
+          ParentDoubleBuffered = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 1
+          IntegersOnly = False
+          DisplayFormat = '.00'
+        end
+        object TOTAL: TRzNumericEdit
+          Left = 278
+          Top = 134
+          Width = 123
+          Height = 27
+          Color = clInfoBk
+          DoubleBuffered = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          FocusColor = clBtnFace
+          MaxLength = 16
+          ParentDoubleBuffered = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 2
+          IntegersOnly = False
+          DisplayFormat = '.00'
+        end
+        object INTERESDEV: TRzNumericEdit
+          Left = 134
+          Top = 134
+          Width = 108
+          Height = 27
+          Color = clInfoBk
+          DoubleBuffered = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = []
+          FocusColor = clBtnFace
+          MaxLength = 16
+          ParentDoubleBuffered = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 3
+          IntegersOnly = False
+          DisplayFormat = '.00'
+        end
+        object SUBTOTAL: TRzNumericEdit
+          Left = 278
+          Top = 34
+          Width = 123
+          Height = 27
+          Color = clInfoBk
+          DoubleBuffered = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = []
+          FocusColor = clBtnFace
+          MaxLength = 16
+          ParentDoubleBuffered = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 4
+          IntegersOnly = False
+          DisplayFormat = '.00'
+        end
+        object TotalInteres: TRzNumericEdit
+          Left = 134
+          Top = 34
+          Width = 108
+          Height = 27
+          Color = clInfoBk
+          DoubleBuffered = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = []
+          FocusColor = clBtnFace
+          MaxLength = 16
+          ParentDoubleBuffered = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 5
+          IntegersOnly = False
+          DisplayFormat = '.00'
+        end
+        object interesjudicial: TRzNumericEdit
+          Left = 278
+          Top = 85
+          Width = 123
+          Height = 27
+          Color = clInfoBk
+          DoubleBuffered = True
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -17
+          Font.Name = 'Arial'
+          Font.Style = []
+          FocusColor = clBtnFace
+          MaxLength = 16
+          ParentDoubleBuffered = False
+          ParentFont = False
+          ReadOnly = True
+          TabOrder = 6
+          IntegersOnly = False
+          DisplayFormat = '.00'
+        end
+      end
+      object Panel1: TPanel
+        Left = 197
+        Top = 78
+        Width = 602
+        Height = 282
+        TabOrder = 4
+        DesignSize = (
+          602
+          282)
+        object GroupBox1: TGroupBox
+          Left = 1
+          Top = 1
+          Width = 600
+          Height = 225
+          Align = alTop
+          Caption = 'Impresion de Declaracion Jurada'
+          TabOrder = 0
+          DesignSize = (
+            600
+            225)
+          object imprime2: TJvBitBtn
+            Left = 443
+            Top = 173
+            Width = 144
+            Height = 43
+            Anchors = [akTop, akRight]
+            Caption = 'PLANILLA'
+            Enabled = False
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -17
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            Glyph.Data = {
+              360C0000424D360C000000000000360000002800000020000000200000000100
+              180000000000000C0000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF1F5F6E1E4E6E2E5E8DEE0E2E2E4E7E1E2E6E1E2E6E1E2
+              E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E2E6E1E3E6E1
+              E3E6E1E3E6E1E4E6E2E4E7E2E5E7E2E5E7E2E6E7F4F6F6FFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFDFFFFAF8F849A877CA18F7B97868EA6977EA59980A59881A59B
+              81A59B81A59B82A59B82A59B82A59B82A59B82A59C82A59B81A59981A59881A5
+              9880A39480A18F7F9E8B7E9D887D9A837C937875B3A5A5FFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFF6F7F7CB5F21E1883AEB9C3FFFB840FEBE47FDC44AFDCB4BFDCE
+              4FFDD251FDD651FDD852FDD853FDD752FDD651FDD451FDD14FFDCD4EFDC84BFE
+              C248FBBA45F2A942E8943CDC7F38CF6732C34A29BB8985FFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFDFFFFCE9068D0E6F8D8E6E99CA8F6D0DAE9CCD5E9CCD4E9CCD3
+              E8CCD3E8CCD2E8CCD2E8CCD1E8CCD1E8CCD2E8CCD2E8CCD3E8CCD4E9CCD4E9CC
+              D6E9CCD7EACDD9EBCFDDEBD1E1ECD4E7F1D4D5D5BD6C5AFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFCFFFFEBA563FFFFFFFFFFFFCFCFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3C2A9C7A08EFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFEEB165FFFFFFFFFFFFC7C7FFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE9A272D2C8C2FFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF2BA62FFFFFFFFFFFFCFD2FFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEB985FDAE8F3FFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF5C162EEE3F0F4E4DABAADDFEFDFD6E4D6D4E2D3D2E1D2
+              D0DED1CEDFD2CCDDD3CBDDD3C9DAD1C5D7CEC3D1C7C0D0C4BED6C7C3DFCFCEF3
+              E3E2F6E7E7F5E6E6F5E6E6F5E6E6F8F1FAE18D3AE6F6FFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF7C760FAFFFFFEFFF8C4C5F6FAFBF3F0F2F2EEF0F0ECED
+              EEE8EAEAE6E7E8E4E5E5E1E2E3DEDFE0DCDDDEDADBDCE4E5E5FCFAF6D5D4CD3B
+              3B3BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDF973FF1FCFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF6D179FFFFFFFFFFFFCFD2FFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9BBBE06398E1FF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFDA9538F8FFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFAE3A4F3D9C0F6E7E3C0B3E6FBEBDFF1E0E1F1E0E0F3E2
+              E0F5E6E2F6E9E2F8ECE3FAF0E3FBF1E5FFFCEBD1D1D81F69C7739FE1E8EAEFFB
+              EAE7F4E7E6F4E7E6F5E7E6F5E7E6F9F2FDD9A148FEFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF7E8C4FCEAB1FFFFFFCACBFDFFFFFCFAFBFCF9FCFCFAFC
+              FCFAFCFCFAFBFDFAFBFCFAFCFDFFFFFE57C9F70087E2B4BCE6F1F4F8FFFFFDFC
+              FDFDFCFDFDFCFDFDFCFDFDFCFFFFFFF9E5D7B071FFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF7F4EEFCDE8BFBFFFFCCCDFAFFFFF8F8F9FAF8FAFAF8FA
+              FAF8F9FAF9FAFAF7F8FAFFFFFA59C7F5008CE200B1F865EAFFEFF2F6FCFCFBF9
+              FBFBFAFCFCF9FBFBFAFCFCF9FDFFFFE9B5D6C0A0FFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF8FFFFF6C756F1E7EDC3B7E7F7E9DFEDE0E0EDE1E0EFE1
+              E0F1E4E1F1E7E3FFF7DF58C5F0008CE300B3F873EFFF8ED8EDFFE3DBEDDDDCEE
+              DDDCEEDDDCEEDDDCEDDCDCEDE0E7F9C879D8D4CCFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFBFFFFF9CF68F7FFFFCBCDF9FDFFF6F4F6F7F4F7F8F4F7
+              F7F3F6F7FFFFF859C9F8008DE300B4FA78EFFF90E3FBFFFCF5F5F8FAF6FAFAF6
+              F9FAF7FBFBF7FAFAF7FBFBF7FFFFFFC960D7E2F7FFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFEFFFFF7CC64F4FCFFD3D5F6F3F4F4F3F4F4F3F5F5F2F4
+              F5FFFFF358C6F2008DE300B5FC7BEFFF8AE3FEFFF9F3F2F4F5F3F5F5F4F5F6F3
+              F5F5F3F5F5F3F5F5F3F4F4F3FCFFF3B955E6F0FFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFF7C85DE6DBE8D4C4DAE0D1D8E8D6D5E5D6D5FFE1
+              D356C2ED008DE400B7FC80F1FF86DAEDFFE8D6EDE1D9EBDDD8E9DAD7E9D8D7E9
+              D8D7E9D9D8E9D8D7E9D8D7E9E0ECE4AA4BF2FBFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFAC960EEFCFFE3E6F3E3E6F5F0F4F3FFFFF359C9
+              F6008FE600B8FC85F2FF86DFF8FFF4EEEEF1F3EFF2F3F0F3F3F0F3F3F0F3F4F1
+              F4F4F0F3F3F0F4F4F0F3F3F3FFFFDEA147F9FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFF9CB65EAF3FFE8E9EED8DAEFFFFBEB58C3EF008E
+              E400BAFC89F5FF86DFF9FFF1EBEBEDEFEDEDEFEDEEEFEDEEEFEEEFF0EEEFEFEE
+              F0F0EEF0F0EFF0F1EFF0EFF1FCFFD69A4EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFAD487E5D1C5E3D8D8F8CEDA58BEE80090E600BC
+              FE8FF5FF87D5EBFFE2D3E9E1D8EBE3D8EAE1D7E8DDD7E7DAD6E5D8D6E4D7D6E5
+              D8D7E4D8D6E4D8D6E4D8DBEAD3C7D4AA79FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFF6D8AAEAD7B6FFFEEE45AFF70092E500BDFF92F5
+              FF87DBF4FFF3EDEFF2F6E9EAECE9EBECE9EAECF0F2F5F0F3F5E9ECECEAECECEA
+              ECEDF3F6F6EFF2F4EAF0F4EDD0AED0B8A3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFAECDAFFC47D57C5F70093E400BDFF98F5FF86DA
+              F2FFECE8C5BFADB3B197EBECF1E4E4E4EBEDF0BAB4A0BEBCA7EAEBEEE5E5E6F2
+              EFE5A4A3A0CECBB4EAF0F7DD9B67EAEAEAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFE9E144A9CF0093E900BFFFA0F9FF7EDDF5FFF1
+              EAF1F2F2DFDFE3A9A9AEF3F2F2EEEEEEF3F3F3DBDCE0A9A9ADF4F4F4EFEFEFF5
+              F5F7BABBBCC8C8CCF4F5F6F0E4DAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFE5D630A4D10097ED00C1FFA5FCFF73C8DDFFF4EDFFFF
+              FFFFFFFFC4C4C4D6D6D6FFFFFFFFFFFFFFFFFFC8C8C7CDCDCDFFFFFFFFFFFFFF
+              FFFFC9C9C9C3C3C3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFE5D630A4D10097EB00C3FFA9FAFF6CC2D9F9E7E2F2F2F2FFFF
+              FFFFFFFFD4D4D4DFDFDFFCFCFCFFFFFFFFFFFFD7D7D7D9D9D9FFFFFFFFFFFFFF
+              FFFFD5D5D5D4D4D4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFDE5DC30A3D10098EC00C4FFACF7FF7EDEF7FFF7F0F7F7F7FFFFFFFFFF
+              FFFFFFFFF1F1F1F6F6F6FFFFFFFFFFFFFFFFFFEFEFEFF8F8F8FFFFFFFFFFFFFF
+              FFFFEEEEEEF8F8F8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              ECEAE9717C7F009BF500C5FFAFF9FF7DDBF5FFFFFEFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEE
+              5F5F5FA8A19ED1E1E791F9FF7FDBF4FFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEF1757779
+              A1A09EEFEFEFE1DAD8C3D4D9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9CB1EA4D7BFF
+              ECE9E3DBDAD8CCCDCDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9BB4FB88B3FF
+              96C5FFD2D1D9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFD2DDFECDDFFE
+              CBD4FCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+            ParentFont = False
+            TabOrder = 0
+            OnClick = imprime2Click
+            HotTrackFont.Charset = DEFAULT_CHARSET
+            HotTrackFont.Color = clWindowText
+            HotTrackFont.Height = -17
+            HotTrackFont.Name = 'MS Sans Serif'
+            HotTrackFont.Style = []
+          end
+          object CB: TCheckBox
+            Left = 13
+            Top = 17
+            Width = 351
+            Height = 19
+            Caption = 'PLANILLA CON CLAUSULA ESPECIAL?'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -15
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+            TabOrder = 1
+            OnClick = CBClick
+          end
+          object Memo1: TMemo
+            Left = 10
+            Top = 42
+            Width = 569
+            Height = 125
+            Hint = 
+              'Describa aqui el detalle de la Clausula sexta en caracter de Esp' +
+              'ecial...'
+            Lines.Strings = (
+              'Memo1')
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 2
+          end
+        end
+        object cerrarDDJ: TJvBitBtn
+          Left = 444
+          Top = 233
+          Width = 145
+          Height = 43
+          Anchors = [akTop, akRight]
+          Caption = 'CERRAR'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -15
+          Font.Name = 'Arial'
+          Font.Style = []
+          Glyph.Data = {
+            360C0000424D360C000000000000360000002800000020000000200000000100
+            180000000000000C0000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFEFFFFFAFFFFFAFFFFFDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F7EDD2D2BCAAAA
+            8C8F8F9483839B7C7CA27878A179799D8C8C94B5B58DDADABAFCFCEDFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE6E6CC9B9B8B5D5DAC5656DD6868
+            FF7D7DFF8080FF6D6DFF5B5BFF4848FF3535FF1B1BFF1919DF3939AC9C9C8BEA
+            EAC9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFF7F7DE94948B2E2ECA2A2AFF4545FF5151FF6060
+            FF8585FF9595FF9898FF8E8EFF7676FF5252FF1212FF0000FF0000FF0000FF10
+            10CC8E8E8DF7F7DCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFDDDDAB2B2BB40000FF1818FF3434FF8A8AFFBCBCFFD3D3
+            FFCDCDFFCFCFFFD4D4FFDADAFFE1E1FFEAEAFFF9F9FFCBCBFF7575FF0000F900
+            00F70000FF2727B2DADAAAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFC7C7A00000E40000FF0909FF8B8BFFB5B5FF9292FF8C8CFF9898
+            FFA1A1FFAAAAFFB0B0FFB4B4FFB5B5FFB5B5FFAFAFFFAAAAFFB4B4FFDEDEFF99
+            99FC0000ED0000EF0000D7BEBE9CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFCBCBA60000E80000F94343FEA4A4FF6969FF6E6EFF7979FF8181FF9191
+            FF9E9EFFA6A6FFADADFFB1B1FFAFAFFFABABFF9F9FFF9898FF9595FF8989FF89
+            89FFC7C7FF5656F20000E00000D9C4C4A4FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            F2F2C30000D70000F06969FE6C6CFF4A4AFF6060FF6363FF8989FFAFAFFF9E9E
+            C9EEEEEFFEFEFEFFFFF9FFFFF9FAFAF9EDEDFADADAF9AEAEFC8E8EFF7979FF79
+            79FF6868FF8989FF8888FB0000D80000C8EDEDC1FFFFFFFFFFFFFFFFFFFFFFF6
+            4444B30000EC5D5DFD4848FF3D3DFF4D4DFF5353FF7575FF9A9AFF0000FF0B0B
+            FF808094FFFFE7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBE7E7F79C9CFC6D
+            6DFF6363FF5A5AFF6161FF7E7EFB0000D13838ABFFFFF4FFFFFFFFFFFFCDCDB9
+            0000E23737F53A3AFF2C2CFF3939FF4343FF4C4CFF5050FF6666FF9B9BFF0000
+            FF0000FF5353A1F7F7CEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9B2
+            B2F56060FF4D4DFF4747FF5656FF5454F00000CBC2C2B7FFFFFFFFFFFD4444B8
+            0000E53F3FFF1919FF2727FF3838FF3232FF4141FF4949FF4D4DFF5757FFA3A3
+            FF0606FC0000FF2424BEEAEAB5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFDAFAFF04B4BFF3D3DFF3131FF6161FF0707D43A3AADFFFFFDFFFFE20000C8
+            2626FC0C0CFF1616FF1F1FFF5151FF5353FF2D2DFF3E3EFF4545FF4949FF4848
+            FF9C9CFF1616F70000FF0505D9D3D39FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFC8282F33131FF2F2FFF1F1FFF4E4EFD0000B2FFFFE1D6D6D30000D8
+            0F0FFF0808FF0B0BFF3838FF4141F02323FB5353FF2B2BFF3838FF3D3DFF4343
+            FF3B3BFF8888FF3636F60000F30000E8B3B393FFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFE93939FF1E1EFF1A1AFF3535FF0000C9CBCBD1ABABCD0000E9
+            0000FF0101FF0707FF0909FFE1E1E6FFFFFA2929F94646FF2929FF3131FF3636
+            FF3939FF3232FF6666FF5252F70000E80000EF90908EFFFFF4FFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFF95757E11717FF1313FF1212FF0707DF9B9BCB9393CB0000F3
+            0000FF0000FF0505FF1616F8FFFFEEFFFFFFFFFFFA5A5AF63232FF2727FF2626
+            FF2828FF2B2BFF2626FF4242FF5959FA0000DD0000F06C6C91FCFCE2FFFFFFFF
+            FFFFFFFFFFFFFFFE4747CC1C1CFF0A0AFF0202FF0000F49494C79999C90000FC
+            0000FF0000FF0000FF4848DFFFFFF5FFFFFFFFFFFFFFFFFD9797F21F1FFF2C2C
+            FF4444FF3B3BFF3E3EFF3131FF2F2FFF4848FD0000D70000E942429DF5F5CBFF
+            FFFFFFFFFFFFFFFD3232B61717FF0000FF0000FF0000FE9696C59696C80000FF
+            0000FF0000FF0000FF1F1FE0FFFFDFFFFFFFFFFFFFFFFFFFFFFFFFD4D4F11111
+            FF6969FFABABFF9696FF9A9AFF9D9DFF9898FF3737FF0101D20000DB1616ABE2
+            E2B6FFFFFFFFFFEB0000B30606FF0000FF0000FF0000FF9595C5B3B3D10000F5
+            0000FF2727FF3232FF1212FAADADAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7F7
+            F31B1BFD3434FFADADFF8F8FFF9090FF9191FFA4A4FF2D2DFF0000D50000CB01
+            01B5D2D2AAC3C3B60000CA0000FF0000FF0000FF0000FAA4A4CEE5E5E10000E4
+            9E9EFFAFAFFF6D6DFF3535FF1212A1FFFFE6FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFF64444FB0505FFB4B4FF9595FF9595FF9494FFB1B1FF2B2BFF0000DD00
+            00BA0000BC22229C0000DA1F1FFF0000FF0000FF0000E8D9D9DDFFFFF90000CE
+            7272FFA1A1FFB7B7FF0000FF2525DB727293FFFFFBFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFF87272F80000FFB2B2FF9F9FFF9C9CFF9B9BFFBABAFF5050FF00
+            00EC0000B70000BA0000FAC9C9FF9898FF1414FF0000CEFFFFF8FFFFFF5757BE
+            1B1BFFBBBBFFAEAEFF4242FF6464FF0000BC85858EFFFFEFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFCA0A0F50000FFABABFFAAAAFFA3A3FFA2A2FFB9B9FF7C
+            7CFF0000F50000CB4444FFB1B1FFBCBCFF3434FF5050BEFFFFFFFFFFFFFFFFEE
+            0000DBB0B0FFACACFFC9C9FF0000FF8C8CF30000BD4E4E90DEDEB4FFFFFCFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFD3D3F60000FF9494FFB9B9FFAAAAFFAAAAFFB9
+            B9FF9A9AFF0000FFC8C8FFACACFFB6B6FF0000DEF7F7E9FFFFFFFFFFFFFFFFFF
+            6060C20000FFD9D9FFB3B3FFB2B2FF0000FFA4A4F20000BC0000B55D5D8EC4C4
+            9BE6E6CDF7F7E9FEFEF4FFFFF5FFFFEADCDCBF1717FF7F7FFFC9C9FFB0B0FFB1
+            B1FFB6B6FFCACAFFB0B0FFD9D9FF0505FF5151C1FFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFF0000BE4E4EFFD7D7FFBFBFFFB6B6FF0000FF9C9CFE4545CA0000BE0000
+            C30A0AA53535974141924141913636970E0EA40808BB2E2EFC6161FFD7D7FFB8
+            B8FFB9B9FFB7B7FFD4D4FF5B5BFF0000BFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFA0000C16E6EFFE2E2FFC3C3FFDADAFF1E1EFF2828FF9090F98888
+            D81B1BC60000BA0000BD0000BD0000BA1010C54646D73737F10000FF6464FFCB
+            CBFFBEBEFFDFDFFF7C7CFF0000C3FFFFF8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFA0000C23535FFF5F5FFCCCCFFE0E0FFB7B7FF3C3CFF0000
+            FF3939FF7171FF6262FF5757FF5252FF1D1DFF0000FF3F3FFFB6B6FFDCDCFFCA
+            CAFFF3F3FF4646FF0000C2FFFFF9FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFF4A4AC80000E4B0B0FFF3F3FFD9D9FFDEDEFFF4F4
+            FFB9B9FF8787FF7070FF7272FF8989FFB8B8FFF5F5FFDFDFFFD8D8FFF1F1FFB5
+            B5FF0000E63F3FC7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE7E7ED1A1ACB0000E28787FFF6F6FFF2F2
+            FFE8E8FFE7E7FFE8E8FFE8E8FFE7E7FFE9E9FFF2F2FFF7F7FF8E8EFF0000E313
+            13CAE0E0EBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9F9F36565D10000D40000
+            D85050ED6D6DF97D7DFF7E7EFF6D6DF95050ED0000D80000D55F5FD0F3F3F2FF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFD3D3EBA5A5E18383D98181D9A4A4E0CECEEAFFFFFEFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+          ParentFont = False
+          TabOrder = 1
+          OnClick = cerrarDDJClick
+        end
+        object GroupBox2: TGroupBox
+          Left = 0
+          Top = 2
+          Width = 600
+          Height = 225
+          Caption = 'Impresion de Sellado del PP y Abogado'
+          TabOrder = 2
+          DesignSize = (
+            600
+            225)
+          object JvSIMConnector1: TJvSIMConnector
+            Left = 26
+            Top = 47
+            Width = 57
+            Height = 38
+            FromGate = 0
+            FromPoint.X = 0
+            FromPoint.Y = 0
+            ToGate = 0
+            ToPoint.X = 0
+            ToPoint.Y = 0
+          end
+          object JvSIMConnector2: TJvSIMConnector
+            Left = 26
+            Top = 47
+            Width = 57
+            Height = 83
+            FromGate = 0
+            FromPoint.X = 0
+            FromPoint.Y = 0
+            ToGate = 0
+            ToPoint.X = 0
+            ToPoint.Y = 0
+          end
+          object Label22: TLabel
+            Left = 24
+            Top = 24
+            Width = 500
+            Height = 19
+            Caption = 'ATENCION... Ud. esta por imprimir las siguientes Liquidaciones '
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -17
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label28: TLabel
+            Left = 86
+            Top = 64
+            Width = 236
+            Height = 19
+            Caption = 'SELLADO por el Plan de Pago'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -17
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label29: TLabel
+            Left = 86
+            Top = 111
+            Width = 269
+            Height = 19
+            Caption = 'SELLADO por Gastos de Abogado'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -17
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label30: TLabel
+            Left = 403
+            Top = 66
+            Width = 60
+            Height = 19
+            Caption = 'Label30'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clBlue
+            Font.Height = -17
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object JvBitBtn1: TJvBitBtn
+            Left = 443
+            Top = 160
+            Width = 143
+            Height = 52
+            Anchors = [akTop, akRight]
+            Caption = 'IMPRIMIR'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -15
+            Font.Name = 'Arial'
+            Font.Style = []
+            Glyph.Data = {
+              360C0000424D360C000000000000360000002800000020000000200000000100
+              180000000000000C0000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF8F8F8F4F4F4F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3
+              F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3F3
+              F3F3F3F3F3F5F5F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFEFEFEB6B6B6A7A7A7A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8
+              A8A8A8A8A7A7A7A4A4A4A8A8A8AAAAAAA8A8A8A8A8A8A8A8A8A8A8A8A8A8A8A8
+              A8A8A7A7A7AFAFAFF1F1F1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFCCCCCCCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBCB
+              CBCACACAD2D2D2E3E3E3BCBCBCC6C6C6CFCFCFCECECECECECECECECECECECECE
+              CECECECECEC7C7C7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFEFEF
+              E3E3E3E3E3E3E8E8E8C2C2C2FAFAFAF0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0
+              F0F0F0F0F0F0F0EEEEEEF4F4F4F1F1F1F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0
+              F0F0F8F8F8C5C5C5E9E9E9E3E3E3E4E4E4E2E2E2F3F3F3FFFFFFDFDFDF9F9F9F
+              9F9F9FA0A0A09F9F9FA2A2A2B8B8B8D1D1D1CECECECECECECECECECECECECECE
+              CECECECECECECECECECECDCDCDCECECECECECECECECECECECECECECECECECECE
+              CECED7D7D7878787A2A2A2A0A0A0A0A0A0A0A0A09F9F9FEAEAEAD9D9D9C8C8C8
+              C9C9C9C9C9C9C8C8C8E2E2E27B7B7BFAFAFAE9E9E9E9E9E9E9E9E9E9E9E9E9E9
+              E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9E9F2
+              F2F29E9E9EB9B9B9CCCCCCC9C9C9C9C9C9C8C8C8CACACADCDCDCD4D4D4CFCFCF
+              CECECECECECECCCCCCFAFAFA0000005959595858585757575656565656565656
+              5657575757575757575757575757575757575757575757575757575756565667
+              67670000009C9C9CD5D5D5D2D2D2CCCCCCD3D3D3CBCBCBDFDFDFD5D5D5D6D6D6
+              D4D4D4D5D5D5D3D3D3FDFDFD0000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000C2C2C2D8D8D8DDDDDDDFDFDFD8D8D8D5D5D5DDDDDDD2D2D2DCDCDC
+              DADADADADADADADADADFDFDFC3C3C37676767D7D7D7D7D7D7D7D7D7D7D7D7D7D
+              7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7D7A
+              7A7A979797EFEFEFD9D9D9E1E1E1E3E3E3DDDDDDDBDBDBDADADAD2D2D2E5E5E5
+              E2E2E2E2E2E2E2E2E2E2E2E2E7E7E7EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+              EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+              EEEEEBEBEBE2E2E2E4E4E4D2D2D2CCCCCCDEDEDEE5E5E5D8D8D8D1D1D1ECECEC
+              E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E7E9EAE7EBF0E8EBF0E8EBF0E8EB
+              EFE8EBEFE8EBEFE8EBEFE8EBF0E8EBF0E8ECF1E8EDF3E8EEF3E8EFF4E8EDEFE7
+              E7E7E7E7E7E7E7E7E7E7E7E9E9E9E9E9E9E8E8E8ECECECD6D6D6D0D0D0F5F5F5
+              EFEFEFF1F1F1F1F1F1F1F1F1F1F1F0F0F5FAFAF5E9F7DFBCF2DEBFF3E1C5F3E2
+              CBF3E4CBF3E3CBF3E2C7F3E0C4F3DDBDF3D9B8F3D3B1F3CBABF3C4A2F7DAC6ED
+              F5FAF1F1F1F1F1F1F1F1F1F1F1F1F2F2F2EEEEEEF5F5F5D6D6D6CFCFCFFDFDFD
+              FFFFFFFEFEFEFEFEFEFEFEFEFEFFFFFFFCF5D28340AD5F1AB26C2AB26F31B273
+              35B27438B27337B27235B26E2EB26B28B26420B25C18B2510EB14502BC3F00FA
+              D1BCFFFFFFFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFBFBFBD4D4D4CECECEFFFFFF
+              FCFCFCFCFCFCFCFCFCFCFCFCFCFFFFFFF4E9C97030C98247CA8A4FCA9054CA91
+              58CA9159CA9159C99055CA8E52CA884DCA8046CA783ECA7037CA662EC1490BF0
+              BAA0FFFFFFFCFCFCFCFCFCFCFCFCFCFCFCFDFDFDFFFFFFD2D2D2D0D0D0FFFFFF
+              FEFEFEFEFEFEFEFEFEFEFEFEFEFFFFFAE5D8EDA16EF2B485ECB17DECB983EBBD
+              88EBBE8AEABC87F6CC9DEDBA88EBB17FEBAB7AEBA374EA9B6AF19C70F08B5DE9
+              AE92FFFFFFFEFEFEFEFEFEFEFEFEFEFEFEFDFDFDFFFFFFD1D1D1D2D2D2FFFFFF
+              FDFDFDFEFEFEFEFEFEFEFEFEFEFFFFFCE2D5CB723AB86F3CB7733DBB753BBF73
+              33BE7535BD7332C78248BC6D2CBE6C2DBE6527BE5F21BD5519BD4B0ECA5723E8
+              AB8FFFFFFFFDFDFDFEFEFEFEFEFEFEFEFEFEFEFEFFFFFFD8D8D8E4E4E4F6F6F6
+              FFFFFFFEFEFEFEFEFEFEFEFEFFFFFFF7D6C5E29066C09C85C3A086CEA384E5AA
+              7DE2AB7FE2AA7FE1A77CE2A67BE1A277E09D72DF976CE59972EFA585F19E7CE1
+              9E7BFFFFFFFDFDFDFEFEFEFDFDFDFDFDFDFFFFFFDDDDDDF8F8F8FFFFFFCACACA
+              FFFFFFFFFFFFFFFFFFFDFDFDFFFFFFEFC6B3ECB097EDAF99ECAF99EFBAA4ECBD
+              A4E9B89DE7B799E7B497E7B395E7B296EAB396EDB39BEBAF94E9AA8FEBAF94DE
+              A183FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCECECEFFFFFFFFFFFFFEFEFE
+              D9D9D9DEDEDEE4E4E4FFFFFFFFFFFFEFB79EF3C7B4F6CDBAF6CCB8F2C7B1F1C5
+              AFF1C6B0F2C4AFF2C3ADF1C2ABF0BFA9F0BCA4F0BCA5F0BCA5F0BEA5F5C5B0DB
+              9D7DFFFFFFF0F0F0E1E1E1CECECEDFDFDFDADADAFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFB4B4B4D4DADCCD9B86E49572F7CEBCFADCD0FFEBE1FFF5
+              F0FFEFE7FFEEE3FFEEE4FFEDE3FFECE3FFF4EDFFE7DBFDDAC9F9CAB5EFA98BC6
+              7D5AE5ECF0B8B8B8ECECECFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFCACACAF9F9F9A8B0B4FFFFFFEBD7CEE4BBAADEA58BDFA3
+              89E0B29DE0B8A4DDB5A3DBB4A3DAB2A0D29C85D2AB99D3B3A5D4C2BAD8E2E6D1
+              DDE3F2F1F1C8C8C8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFC7C7C7FFFFFFB9B8B8FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFCFFFFF9FEFFF5F9FBF2F6F8EFF3F5ECF1F4E9EDEFE5E9EBE2E4E5E0E0E0D0
+              D0CFF0F0F0C7C7C7FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFC9C9C9FFFFFFC0C0C0FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+              FEFDFDFDF8F8F8F6F6F6F2F2F2EFEFEFEBEBEBE8E8E8E5E5E5E3E3E3E1E1E1D0
+              D0D0EFEFEFC6C6C6FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFCBCBCBFFFFFFC6C6C6FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+              FEFDFDFDFBFBFBF8F8F8F4F4F4F0F0F0EEEEEEEBEBEBE8E8E8E4E4E4E4E4E4D1
+              D1D1EFEFEFC6C6C6FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFC7C7C7FFFFFFCBCBCBFFFFFFFDFDFDFEFEFEFEFEFEFEFE
+              FEFEFEFEFEFEFEF9F9F9F6F6F6F3F3F3EFEFEFEDEDEDE9E9E9E7E7E7E4E4E4D2
+              D2D2EFEFEFC5C5C5FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFBDBDBDFFFFFFCFCFCFFFFFFFFDFDFDFEFEFEFEFEFEFEFE
+              FEFEFEFEFEFEFEFCFCFCF8F8F8F5F5F5F1F1F1EEEEEEEBEBEBE8E8E8E6E6E6D2
+              D2D2EFEFEFC5C5C5FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFBDBDBDFFFFFFD7D7D7FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+              FEFEFEFEFEFEFEFEFEFEFAFAFAF7F7F7F3F3F3F0F0F0EDEDEDEAEAEAE9E9E9D4
+              D4D4EEEEEEC4C4C4FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFF6F6F6D0D0D0BDBDBDFFFFFFFDFDFDFEFEFEFEFEFEFEFE
+              FEFEFEFEFEFEFEFEFEFEFCFCFCF8F8F8F6F6F6F2F2F2EEEEEEECECECEAEAEAD4
+              D4D4EEEEEEC3C3C3FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC9C9C9FFFFFFFDFDFDFEFEFEFEFEFEFEFE
+              FEFEFEFEFEFEFEFEFEFEFDFDFDFBFBFBF7F7F7F4F4F4F1F1F1EEEEEEECECECD4
+              D4D4EEEEEEC4C4C4FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFAFAFACFCFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFBFBFBF7F7F7F3F3F3F0F0F0EFEFEFD6
+              D6D6EEEEEEC3C3C3FEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE2E2E2EBEBEBEAEAEAEAEAEAEAEAEAEAEA
+              EAEAEAEAEAEAEAEAEAEAEAEAEAEAEAEAEBEBEBEBEBEBEBEBEBECECECEEEEEED3
+              D3D3F0F0F0CDCDCDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFEFEFEFFEFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+            ParentFont = False
+            TabOrder = 0
+            OnClick = JvBitBtn1Click
+          end
+          object valabogado: TEdit
+            Left = 403
+            Top = 101
+            Width = 130
+            Height = 27
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -17
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+            TabOrder = 1
+            OnExit = valabogadoExit
+            OnKeyPress = valabogadoKeyPress
+          end
+        end
+      end
+    end
+  end
+  object ToolBar1: TToolBar
+    Left = 0
+    Top = 0
+    Width = 1075
+    Height = 39
+    ButtonHeight = 36
+    Caption = 'ToolBar1'
+    Color = clGradientInactiveCaption
+    EdgeBorders = [ebLeft, ebTop, ebBottom]
+    EdgeInner = esLowered
+    ParentColor = False
+    TabOrder = 1
+    DesignSize = (
+      1073
+      35)
+    object Label2: TLabel
+      Left = 0
+      Top = 0
+      Width = 494
+      Height = 36
+      Caption = ' Configuraci'#243'n del Plan de Pago desde Boleta de Deuda'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+    end
+    object ToolButton1: TToolButton
+      Left = 494
+      Top = 0
+      Width = 315
+      Caption = 'ToolButton1'
+      ImageIndex = 2
+      Style = tbsSeparator
+    end
+    object BORRA: TJvBitBtn
+      Left = 809
+      Top = 0
+      Width = 77
+      Height = 36
+      Anchors = [akTop, akRight]
+      Caption = 'Limpiar'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = []
+      Glyph.Data = {
+        76010000424D7601000000000000760000002800000020000000100000000100
+        04000000000000010000120B0000120B00001000000000000000000000000000
+        800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00500005000555
+        555557777F777555F55500000000555055557777777755F75555005500055055
+        555577F5777F57555555005550055555555577FF577F5FF55555500550050055
+        5555577FF77577FF555555005050110555555577F757777FF555555505099910
+        555555FF75777777FF555005550999910555577F5F77777775F5500505509990
+        3055577F75F77777575F55005055090B030555775755777575755555555550B0
+        B03055555F555757575755550555550B0B335555755555757555555555555550
+        BBB35555F55555575F555550555555550BBB55575555555575F5555555555555
+        50BB555555555555575F555555555555550B5555555555555575}
+      NumGlyphs = 2
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BORRAClick
+    end
+    object ToolButton2: TToolButton
+      Left = 886
+      Top = 0
+      Width = 8
+      Caption = 'ToolButton2'
+      ImageIndex = 2
+      Style = tbsSeparator
+    end
+    object SALE: TJvBitBtn
+      Left = 894
+      Top = 0
+      Width = 93
+      Height = 36
+      Anchors = [akTop, akRight]
+      Caption = 'SALIR'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = []
+      Glyph.Data = {
+        360C0000424D360C000000000000360000002800000020000000200000000100
+        180000000000000C0000C40E0000C40E00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFEFEFFFDFDFEFCFCFEFCFDFEFCFDFEFCFDFEFCFDFEFCFD
+        FEFCFDFEFCFCFEFCFCFEFCFCFEFCFCFEFCFCFEFCFCFEFCFCFEFCFCFEFCFCFEFC
+        FCFEFCFCFEFDFDFFFEFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFE8E8E1B9B89F9B99799693759694769694769594769594769594759694
+        759694759695759695759796759796759897759898759999759A9A759B9B759B
+        9B759B9A759A9976AAAA87D3D3C3FAFAFAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        DEDDC35F62953D45E6636BFF6A73FF6C73FF6C75FF6C76FF6C77FF6C76FF6D75
+        FF6C73FF6A72FF686FFF656CFF636AFF6066FF5E62FF5A5EFF5659FF5455FF54
+        56FF5557FF5759FF4446F41A18A6B0AF90F6F6F5FFFFFFFFFFFFFFFFFFF1F1DB
+        4146B06D6FF84A48C90707C20605C60605C90605CC0605CF0605D20605D70605
+        D80605DC0605E00606E30706E60B0CE71316E9191FE72027E9252FEA2C37EC31
+        3EEC3543ED3848ED5161F29FACFF1A1AD4B8B8A1FFFFFFFFFFFFFFFFFF9C9CB3
+        4848F80000B50000C00000C40000C70000CC0000CD0000D10000D40000D90000
+        DA0000DD0000E00000E20000E70407E81014EA141BE91A22EA2129EB2530EC2A
+        37EE2F3EEF3644EE384AEF2E40EF8293FF2523B1F7F7E1FFFFFFFFFFF44A4AE1
+        1B1BB50000BE0000C10000C50000C80000CA0000CD0000D20000D40000D70000
+        D60000D81515E23333E92727E90000E60000E6030BE81921EA222CEC2833ED2D
+        39EE3240EF3745EE3C4BF04153F13B51F33841E2CFCEC5FFFFFFFFFFF22828D9
+        0000B30000BE0000C00000C40000C70000CB0000CE0000D00000CB5B5BE2D3D3
+        F7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9A9BF51019EA0B15EA2934ED2D
+        38EE3240EF3847EE3B4BF04153F1465AF3384BEE9D9AC1FFFFFFFFFFF41818CD
+        0000B50000BD0000C10000C40000C70000CA0000CA1818D1FFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF9A9EF60009E92D
+        39EE3140EF3746EE3C4BF04153F1475AF3293DEAA4A2C0FFFFFFFFFFF51A1AC5
+        0000B60000BC0000C00000C20000C70000C52424D3FFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFDBDBF2F4F4F7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE6E7FC00
+        0DEA3340EF3645EE3B4BF04050F1465AF32B3EE6A4A2BEFFFFFFFFFFF61A1AC1
+        0000B40000BB0000BF0000C10000C41F1FCBFFFFFFFFFFFFFFFFFFFFFFFFB1B1
+        E30E0ECD0000CE0000D90000DC0000D55757DDFFFFFCFFFFFFFFFFFFFFFFFFE0
+        E1FC0515EC3543EE384AF03F50F14558F4273BE2A5A2BCFFFFFFFFFFF71919BB
+        0101B30808BC0909BF0808C10000BBFFFFFFFFFFFFFFFFFFFFFFFF2727C50000
+        D40000DB0000DF0000E20000E50000E90000ED0000D8E0E0F3FFFFFFFFFFFFFF
+        FFFF7078F32838EE3948EF3C4EF04356F42538DFA6A3BBFFFFFFFFFFF71818B6
+        0A0AB31B1BBE1B1BC11313C17171DCFFFFFFFFFFFFFFFFFF5353CA0404D60707
+        D70000D80000DD0000DF0000E30000E60606E80D12EB0000DDFAFAF7FFFFFFFF
+        FFFFFFFFFF0617EB3745EE3A4BEF4254F52134DAA6A3BAFFFFFFFFFFF81717B1
+        0F0FB12424C02626C20606BEEAEAF9FFFFFFFFFFFFE4E4EF0303CC3434DA3838
+        DB3C3CDF2626DE0F0FE00000E10000E30100E80A0CE90A0FEC393DE0FFFFFFFF
+        FFFFFFFFFF5A63F12C3AEE3848EF3D4FF31F30D7A7A4B9FFFFFFFFFFFA1717AA
+        1212B02E2EC12F2FC30B0BBBFFFFFFFFFFFFFFFFFF7474DC2F2FD33838D93B3B
+        DA3C3CDF4040E04747E44747E62424E50000E40000E70E12E90000E4FFFFFBFF
+        FFFFFFFFFF8F96F52130EE3543EF3B4BF11C2CD5A7A4BBFFFFFFFFFFFA1616A4
+        1D1DAF3838C33232C23D3DC7FFFFFFFFFFFFFFFFFF4949D23C3CD44141D74343
+        D94545DD4545E04848E34949E45050E95B5BEB2C2BEA0000E80000E8BEC0F5FF
+        FFFFFFFFFFB9BCF91521EB303EEF3544EE1726D4A8A5BBFFFFFFFFFFFB15159F
+        2222AF3F3FC23D3DC34949C9FFFFFFFFFFFFFFFFFF4F4FD44545D44A4AD84B4B
+        D94D4DDE4C4CDE4444E04B4BE35252E75353E95A5AED6464F00404E7B0B2F8FF
+        FFFFFFFFFFBEC0F70E19EB2B37EE303EEE1320D2A8A7BBFFFFFFFFFFFD151598
+        2727AD4949C34646C43232BDFFFFFFFFFFFFFFFFFF7878DD4A4AD35151D85252
+        DA5252DB5858DFB4B4F27D7DEA4E4EE45D5DE85E5EEA5F5FED4E4EEDFBFAFEFF
+        FFFFFFFFFF9497F20E19EB2430ED2A36ED0D18CFAAA7BCFFFFFFFFFFFD141492
+        2C2CAD5050C54F4FC53232C0FFFFF9FFFFFFFFFFFFC5C5F04141CD5959D75D5D
+        DA3E3ED6FFFFFFFFFFFFFFFFFF6E6EE76060E66565EA6565EA6060EDFFFFFFFF
+        FFFFFFFFFF6165E90F15EA1D26EB242DEB0610CDABA9BBFFFFFFFFFFFD13138F
+        3131AD5A5AC55757C64E4EC6AAAADAFFFFFFFFFFFFFFFFFF5E5ED45E5ED56262
+        D94444D4FFFFFFFFFFFFFFFFFF9090EA6565E56E6EE95050E6E1E1FBFFFFFFFF
+        FFFFFFFFFF0405DE050AEA151BEA1A21E90005CAACABBBFFFFFFFFFFFD13138F
+        3737AC6161C65F5FC76060C94848B9FFFFFFFFFFFFFFFFFFFFFFFF5454D16767
+        D94D4DD4FFFFFFFFFFFFFFFFFF9494E96D6DE35959E2BABAF4FFFFFFFFFFFFFF
+        FFFFC1C1E68A89F61616E90002E90E13E90000C9AEADBCFFFFFFFFFFFE12128D
+        3C3CAC6A6AC76565C66767C86262CC9393C8FFFFFFFFFFFFFFFFFFFFFFFF7373
+        D95555D2FFFFFFFFFFFFFFFFFF9898EA6363E0E0E0F8FFFFFFFFFFFFFFFFFFFF
+        FFF96464DF8282F0A0A0F10E0DE70000E80000C6AFAFBDFFFFFFFFFFFE11118B
+        4141AD7171C86E6EC66F6FC87070CE5656C4CFCFDDFFFFFFFFFFFFFFFFFFBEBE
+        EE5757D0FFFFFFFFFFFFFFFFFF9797E6B8B8F0FFFFFFFFFFFFFFFFFFFFFFFF75
+        75CE8787F08989EC8A8AEEA5A5F10000E20000BDAFAFBEFFFFFFFFFFFE101089
+        4D4DB07878C87575C87676CA7777CC7A7ACF5C5CC2B3B3CEFFFFFFFFFFFF7979
+        CA6666D3FFFFFFFFFFFFFFFFFF9E9EE7A3A3E0FFFFFFFFFFFFFDFDF77676C98C
+        8CEF8E8EE98F8FEA9090EC9797ED8A8AF10000B3AFAFBEFFFFFFFFFFFE0F0F87
+        5A5AB57E7EC87C7CC87D7DC97D7DCD8080CD8282D17676D26666B26060B88989
+        DD6F6FD1FFFFFFFFFFFFFFFFFFA8A8E77A7ADC9A9ACAAFAFD07272CD9494EB95
+        95E69595E79797E99797E99898EAB4B4F20808B6AAAAC0FFFFFFFFFFFE0C0C82
+        7575BF8282C88181C88282CA8585CE8585CE8888D08989D38B8BD68E8ED88D8D
+        D87676D2FFFFFFFFFFFFFFFFFFACACE59191DF9595E49595E79999E69999E49A
+        9AE59D9DE69D9DE79F9FE8A0A0E7B0B0EF2A2AB7A6A6BFFFFFFFFFFFFF06067C
+        9898CE8787C78989C98A8ACC8C8CCE8D8DCF8D8DD08E8ED39191D39191D69595
+        D87F7FD1FFFFFFFFFFFFFFFFFFB6B6E89797DE9C9CE19E9EE19E9EE2A1A1E4A2
+        A2E5A2A2E4A4A4E5A4A4E5A6A6E5B3B3EA3F3FBCB1B1C2FFFFFFFFFFFF1F1F90
+        9B9BCE8D8DC79090CB9090CD9292CD9494D09595D19797D49898D39999D69A9A
+        D88F8FD7EDEDEDFFFFFFFFFFFE9191D2A1A1DFA3A3DFA3A3E1A5A5E2A7A7E2A7
+        A7E2AAAAE4AAAAE4ACACE5ADADE5B2B2E68A8AD29999C2FFFFFFFFFFFF6666B4
+        A5A5CD9494C99797CC9898CD9999CF9A9AD09C9CD39D9DD39F9FD59F9FD7A0A0
+        D7A4A4DB8A8AC89E9EC38B8BC3AAAAE2A9A9DEA9A9DFABABE0ACACE0ADADE1AF
+        AFE3AFAFE2B2B2E3B3B3E2B4B4E3AFAFE0A6A6DCDEDEE3FFFFFFFFFFFFC9C9E2
+        8B8BC9A1A1CB9999CA9D9DCC9F9FCF9F9FD1A0A0D3A3A3D2A3A3D5A4A4D5A6A6
+        D9A7A7D9AAAADAA9A9DDACACDFACACDDADADDEB0B0DDAFAFDFB1B1E0B2B2E1B3
+        B3E0B5B5E1B6B6E0B6B6E0ADADDBF7F7FB7777BDFFFFFFFFFFFFFFFFFFFFFFFF
+        7F7FC4B9B9DCCDCDE0B7B7D7B6B6D8B9B9DABABADBBCBCDDBDBDDEBDBDDFBFBF
+        E1C1C1E1C2C2E3C5C5E3C5C5E5C6C6E6C7C7E6C9C9E7CBCBE7CBCBE8CCCCE8CE
+        CEEACFCFE9D0D0EADEDEEFFFFFFF7C7CC7ECECF4FFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFAAAAD98686C98E8ECDA0A0D4A1A1D4A3A3D5A5A5D7A8A8D7AAAAD9ACAC
+        D9AEAEDAB0B0DBB2B2DCB4B4DDB5B5DFB8B8DFBABAE0BABAE0BABAE1BBBBE0BA
+        BAE0BABAE0B8B8E09E9ED68585C9FCFCFBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      ParentFont = False
+      TabOrder = 1
+      OnClick = SALEClick
+    end
+  end
+  object FormularioEmb: TJvEmbeddedFormLink
+    Left = 612
+    Top = 8
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 736
+    Top = 11
+    object Exportar1: TMenuItem
+      Caption = 'Exportar a Excel'
+      OnClick = Exportar1Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object Imprimir1: TMenuItem
+      Caption = 'Imprimir'
+      OnClick = Imprimir1Click
+    end
+  end
+  object ImageList1: TImageList
+    Left = 890
+    Top = 43
+    Bitmap = {
+      494C010102000800440310001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      0000000000003600000028000000400000001000000001002000000000000010
+      0000000000000000000000000000000000000000000000000000000000002020
+      2000404040004040400020202000000000000000000000000000000000004040
+      4000404040004040400000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000005050
+      5000505050005050500090909000000000000000000000000000202020005050
+      50005050500080808000404040000000000000000000BF000000BF000000BF00
+      0000BF000000BF000000BF000000BF000000BF000000BF000000BF000000BF00
+      0000BF0000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000006060
+      60006F6F6F00000000009090900000000000000000000000000000000000DFDF
+      DF000000000050505000404040000000000000000000BF000000808080008080
+      8000808080008080800080808000808080008080800080808000808080008080
+      8000BF0000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000006060
+      60006F6F6F00000000009090900040404000404040004040400000000000DFDF
+      DF000000000050505000606060000000000000000000BF000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000BF0000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000202020003030
+      3000303030000000000050505000505050008080800050505000000000006F6F
+      6F000000000050505000A0A0A0006060600000000000BF000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000BF0000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000030303000303030000000
+      00006F6F6F00000000000000000000000000202020006F6F6F00000000000000
+      00000000000030303000808080009090900000000000BF000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000003F3F009FDFDF006F6F6F000000
+      0000606060000000000000000000C0C0C0000000000060606000000000000000
+      000000000000306F6F00505050009090900000000000BF000000000000000000
+      00000000000000000000000000000000000000000000000000000000000000FF
+      FF00808080000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000003F7F7F007FFFFF007FFFFF003F3F
+      3F00303030000000000000000000606060000000000030303000000000000000
+      0000000000007FBFBF00505050009090900000000000BF000000000000000000
+      00000000000000000000000000000000000000000000000000000000000000FF
+      FF00000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000003F7F7F007FFFFF007FFFFF007FFF
+      FF003F7F7F003030300000000000000000003F7F7F0030303000000000000000
+      00007FFFFF007FFFFF00505050009090900000000000BF000000BF000000BF00
+      0000BF000000BF000000BF000000BF000000BF000000BF000000BF0000000000
+      000000FFFF008080800000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000003F7F7F007FFFFF007FFFFF007FFF
+      FF007FFFFF0030303000303030003F7F7F007FFFFF0030303000303030003F7F
+      7F007FFFFF007FFFFF00505050009090900000000000BF000000FFFFFF00BF00
+      0000BF000000FFFFFF00BF000000BF000000FFFFFF00BF000000BF0000000000
+      000000FFFF000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000003F7F7F007FFFFF007FFFFF007FFF
+      FF007FFFFF0030303000303030003F7F7F007FFFFF0030303000303030003F7F
+      7F007FFFFF007FFFFF00505050009090900000000000BF000000BF000000BF00
+      0000BF000000BF000000BF000000BF000000BF000000BF000000BF000000BF00
+      00000000000000FFFF0080808000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000003F7F7F007FFFFF007FFFFF007FFF
+      FF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFF
+      FF007FFFFF007FFFFF0050505000909090000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000FFFF0080808000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000003F7F7F007FFFFF007FFFFF007FFF
+      FF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFF
+      FF007FFFFF007FFFFF0040404000202020000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000BF00BF000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000003F7F7F007FFFFF007FFFFF007FFF
+      FF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFFFF007FFF
+      FF007FFFFF00205F5F0020202000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000BF00BF00BF00BF000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000000000003F3F00007F7F00007F7F
+      00007F7F00007F7F00007F7F0000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000000000000000000000000000000000000007F7F00007F7F
+      00007F7F00007F7F00003F3F0000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      000000000000000000000000000000000000424D3E000000000000003E000000
+      2800000040000000100000000100010000000000800000000000000000000000
+      000000000000000000000000FFFFFF00E1E3FFFF00000000C1C1800700000000
+      C1C1800700000000C001BFD700000000C000A487000000008000BFC700000000
+      0000A483000000000000BFCB0000000000008001000000000000800500000000
+      00008000000000000000FFF0000000000000FFF8000000000001FFF800000000
+      0007FFFC0000000081FFFFFF0000000000000000000000000000000000000000
+      000000000000}
+  end
+  object frxReport1: TfrxReport
+    Version = '6.9.15'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 42511.403196574100000000
+    ReportOptions.LastChange = 45589.403261493050000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      ''
+      'begin'
+      ''
+      'end.')
+    Left = 900
+    Top = 322
+    Datasets = <>
+    Variables = <
+      item
+        Name = ' New Category1'
+        Value = Null
+      end
+      item
+        Name = 'NombreRespo'
+        Value = #39'BRA'#209'A JUAN ANGEL'#39
+      end
+      item
+        Name = 'CuimRespo'
+        Value = #39'20-24525019-4'#39
+      end
+      item
+        Name = 'DomicilioRespo'
+        Value = #39'DESCONOCIDO'#39
+      end
+      item
+        Name = 'NombreTit'
+        Value = #39'CACERES JUAN ALBERTO'#39
+      end
+      item
+        Name = 'CuimTit'
+        Value = #39#39
+      end
+      item
+        Name = 'DomicilioTit'
+        Value = #39'DESCONOCIDO'#39
+      end
+      item
+        Name = 'CuotaDe'
+        Value = #39'1 de 10'#39
+      end
+      item
+        Name = 'Anio'
+        Value = '2016'
+      end
+      item
+        Name = 'NroPlan'
+        Value = '123466'
+      end
+      item
+        Name = 'NroCuota'
+        Value = '1'
+      end
+      item
+        Name = 'FechaIni'
+        Value = #39'01/01/2016'#39
+      end
+      item
+        Name = 'CantObj'
+        Value = '20'
+      end
+      item
+        Name = 'Objetos'
+        Value = 
+          #39'JVS001, NBV003, OPS985/1111201 - 21121, 54512, 5452/1111601 - 2' +
+          '1121, 54515, 5452/1120501'#39
+      end
+      item
+        Name = 'DetalleRecibo'
+        Value = #39'MULTIPLES PERIODOS - VERIFICAR DOCUMENTACION PLAN'#39
+      end
+      item
+        Name = 'NroCobro'
+        Value = #39'2016-004'#39
+      end
+      item
+        Name = 'NroLiquidacion'
+        Value = '36232635'
+      end
+      item
+        Name = 'PrimerV'
+        Value = #39'21/05/2016'#39
+      end
+      item
+        Name = 'Importe1'
+        Value = '33525.65'
+      end
+      item
+        Name = 'SegundoV'
+        Value = #39'21/05/2016'#39
+      end
+      item
+        Name = 'Importe2'
+        Value = '33525.65'
+      end
+      item
+        Name = 'CodBar'
+        Value = #39'9270001148316257201630015853104000011483162572'#39
+      end
+      item
+        Name = 'NroCodBar'
+        Value = #39'9270004704004090200400134046230000047040040907'#39
+      end
+      item
+        Name = 'NroUsuario'
+        Value = '120'
+      end
+      item
+        Name = 'TituloDesc'
+        Value = #39'PLAN DE FACILIDADES DE PAGO'#39
+      end>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 210.000000000000000000
+      PaperHeight = 297.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      Frame.Typ = []
+      MirrorMode = []
+      object ReportTitle1: TfrxReportTitle
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 1028.032306460000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Shape16: TfrxShapeView
+          AllowVectorExport = True
+          Top = 789.921770000000000000
+          Width = 718.110700000000000000
+          Height = 238.110236220000000000
+          Frame.Typ = []
+        end
+        object Shape11: TfrxShapeView
+          AllowVectorExport = True
+          Top = 551.811380000000000000
+          Width = 718.110700000000000000
+          Height = 238.110236220000000000
+          Frame.Typ = []
+        end
+        object Shape6: TfrxShapeView
+          AllowVectorExport = True
+          Top = 313.700843540000000000
+          Width = 718.110700000000000000
+          Height = 238.110236220000000000
+          Frame.Typ = []
+        end
+        object Shape2: TfrxShapeView
+          AllowVectorExport = True
+          Top = 2.000000000000000000
+          Width = 718.110700000000000000
+          Height = 313.700787400000000000
+          Frame.Typ = []
+        end
+        object Logo1: TfrxPictureView
+          AllowVectorExport = True
+          Left = 298.582870000000000000
+          Top = 3.000000000000000000
+          Width = 52.913420000000000000
+          Height = 64.252010000000000000
+          Frame.Typ = []
+          HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
+        end
+        object Shape5: TfrxShapeView
+          AllowVectorExport = True
+          Left = 589.606680000000000000
+          Top = 234.330860000000000000
+          Width = 124.724402130000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Shape4: TfrxShapeView
+          AllowVectorExport = True
+          Left = 456.063286670000000000
+          Top = 234.330860000000000000
+          Width = 124.724409450000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Memo28: TfrxMemoView
+          AllowVectorExport = True
+          Left = 454.543600000000000000
+          Top = 236.330860000000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Primer Vto:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo1: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 7.559060000000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Municipalidad de la Ciudad de Formosa')
+          ParentFont = False
+        end
+        object Memo2: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 26.456710000000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Administraci'#243'n de Ingresos Municipales')
+          ParentFont = False
+        end
+        object Memo3: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 34.015770000000000000
+          Width = 64.251851340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Orden.N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo4: TfrxMemoView
+          AllowVectorExport = True
+          Left = 506.457020000000000000
+          Top = 34.015770000000000000
+          Width = 56.692791340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'CUOTA:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo5: TfrxMemoView
+          AllowVectorExport = True
+          Left = 442.205010000000000000
+          Top = 34.015770000000000000
+          Width = 49.133890000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '7147/17')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo6: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 34.015770000000000000
+          Width = 34.015611340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'A'#209'O:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo7: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 7.559060000000000000
+          Width = 332.598481340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[TituloDesc]')
+          ParentFont = False
+        end
+        object Memo8: TfrxMemoView
+          AllowVectorExport = True
+          Left = 30.236240000000000000
+          Top = 68.031540000000000000
+          Width = 79.369971340000000000
+          Height = 15.118120000000000000
+          Visible = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Resp. de Pago:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo9: TfrxMemoView
+          AllowVectorExport = True
+          Left = 600.945270000000000000
+          Top = 70.031540000000000000
+          Width = 34.015611340000000000
+          Height = 15.118110240000000000
+          Visible = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cuim:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo10: TfrxMemoView
+          AllowVectorExport = True
+          Top = 85.149660000000000000
+          Width = 109.606211340000000000
+          Height = 15.118110240000000000
+          Visible = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Domicilio Resp. Pago:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo11: TfrxMemoView
+          AllowVectorExport = True
+          Left = 26.456710000000000000
+          Top = 106.047310000000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo12: TfrxMemoView
+          AllowVectorExport = True
+          Left = 600.945270000000000000
+          Top = 103.937007870000000000
+          Width = 34.015611340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cuim:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo13: TfrxMemoView
+          AllowVectorExport = True
+          Left = 22.677180000000000000
+          Top = 125.944960000000000000
+          Width = 86.929031340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Domicilio Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Line2: TfrxLineView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 148.842610000000000000
+          Width = 551.811380000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo14: TfrxMemoView
+          AllowVectorExport = True
+          Left = 60.472480000000000000
+          Top = 140.283550000000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Datos del Plan')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo15: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 153.960730000000000000
+          Width = 45.354201340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Plan:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo16: TfrxMemoView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 153.960730000000000000
+          Width = 60.472321340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Cuotas:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo17: TfrxMemoView
+          AllowVectorExport = True
+          Left = 343.937230000000000000
+          Top = 153.960730000000000000
+          Width = 79.369971340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Fecha de Inicio:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo18: TfrxMemoView
+          AllowVectorExport = True
+          Left = 585.827150000000000000
+          Top = 153.960730000000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cant. Objetos:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo19: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 170.078850000000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Objetos / Rubro:')
+          ParentFont = False
+        end
+        object Line3: TfrxLineView
+          AllowVectorExport = True
+          Left = 15.118120000000000000
+          Top = 148.622140000000000000
+          Width = 30.236240000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Line4: TfrxLineView
+          AllowVectorExport = True
+          Top = 207.874150000000000000
+          Width = 718.110700000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo20: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 247.448980000000000000
+          Width = 71.810911340000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Lugares de Pago:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo21: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 262.567100000000000000
+          Width = 298.582711340000000000
+          Height = 30.236230240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haBlock
+          Memo.UTF8W = (
+            
+              'Oficinas de Pago F'#225'cil y BAPRO, Banco Formosa S.A., Administraci' +
+              #243'n de Ingresos Municipales, Direcci'#243'n de Tr'#225'nsito, 1er. Piso Pas' +
+              'eo de Compras,Ex-Estaci'#243'n del Ferrocarril')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo22: TfrxMemoView
+          AllowVectorExport = True
+          Top = 211.653680000000000000
+          Width = 83.149660000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Detalle del Recibo:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo23: TfrxMemoView
+          AllowVectorExport = True
+          Left = 340.157700000000000000
+          Top = 272.126160000000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Nro Cobro:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo24: TfrxMemoView
+          AllowVectorExport = True
+          Left = 495.118430000000000000
+          Top = 272.126160000000000000
+          Width = 71.811070000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Liquidaci'#243'n N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo25: TfrxMemoView
+          AllowVectorExport = True
+          Left = 166.299320000000000000
+          Top = 298.582870000000000000
+          Width = 381.732530000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            
+              '(Liquidaci'#243'n no v'#225'lido como Comprobante de Pago sin su correspon' +
+              'diente ticket/recibo o sello de pago)')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo26: TfrxMemoView
+          AllowVectorExport = True
+          Left = 548.031850000000000000
+          Top = 298.582870000000000000
+          Width = 147.401670000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Tal'#243'n para el Contribuyente - Usu:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo27: TfrxMemoView
+          AllowVectorExport = True
+          Left = 590.606680000000000000
+          Top = 236.330860000000000000
+          Width = 37.795300000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Importe:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object NombreRespo: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 68.031540000000000000
+          Width = 483.779840000000000000
+          Height = 15.118110240000000000
+          Visible = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NombreRespo]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object CuimRespo: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 69.811070000000000000
+          Width = 79.370130000000000000
+          Height = 15.118110240000000000
+          Visible = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuimRespo]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo31: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 87.149660000000000000
+          Width = 604.724800000000000000
+          Height = 15.118110240000000000
+          Visible = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DomicilioRespo]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo32: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 106.047310000000000000
+          Width = 483.779840000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NombreTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo33: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 103.826840000000000000
+          Width = 79.370130000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuimTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo34: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 125.944960000000000000
+          Width = 604.724800000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DomicilioTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object CuotaDe: TfrxMemoView
+          AllowVectorExport = True
+          Left = 563.149970000000000000
+          Top = 34.015770000000000000
+          Width = 64.252010000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuotaDe]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Anio: TfrxMemoView
+          AllowVectorExport = True
+          Left = 668.976810000000000000
+          Top = 34.015770000000000000
+          Width = 41.574830000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Anio]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object NroPlan: TfrxMemoView
+          AllowVectorExport = True
+          Left = 49.133890000000000000
+          Top = 153.960730000000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroPlan]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo35: TfrxMemoView
+          AllowVectorExport = True
+          Left = 211.653680000000000000
+          Top = 153.960730000000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCuota]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo36: TfrxMemoView
+          AllowVectorExport = True
+          Left = 423.307360000000000000
+          Top = 153.960730000000000000
+          Width = 75.590600000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[FechaIni]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo37: TfrxMemoView
+          AllowVectorExport = True
+          Left = 661.417750000000000000
+          Top = 154.181200000000000000
+          Width = 52.913420000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CantObj]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Objetos: TfrxMemoView
+          AllowVectorExport = True
+          Left = 86.929190000000000000
+          Top = 170.858380000000000000
+          Width = 627.401980000000000000
+          Height = 34.015770000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Objetos]')
+          ParentFont = False
+        end
+        object DetalleRecibo: TfrxMemoView
+          AllowVectorExport = True
+          Left = 83.149660000000000000
+          Top = 211.653680000000000000
+          Width = 631.181510000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DetalleRecibo]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object PrimerV: TfrxMemoView
+          AllowVectorExport = True
+          Left = 512.016080000000000000
+          Top = 234.330860000000000000
+          Width = 68.031540000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[PrimerV]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo38: TfrxMemoView
+          AllowVectorExport = True
+          Left = 627.401980000000000000
+          Top = 234.330860000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2f'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[Importe1]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object NroCobro: TfrxMemoView
+          AllowVectorExport = True
+          Left = 393.071120000000000000
+          Top = 272.126160000000000000
+          Width = 79.370130000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCobro]')
+          ParentFont = False
+        end
+        object NroCobro1: TfrxMemoView
+          AllowVectorExport = True
+          Left = 566.929500000000000000
+          Top = 272.126160000000000000
+          Width = 98.267780000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroLiquidacion]')
+          ParentFont = False
+        end
+        object NroUsuario: TfrxMemoView
+          AllowVectorExport = True
+          Left = 695.433520000000000000
+          Top = 298.582870000000000000
+          Width = 18.897650000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroUsuario]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Logo2: TfrxPictureView
+          AllowVectorExport = True
+          Left = 302.362400000000000000
+          Top = 321.260050000000000000
+          Width = 41.574830000000000000
+          Height = 49.133890000000000000
+          Frame.Typ = []
+          HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
+        end
+        object Memo41: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 317.480520000000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Municipalidad de la Ciudad de Formosa')
+          ParentFont = False
+        end
+        object Memo42: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 336.378170000000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Administraci'#243'n de Ingresos Municipales')
+          ParentFont = False
+        end
+        object Memo43: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 336.378170000000000000
+          Width = 64.251851340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Orden.N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo44: TfrxMemoView
+          AllowVectorExport = True
+          Left = 506.457020000000000000
+          Top = 336.378170000000000000
+          Width = 56.692791340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'CUOTA:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo45: TfrxMemoView
+          AllowVectorExport = True
+          Left = 442.205010000000000000
+          Top = 336.378170000000000000
+          Width = 49.133890000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '7147/17')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo46: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 336.378170000000000000
+          Width = 34.015611340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'A'#209'O:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo47: TfrxMemoView
+          AllowVectorExport = True
+          Left = 563.149970000000000000
+          Top = 336.378170000000000000
+          Width = 64.252010000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuotaDe]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo48: TfrxMemoView
+          AllowVectorExport = True
+          Left = 668.976810000000000000
+          Top = 336.378170000000000000
+          Width = 41.574830000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Anio]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo49: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 317.480520000000000000
+          Width = 332.598481340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[TituloDesc]')
+          ParentFont = False
+        end
+        object Memo50: TfrxMemoView
+          AllowVectorExport = True
+          Left = 26.456710000000000000
+          Top = 366.834880000000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo51: TfrxMemoView
+          AllowVectorExport = True
+          Left = 600.945270000000000000
+          Top = 366.724577870000000000
+          Width = 34.015611340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cuim:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo52: TfrxMemoView
+          AllowVectorExport = True
+          Left = 22.677180000000000000
+          Top = 381.953000000000000000
+          Width = 86.929031340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Domicilio Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Line1: TfrxLineView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 404.071120000000000000
+          Width = 551.811380000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo53: TfrxMemoView
+          AllowVectorExport = True
+          Left = 60.472480000000000000
+          Top = 395.512060000000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Datos del Plan')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo54: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 409.189240000000000000
+          Width = 45.354201340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Plan:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo55: TfrxMemoView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 409.189240000000000000
+          Width = 60.472321340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Cuotas:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo56: TfrxMemoView
+          AllowVectorExport = True
+          Left = 343.937230000000000000
+          Top = 409.189240000000000000
+          Width = 79.369971340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Fecha de Inicio:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo57: TfrxMemoView
+          AllowVectorExport = True
+          Left = 585.827150000000000000
+          Top = 409.189240000000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cant. Objetos:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo58: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 425.307360000000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Objetos / Rubro:')
+          ParentFont = False
+        end
+        object Line5: TfrxLineView
+          AllowVectorExport = True
+          Left = 15.118120000000000000
+          Top = 403.850650000000000000
+          Width = 30.236240000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo59: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 366.834880000000000000
+          Width = 483.779840000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NombreTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo60: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 366.614410000000000000
+          Width = 79.370130000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuimTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo61: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 381.953000000000000000
+          Width = 604.724800000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DomicilioTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo62: TfrxMemoView
+          AllowVectorExport = True
+          Left = 49.133890000000000000
+          Top = 409.189240000000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroPlan]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo63: TfrxMemoView
+          AllowVectorExport = True
+          Left = 211.653680000000000000
+          Top = 409.189240000000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCuota]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo64: TfrxMemoView
+          AllowVectorExport = True
+          Left = 423.307360000000000000
+          Top = 409.189240000000000000
+          Width = 75.590600000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[FechaIni]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo65: TfrxMemoView
+          AllowVectorExport = True
+          Left = 661.417750000000000000
+          Top = 409.409710000000000000
+          Width = 52.913420000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CantObj]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo66: TfrxMemoView
+          AllowVectorExport = True
+          Left = 86.929190000000000000
+          Top = 426.086890000000000000
+          Width = 627.401980000000000000
+          Height = 30.236240000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Objetos]')
+          ParentFont = False
+        end
+        object Line6: TfrxLineView
+          AllowVectorExport = True
+          Top = 457.323130000000000000
+          Width = 718.110700000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo67: TfrxMemoView
+          AllowVectorExport = True
+          Top = 457.323130000000000000
+          Width = 83.149660000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Detalle del Recibo:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo68: TfrxMemoView
+          AllowVectorExport = True
+          Left = 83.149660000000000000
+          Top = 457.323130000000000000
+          Width = 631.181510000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DetalleRecibo]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Shape7: TfrxShapeView
+          AllowVectorExport = True
+          Left = 589.606680000000000000
+          Top = 474.220780000000000000
+          Width = 124.724402130000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Shape8: TfrxShapeView
+          AllowVectorExport = True
+          Left = 456.063286670000000000
+          Top = 474.220780000000000000
+          Width = 124.724409450000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Memo69: TfrxMemoView
+          AllowVectorExport = True
+          Left = 454.543600000000000000
+          Top = 476.220780000000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Primer Vto:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo70: TfrxMemoView
+          AllowVectorExport = True
+          Left = 389.291590000000000000
+          Top = 506.457020000000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Nro Cobro:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo71: TfrxMemoView
+          AllowVectorExport = True
+          Left = 544.252320000000000000
+          Top = 506.457020000000000000
+          Width = 71.811070000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Liquidaci'#243'n N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo72: TfrxMemoView
+          AllowVectorExport = True
+          Left = 170.078850000000000000
+          Top = 536.693260000000000000
+          Width = 377.953000000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            
+              '(Liquidaci'#243'n no v'#225'lido como Comprobante de Pago sin su correspon' +
+              'diente ticket/recibo o sello de pago)')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo73: TfrxMemoView
+          AllowVectorExport = True
+          Left = 548.031850000000000000
+          Top = 536.693260000000000000
+          Width = 147.401670000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Tal'#243'n para el Area de Control - Usu:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo74: TfrxMemoView
+          AllowVectorExport = True
+          Left = 590.606680000000000000
+          Top = 476.220780000000000000
+          Width = 37.795300000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Importe:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo77: TfrxMemoView
+          AllowVectorExport = True
+          Left = 512.016080000000000000
+          Top = 474.220780000000000000
+          Width = 68.031540000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[PrimerV]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo78: TfrxMemoView
+          AllowVectorExport = True
+          Left = 627.401980000000000000
+          Top = 474.220780000000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2f'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[Importe1]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo81: TfrxMemoView
+          AllowVectorExport = True
+          Left = 442.205010000000000000
+          Top = 506.457020000000000000
+          Width = 79.370130000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCobro]')
+          ParentFont = False
+        end
+        object Memo82: TfrxMemoView
+          AllowVectorExport = True
+          Left = 616.063390000000000000
+          Top = 506.457020000000000000
+          Width = 98.267780000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroLiquidacion]')
+          ParentFont = False
+        end
+        object Memo83: TfrxMemoView
+          AllowVectorExport = True
+          Left = 695.433520000000000000
+          Top = 536.693260000000000000
+          Width = 18.897650000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroUsuario]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Logo3: TfrxPictureView
+          AllowVectorExport = True
+          Left = 302.362400000000000000
+          Top = 555.591056460000000000
+          Width = 41.574830000000000000
+          Height = 49.133890000000000000
+          Frame.Typ = []
+          HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
+        end
+        object Memo84: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 555.591056460000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Municipalidad de la Ciudad de Formosa')
+          ParentFont = False
+        end
+        object Memo85: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 574.488706460000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Administraci'#243'n de Ingresos Municipales')
+          ParentFont = False
+        end
+        object Memo86: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 574.488706460000000000
+          Width = 64.251851340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Orden.N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo87: TfrxMemoView
+          AllowVectorExport = True
+          Left = 506.457020000000000000
+          Top = 574.488706460000000000
+          Width = 56.692791340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'CUOTA:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo88: TfrxMemoView
+          AllowVectorExport = True
+          Left = 442.205010000000000000
+          Top = 574.488706460000000000
+          Width = 49.133890000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '7147/17')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo89: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 574.488706460000000000
+          Width = 34.015611340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'A'#209'O:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo90: TfrxMemoView
+          AllowVectorExport = True
+          Left = 563.149970000000000000
+          Top = 574.488706460000000000
+          Width = 64.252010000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuotaDe]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo91: TfrxMemoView
+          AllowVectorExport = True
+          Left = 668.976810000000000000
+          Top = 574.488706460000000000
+          Width = 41.574830000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Anio]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo92: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 555.591056460000000000
+          Width = 332.598481340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[TituloDesc]')
+          ParentFont = False
+        end
+        object Memo93: TfrxMemoView
+          AllowVectorExport = True
+          Left = 26.456710000000000000
+          Top = 604.945416460000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo94: TfrxMemoView
+          AllowVectorExport = True
+          Left = 600.945270000000000000
+          Top = 604.835114330000000000
+          Width = 34.015611340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cuim:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo95: TfrxMemoView
+          AllowVectorExport = True
+          Left = 22.677180000000000000
+          Top = 620.063536460000000000
+          Width = 86.929031340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Domicilio Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Line7: TfrxLineView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 642.181656460000000000
+          Width = 551.811380000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo96: TfrxMemoView
+          AllowVectorExport = True
+          Left = 60.472480000000000000
+          Top = 633.622596460000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Datos del Plan')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo97: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 647.299776460000000000
+          Width = 45.354201340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Plan:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo98: TfrxMemoView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 647.299776460000000000
+          Width = 60.472321340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Cuotas:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo99: TfrxMemoView
+          AllowVectorExport = True
+          Left = 343.937230000000000000
+          Top = 647.299776460000000000
+          Width = 79.369971340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Fecha de Inicio:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo100: TfrxMemoView
+          AllowVectorExport = True
+          Left = 585.827150000000000000
+          Top = 647.299776460000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cant. Objetos:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo101: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 663.417896460000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Objetos / Rubro:')
+          ParentFont = False
+        end
+        object Line8: TfrxLineView
+          AllowVectorExport = True
+          Left = 15.118120000000000000
+          Top = 641.961186460000000000
+          Width = 30.236240000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo102: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 604.945416460000000000
+          Width = 483.779840000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NombreTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo103: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 604.724946460000000000
+          Width = 79.370130000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuimTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo104: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 620.063536460000000000
+          Width = 604.724800000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DomicilioTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo105: TfrxMemoView
+          AllowVectorExport = True
+          Left = 49.133890000000000000
+          Top = 647.299776460000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroPlan]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo106: TfrxMemoView
+          AllowVectorExport = True
+          Left = 211.653680000000000000
+          Top = 647.299776460000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCuota]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo107: TfrxMemoView
+          AllowVectorExport = True
+          Left = 423.307360000000000000
+          Top = 647.299776460000000000
+          Width = 75.590600000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[FechaIni]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo108: TfrxMemoView
+          AllowVectorExport = True
+          Left = 661.417750000000000000
+          Top = 647.520246460000000000
+          Width = 52.913420000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CantObj]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo109: TfrxMemoView
+          AllowVectorExport = True
+          Left = 86.929190000000000000
+          Top = 664.197426460000000000
+          Width = 627.401980000000000000
+          Height = 30.236240000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Objetos]')
+          ParentFont = False
+        end
+        object Line9: TfrxLineView
+          AllowVectorExport = True
+          Top = 695.433666460000000000
+          Width = 718.110700000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo110: TfrxMemoView
+          AllowVectorExport = True
+          Top = 695.433666460000000000
+          Width = 83.149660000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Detalle del Recibo:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo111: TfrxMemoView
+          AllowVectorExport = True
+          Left = 83.149660000000000000
+          Top = 695.433666460000000000
+          Width = 631.181510000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DetalleRecibo]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Shape12: TfrxShapeView
+          AllowVectorExport = True
+          Left = 589.606680000000000000
+          Top = 712.331316460000000000
+          Width = 124.724402130000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Shape13: TfrxShapeView
+          AllowVectorExport = True
+          Left = 456.063286670000000000
+          Top = 712.331316460000000000
+          Width = 124.724409450000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Memo112: TfrxMemoView
+          AllowVectorExport = True
+          Left = 454.543600000000000000
+          Top = 714.331316460000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Primer Vto:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo113: TfrxMemoView
+          AllowVectorExport = True
+          Left = 389.291590000000000000
+          Top = 744.567556460000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Nro Cobro:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo114: TfrxMemoView
+          AllowVectorExport = True
+          Left = 544.252320000000000000
+          Top = 744.567556460000000000
+          Width = 71.811070000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Liquidaci'#243'n N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo115: TfrxMemoView
+          AllowVectorExport = True
+          Left = 170.078850000000000000
+          Top = 774.803796460000000000
+          Width = 377.953000000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            
+              '(Liquidaci'#243'n no v'#225'lido como Comprobante de Pago sin su correspon' +
+              'diente ticket/recibo o sello de pago)')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo116: TfrxMemoView
+          AllowVectorExport = True
+          Left = 548.031850000000000000
+          Top = 774.803796460000000000
+          Width = 147.401670000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Tal'#243'n para Archivo Municipal - Usu:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo117: TfrxMemoView
+          AllowVectorExport = True
+          Left = 590.606680000000000000
+          Top = 714.331316460000000000
+          Width = 37.795300000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Importe:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo120: TfrxMemoView
+          AllowVectorExport = True
+          Left = 512.016080000000000000
+          Top = 712.331316460000000000
+          Width = 68.031540000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[PrimerV]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo121: TfrxMemoView
+          AllowVectorExport = True
+          Left = 627.401980000000000000
+          Top = 712.331316460000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2f'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[Importe1]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo124: TfrxMemoView
+          AllowVectorExport = True
+          Left = 442.205010000000000000
+          Top = 744.567556460000000000
+          Width = 79.370130000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCobro]')
+          ParentFont = False
+        end
+        object Memo125: TfrxMemoView
+          AllowVectorExport = True
+          Left = 616.063390000000000000
+          Top = 744.567556460000000000
+          Width = 98.267780000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroLiquidacion]')
+          ParentFont = False
+        end
+        object Memo126: TfrxMemoView
+          AllowVectorExport = True
+          Left = 695.433520000000000000
+          Top = 774.803796460000000000
+          Width = 18.897650000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroUsuario]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Logo4: TfrxPictureView
+          AllowVectorExport = True
+          Left = 302.362400000000000000
+          Top = 793.701446460000000000
+          Width = 41.574830000000000000
+          Height = 49.133890000000000000
+          Frame.Typ = []
+          HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
+        end
+        object Memo129: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 793.701446460000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Municipalidad de la Ciudad de Formosa')
+          ParentFont = False
+        end
+        object Memo130: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 812.599096460000000000
+          Width = 238.110231340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Administraci'#243'n de Ingresos Municipales')
+          ParentFont = False
+        end
+        object Memo131: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 812.599096460000000000
+          Width = 64.251851340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Orden.N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo132: TfrxMemoView
+          AllowVectorExport = True
+          Left = 506.457020000000000000
+          Top = 812.599096460000000000
+          Width = 56.692791340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'CUOTA:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo133: TfrxMemoView
+          AllowVectorExport = True
+          Left = 442.205010000000000000
+          Top = 812.599096460000000000
+          Width = 49.133890000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '7147/17')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo134: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 812.599096460000000000
+          Width = 34.015611340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'A'#209'O:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo135: TfrxMemoView
+          AllowVectorExport = True
+          Left = 563.149970000000000000
+          Top = 812.599096460000000000
+          Width = 64.252010000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuotaDe]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo136: TfrxMemoView
+          AllowVectorExport = True
+          Left = 668.976810000000000000
+          Top = 812.599096460000000000
+          Width = 41.574830000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Anio]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo137: TfrxMemoView
+          AllowVectorExport = True
+          Left = 377.953000000000000000
+          Top = 793.701446460000000000
+          Width = 332.598481340000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[TituloDesc]')
+          ParentFont = False
+        end
+        object Memo138: TfrxMemoView
+          AllowVectorExport = True
+          Left = 26.456710000000000000
+          Top = 843.055806460000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo139: TfrxMemoView
+          AllowVectorExport = True
+          Left = 600.945270000000000000
+          Top = 842.945504330000000000
+          Width = 34.015611340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cuim:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo140: TfrxMemoView
+          AllowVectorExport = True
+          Left = 22.677180000000000000
+          Top = 858.173926460000000000
+          Width = 86.929031340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Domicilio Titular:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Line10: TfrxLineView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 880.292046460000000000
+          Width = 551.811380000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo141: TfrxMemoView
+          AllowVectorExport = True
+          Left = 60.472480000000000000
+          Top = 871.732986460000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Datos del Plan')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo142: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 885.410166460000000000
+          Width = 45.354201340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Plan:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo143: TfrxMemoView
+          AllowVectorExport = True
+          Left = 151.181200000000000000
+          Top = 885.410166460000000000
+          Width = 60.472321340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'N'#176' Cuotas:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo144: TfrxMemoView
+          AllowVectorExport = True
+          Left = 343.937230000000000000
+          Top = 885.410166460000000000
+          Width = 79.369971340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Fecha de Inicio:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo145: TfrxMemoView
+          AllowVectorExport = True
+          Left = 585.827150000000000000
+          Top = 885.410166460000000000
+          Width = 75.590441340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Cant. Objetos:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo146: TfrxMemoView
+          AllowVectorExport = True
+          Left = 3.779530000000000000
+          Top = 901.528286460000000000
+          Width = 83.149501340000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Objetos / Rubro:')
+          ParentFont = False
+        end
+        object Line11: TfrxLineView
+          AllowVectorExport = True
+          Left = 15.118120000000000000
+          Top = 880.071576460000000000
+          Width = 30.236240000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo147: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 843.055806460000000000
+          Width = 483.779840000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NombreTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo148: TfrxMemoView
+          AllowVectorExport = True
+          Left = 634.961040000000000000
+          Top = 842.835336460000000000
+          Width = 79.370130000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CuimTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo149: TfrxMemoView
+          AllowVectorExport = True
+          Left = 109.606370000000000000
+          Top = 858.173926460000000000
+          Width = 604.724800000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DomicilioTit]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo150: TfrxMemoView
+          AllowVectorExport = True
+          Left = 49.133890000000000000
+          Top = 885.410166460000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroPlan]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo151: TfrxMemoView
+          AllowVectorExport = True
+          Left = 211.653680000000000000
+          Top = 885.410166460000000000
+          Width = 64.252010000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCuota]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo152: TfrxMemoView
+          AllowVectorExport = True
+          Left = 423.307360000000000000
+          Top = 885.410166460000000000
+          Width = 75.590600000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[FechaIni]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo153: TfrxMemoView
+          AllowVectorExport = True
+          Left = 661.417750000000000000
+          Top = 885.630636460000000000
+          Width = 52.913420000000000000
+          Height = 15.118110240000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[CantObj]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo154: TfrxMemoView
+          AllowVectorExport = True
+          Left = 86.929190000000000000
+          Top = 902.307816460000000000
+          Width = 627.401980000000000000
+          Height = 30.236240000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[Objetos]')
+          ParentFont = False
+        end
+        object Line12: TfrxLineView
+          AllowVectorExport = True
+          Top = 933.544056460000000000
+          Width = 718.110700000000000000
+          Color = clBlack
+          Frame.Typ = [ftTop]
+        end
+        object Memo155: TfrxMemoView
+          AllowVectorExport = True
+          Top = 933.544056460000000000
+          Width = 83.149660000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Detalle del Recibo:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo156: TfrxMemoView
+          AllowVectorExport = True
+          Left = 83.149660000000000000
+          Top = 933.544056460000000000
+          Width = 631.181510000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[DetalleRecibo]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Shape17: TfrxShapeView
+          AllowVectorExport = True
+          Left = 589.606680000000000000
+          Top = 950.441706460000000000
+          Width = 124.724402130000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Shape18: TfrxShapeView
+          AllowVectorExport = True
+          Left = 456.063286670000000000
+          Top = 950.441706460000000000
+          Width = 124.724409450000000000
+          Height = 18.897650000000000000
+          Frame.Typ = []
+        end
+        object Memo157: TfrxMemoView
+          AllowVectorExport = True
+          Left = 454.543600000000000000
+          Top = 952.441706460000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Primer Vto:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo158: TfrxMemoView
+          AllowVectorExport = True
+          Left = 389.291590000000000000
+          Top = 982.677946460000000000
+          Width = 52.913420000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Nro Cobro:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo159: TfrxMemoView
+          AllowVectorExport = True
+          Left = 544.252320000000000000
+          Top = 982.677946460000000000
+          Width = 71.811070000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Liquidaci'#243'n N'#176':')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo160: TfrxMemoView
+          AllowVectorExport = True
+          Left = 170.078850000000000000
+          Top = 1012.914186460000000000
+          Width = 377.953000000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            
+              '(Liquidaci'#243'n no v'#225'lido como Comprobante de Pago sin su correspon' +
+              'diente ticket/recibo o sello de pago)')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo161: TfrxMemoView
+          AllowVectorExport = True
+          Left = 548.031850000000000000
+          Top = 1012.914186460000000000
+          Width = 147.401670000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Tal'#243'n para el Ente Recaudador - Usu:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo162: TfrxMemoView
+          AllowVectorExport = True
+          Left = 590.606680000000000000
+          Top = 952.441706460000000000
+          Width = 37.795300000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -9
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Importe:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo165: TfrxMemoView
+          AllowVectorExport = True
+          Left = 512.016080000000000000
+          Top = 950.441706460000000000
+          Width = 68.031540000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            '[PrimerV]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo166: TfrxMemoView
+          AllowVectorExport = True
+          Left = 627.401980000000000000
+          Top = 950.441706460000000000
+          Width = 86.929190000000000000
+          Height = 18.897650000000000000
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2f'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[Importe1]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo169: TfrxMemoView
+          AllowVectorExport = True
+          Left = 442.205010000000000000
+          Top = 982.677946460000000000
+          Width = 79.370130000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroCobro]')
+          ParentFont = False
+        end
+        object Memo170: TfrxMemoView
+          AllowVectorExport = True
+          Left = 616.063390000000000000
+          Top = 982.677946460000000000
+          Width = 98.267780000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroLiquidacion]')
+          ParentFont = False
+        end
+        object Memo171: TfrxMemoView
+          AllowVectorExport = True
+          Left = 695.433520000000000000
+          Top = 1012.914186460000000000
+          Width = 18.897650000000000000
+          Height = 15.118120000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -8
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[NroUsuario]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object BarCode3: TfrxBarCodeView
+          AllowVectorExport = True
+          Left = 26.456710000000000000
+          Top = 956.221090000000000000
+          Width = 288.000000000000000000
+          Height = 52.913420000000000000
+          BarType = bcCode128C
+          Expression = '<NroCodBar>'
+          Frame.Typ = []
+          Rotation = 0
+          TestLine = False
+          Text = '9270001148316257201630015853104000011483162572'
+          WideBarRatio = 2.000000000000000000
+          Zoom = 1.000000000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ColorBar = clBlack
+        end
+        object BarCode2: TfrxBarCodeView
+          AllowVectorExport = True
+          Left = 26.456710000000000000
+          Top = 721.890230000000000000
+          Width = 288.000000000000000000
+          Height = 52.913420000000000000
+          BarType = bcCode128C
+          Expression = '<NroCodBar>'
+          Frame.Typ = []
+          Rotation = 0
+          TestLine = False
+          Text = '9270001148316257201630015853104000011483162572'
+          WideBarRatio = 2.000000000000000000
+          Zoom = 1.000000000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ColorBar = clBlack
+        end
+        object BarCode1: TfrxBarCodeView
+          AllowVectorExport = True
+          Left = 26.456710000000000000
+          Top = 483.779840000000000000
+          Width = 288.000000000000000000
+          Height = 52.913420000000000000
+          BarType = bcCode128C
+          Expression = '<NroCodBar>'
+          Frame.Typ = []
+          Rotation = 0
+          TestLine = False
+          Text = '9270001148316257201630015853104000011483162572'
+          WideBarRatio = 2.000000000000000000
+          Zoom = 1.000000000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -12
+          Font.Name = 'Arial'
+          Font.Style = []
+          ColorBar = clBlack
+        end
+      end
+    end
+  end
+end

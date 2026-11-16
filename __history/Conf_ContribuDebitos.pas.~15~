@@ -1,0 +1,831 @@
+unit Conf_ContribuDebitos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet;
+
+type THackStringGrid = class(TJvStringGrid);
+type
+  TCons_Contrib = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    BORRA: TJvBitBtn;
+    ToolButton3: TToolButton;
+    SALE: TJvBitBtn;
+    Barra1: TStatusBar;
+    JvgGroupBox1: TJvgGroupBox;
+    LB1: TLabel;
+    Label9: TLabel;
+    Label28: TLabel;
+    ONOMB: TEdit;
+    ODNI: TEdit;
+    Buscar: TJvBitBtn;
+    OCUIT: TEdit;
+    JvgGroupBox3: TJvgGroupBox;
+    JvDBGrid2: TJvDBGrid;
+    DataSource1: TDataSource;
+    PC1: TPageControl;
+    TabSheet3: TTabSheet;
+    JvgGroupBox5: TJvgGroupBox;
+    FormularioEmb: TJvEmbeddedFormLink;
+    JvgGroupBox2: TJvgGroupBox;
+    grilladebitos: TStringGrid;
+    PopupMenu1: TPopupMenu;
+    ConfirmarCuentaBancaria1: TMenuItem;
+    ImageList1: TImageList;
+    PopupMenu2: TPopupMenu;
+    ConfirmarDebitoSeleccionado1: TMenuItem;
+    ConfirmarTODOSlosDebitos1: TMenuItem;
+    frxReport1: TfrxReport;
+    N1: TMenuItem;
+    DardeBAJACuentaBancaria1: TMenuItem;
+    N2: TMenuItem;
+    DarBAJADebitoSeleccionado1: TMenuItem;
+    DarBAJATODOSlosDebitos1: TMenuItem;
+    JvGroupBox3: TJvGroupBox;
+    Label39: TLabel;
+    Shape2: TShape;
+    Label2: TLabel;
+    JvgGroupBox4: TJvgGroupBox;
+    Label1: TLabel;
+    Edit2: TEdit;
+    Label3: TLabel;
+    Edit1: TEdit;
+    Label4: TLabel;
+    Edit3: TEdit;
+    grillactabancos: TStringGrid;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Coloca1(nro:byte);
+    procedure JvDBGrid2CellClick(Column: TColumn);
+    procedure SALEClick(Sender: TObject);
+    procedure BORRAClick(Sender: TObject);
+    procedure ODNIKeyPress(Sender: TObject; var Key: Char);
+    procedure ONOMBKeyPress(Sender: TObject; var Key: Char);
+    procedure OCUITKeyPress(Sender: TObject; var Key: Char);
+    procedure BuscarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure grillactabancosClick(Sender: TObject);
+    procedure VerArea(nro:byte);
+    procedure ConfirmarCuentaBancaria1Click(Sender: TObject);
+    procedure ConfirmarDebitoSeleccionado1Click(Sender: TObject);
+    procedure ConfirmarTODOSlosDebitos1Click(Sender: TObject);
+    procedure ImprimeConfirmacion();
+    procedure ImprimeBaja(nro:byte);
+    procedure DarBAJADebitoSeleccionado1Click(Sender: TObject);
+    procedure DarBAJATODOSlosDebitos1Click(Sender: TObject);
+    procedure DardeBAJACuentaBancaria1Click(Sender: TObject);
+    function VerificaGrilla(grilla:string):boolean;
+    procedure grillactabancosDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure grilladebitosDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure grilladebitosClick(Sender: TObject);
+  private
+    CONTRIBUYENTE,Identidad,CONTRIBCTASBANCOS,DataSet:TADODataSet;{ Private declarations }
+    fecha,respuesta,laidcuenta,dato,FechaAct,elcontrib,
+    eldni,tipocta,lacuenta,lasucur,elbank,elidcontrib,elcuit,lacbu:string;
+    Com1:TADOCommand;
+  public
+    Objetos:TObjetos;
+    gh:boolean;{ Public declarations }
+  end;
+
+var
+  Cons_Contrib: TCons_Contrib;
+
+implementation
+
+uses Unidad ,modulo;
+
+{$R *.dfm}
+
+procedure TCons_Contrib.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(CONTRIBUYENTE);
+FreeAndNil(CONTRIBCTASBANCOS);
+FreeAndNil(DataSet);
+FreeAndNil(Self);
+end;
+
+procedure TCons_Contrib.FormCreate(Sender: TObject);
+begin
+CONTRIBUYENTE:=TADODataSet.Create(nil);
+DataSource1.DataSet:=CONTRIBUYENTE;
+CONTRIBCTASBANCOS:=TADODataSet.Create(Self);
+DataSet:=TADODataSet.Create(nil);
+end;
+
+procedure TCons_Contrib.FormActivate(Sender: TObject);
+begin
+if not (gh) then begin
+  grillactabancos.Cells[0,0]:='Orden';
+  grillactabancos.Cells[1,0]:='IdCuenta';                grillactabancos.Cells[2,0]:='IdContrib';
+  grillactabancos.Cells[3,0]:='Banco';                   grillactabancos.Cells[4,0]:='TipoCuenta';
+  grillactabancos.Cells[5,0]:='Nro.Sucursal';            grillactabancos.Cells[6,0]:='Nro.Cuenta';
+  grillactabancos.Cells[7,0]:='NroCBU';                  grillactabancos.Cells[8,0]:='Confirmado';
+  grillactabancos.Cells[9,0]:='Baja';                    grillactabancos.Cells[10,0]:='UsuModif';
+  grillactabancos.Cells[11,0]:='FechaModif';             grillactabancos.Cells[12,0]:='IdBanco';
+  grillactabancos.Cells[13,0]:='IdTipoCuenta';           grillactabancos.Cells[14,0]:='MDF';
+
+  grilladebitos.Cells[0,0]:='Orden';
+  grilladebitos.Cells[1,0]:='Id';                         grilladebitos.Cells[2,0]:='IdCuenta';
+  grilladebitos.Cells[3,0]:='Rubro';                      grilladebitos.Cells[4,0]:='SubRubro';
+  grilladebitos.Cells[5,0]:='CodigoObjeto';               grilladebitos.Cells[6,0]:='Identificador';
+  grilladebitos.Cells[7,0]:='Confirmado';                 grilladebitos.Cells[8,0]:='Baja';
+  grilladebitos.Cells[9,0]:='UsuModif';                   grilladebitos.Cells[10,0]:='FechaModif';
+  grilladebitos.Cells[11,0]:='idRubro';                   grilladebitos.Cells[12,0]:='IdSubRubro';
+  grilladebitos.Cells[13,0]:='MDF';
+
+  FechaAct:=LeftStr(Fec_System(),10);
+  VerArea(1);
+  gh:=true;
+  PC1.ActivePage:=PC1.Pages[0];
+  ODNI.SetFocus;
+end;
+end;
+
+function TCons_Contrib.VerificaGrilla(grilla:string):boolean;
+var j,a:integer;
+begin
+ Result:=true;
+ for j:=1 to grilladebitos.RowCount-1 do begin
+  if trim(grilladebitos.Cells[1,j])='' then begin
+    Result:=false;
+    break;
+  end;
+ end;
+end;
+
+procedure TCons_Contrib.VerArea(nro:byte);
+var Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=modulo2.Sistema.ConectUsu;
+ DataSet.Connection:=Cnx2;
+ if nro=1 then begin
+  DataSet.CommandText:='SELECT nivel FROM usumodulos WHERE (modulo = 151) AND (codusu = ' + modulo2.Usuario.UsuNro + ');';
+  DataSet.Open;
+  dato:=DataSet.Fields[0].AsString;
+  if dato = '1' then BEGIN
+    PopupMenu1.Items[0].Enabled:=true;           PopupMenu1.Items[2].Enabled:=true;
+    PopupMenu2.Items[0].Enabled:=true;           PopupMenu2.Items[1].Enabled:=true;
+    PopupMenu2.Items[3].Enabled:=true;           PopupMenu2.Items[4].Enabled:=true;
+  end
+  else begin
+    PopupMenu1.Items[0].Enabled:=false;          PopupMenu1.Items[2].Enabled:=false;
+    PopupMenu2.Items[0].Enabled:=false;          PopupMenu2.Items[1].Enabled:=false;
+    PopupMenu2.Items[3].Enabled:=false;          PopupMenu2.Items[4].Enabled:=false;
+  end;
+  DataSet.Close;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TCons_Contrib.grillactabancosClick(Sender: TObject);
+begin
+ if trim(grillactabancos.Cells[0,grillactabancos.Row]) <> '' then begin
+  laidcuenta:=trim(grillactabancos.Cells[1,grillactabancos.Row]);
+  elbank:=trim(grillactabancos.Cells[3,grillactabancos.Row]);
+  tipocta:=trim(grillactabancos.Cells[4,grillactabancos.Row]);
+  lasucur:=trim(grillactabancos.Cells[5,grillactabancos.Row]);
+  lacuenta:=trim(grillactabancos.Cells[6,grillactabancos.Row]);
+  lacbu:=trim(grillactabancos.Cells[7,grillactabancos.Row]);
+  edit3.Text:=lacbu;
+  edit1.Text:=lacuenta;
+  edit2.Text:=elbank;
+  if dato = '1' then begin
+   if trim(grillactabancos.Cells[9,grillactabancos.Row])='True' then begin   // baja
+    messagedlg('ATENCION esta Cuenta Bancaria se encuentra de BAJA, imposible su Confirmacion y/o Modificación..',mtInformation,[mbok],0);
+    PopupMenu1.Items[0].Enabled:=false;
+    PopupMenu1.Items[2].Enabled:=false;
+    JvgGroupBox2.Enabled:=false;
+   end
+   else begin
+    if trim(grillactabancos.Cells[8,grillactabancos.Row])='True' then PopupMenu1.Items[0].Enabled:=false
+      else   PopupMenu1.Items[0].Enabled:=true;
+    PopupMenu1.Items[2].Enabled:=true;
+    JvgGroupBox2.Enabled:=true;
+   end;
+  end;
+  Coloca1(3);
+ end;
+end;
+
+procedure TCons_Contrib.grillactabancosDrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+ With Sender as TStringGrid do begin
+   if trim(grillactabancos.Cells[9,Arow]) = 'True' then begin
+     Canvas.Brush.Color := clYellow;
+     Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+   end;
+ end;
+end;
+
+procedure TCons_Contrib.grilladebitosClick(Sender: TObject);
+begin
+ if trim(grilladebitos.Cells[0,grilladebitos.Row]) <> '' then begin
+  grilladebitos.Cells[13,grilladebitos.Row]:='X';
+  if dato = '1' then begin
+   if trim(grilladebitos.Cells[8,grilladebitos.Row])='True' then begin   // baja
+    messagedlg('ATENCION este Debito se encuentra de BAJA, imposible su Confirmacion y/o Modificación..',mtInformation,[mbok],0);
+    PopupMenu2.Items[3].Enabled:=false;
+    PopupMenu2.Items[4].Enabled:=false;
+   end
+   else begin
+    if trim(grilladebitos.Cells[7,grilladebitos.Row])='True' then begin    // confirmado
+     PopupMenu2.Items[0].Enabled:=false;
+     PopupMenu2.Items[1].Enabled:=false;
+    end
+    else begin
+     PopupMenu2.Items[0].Enabled:=true;
+     PopupMenu2.Items[1].Enabled:=true;
+    end;
+    PopupMenu2.Items[3].Enabled:=true;
+    PopupMenu2.Items[4].Enabled:=true;
+   end;
+  end;
+ end;
+end;
+
+procedure TCons_Contrib.grilladebitosDrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+ With Sender as TStringGrid do begin
+   if trim(grilladebitos.Cells[8,Arow]) = 'True' then begin
+     Canvas.Brush.Color := clYellow;
+     Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+   end;
+ end;
+end;
+
+procedure  TCons_Contrib.ImprimeBaja(nro:byte);
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2: TfrxDBDataset;
+    DtsObjetos, DtsGrilla2:TClientDataSet;
+    t,y:integer;
+begin
+ try
+  DtsObjetos:=TClientDataSet.Create(nil);
+  DtsObjetos.FieldDefs.Clear;
+  DtsObjetos.Active:=False;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Orden';
+    DataType:=ftInteger;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Impuesto';
+    DataType:=ftString;Size:=60;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Objeto';
+    DataType:=ftString;Size:=60;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Detalle';
+    DataType:=ftString;Size:=60;
+  end;
+  DtsObjetos.CreateDataSet;
+  DtsObjetos.Active:=True;
+  y:=1;
+  if nro=1 then begin   /// todos los debitos
+   for t:=1 to grilladebitos.RowCount-1 do begin
+    DtsObjetos.Append;
+    DtsObjetos.FieldValues['Orden']:=y;
+    DtsObjetos.FieldValues['Impuesto']:=grilladebitos.Cells[3,t];
+    DtsObjetos.FieldValues['Objeto']:=grilladebitos.Cells[4,t];
+    DtsObjetos.FieldValues['Detalle']:=grilladebitos.Cells[5,t] + ' / ' + grilladebitos.Cells[6,t];
+    DtsObjetos.Post;
+    y:=y+1;
+   end;
+  end;
+  if nro=2 then begin  /// un debito seleccionado
+   for t:=1 to grilladebitos.RowCount-1 do begin
+    if grilladebitos.Cells[13,t] = 'X' then begin
+     DtsObjetos.Append;
+     DtsObjetos.FieldValues['Orden']:=y;
+     DtsObjetos.FieldValues['Impuesto']:=grilladebitos.Cells[3,t];
+     DtsObjetos.FieldValues['Objeto']:=grilladebitos.Cells[4,t];
+     DtsObjetos.FieldValues['Detalle']:=grilladebitos.Cells[5,t] + ' / ' + grilladebitos.Cells[6,t];
+     DtsObjetos.Post;
+     y:=y+1;
+    end;
+   end;
+  end;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+
+//Imprimiendo
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsObjetos;
+  frxDB1.UserName:='frxDBDataset1';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Baja_Debitos.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\logoformosa.jpg');
+  ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(elcontrib);  //elcuit
+  ReporteRst.Variables['NroDni'] := QuotedStr(eldni);
+  ReporteRst.Variables['NomTitular'] := QuotedStr(elcuit);
+  ReporteRst.Variables['NroPlan'] := QuotedStr(lacuenta);
+  ReporteRst.Variables['NomRespo'] := QuotedStr(tipocta);
+  ReporteRst.Variables['DomTitular'] := QuotedStr(elbank);
+  ReporteRst.Variables['CuimTitular'] := QuotedStr(lacbu);
+  ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(FechaAct,'DDMMAAAA'));
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(frxDB1);
+ FreeAndNil(ReporteRst);
+ FreeAndNil(DtsObjetos);
+end;
+
+procedure  TCons_Contrib.ImprimeConfirmacion();
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2: TfrxDBDataset;
+    DtsObjetos, DtsGrilla2:TClientDataSet;
+    t,y:integer;
+begin
+ try
+  DtsObjetos:=TClientDataSet.Create(nil);
+  DtsObjetos.FieldDefs.Clear;
+  DtsObjetos.Active:=False;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Orden';
+    DataType:=ftInteger;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Impuesto';
+    DataType:=ftString;Size:=60;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Objeto';
+    DataType:=ftString;Size:=60;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Detalle';
+    DataType:=ftString;Size:=60;
+  end;
+  DtsObjetos.CreateDataSet;
+  DtsObjetos.Active:=True;
+  y:=1;
+  for t:=1 to grilladebitos.RowCount-1 do begin
+   DtsObjetos.Append;
+   dtsObjetos.FieldValues['Orden']:=y;
+   DtsObjetos.FieldValues['Impuesto']:=grilladebitos.Cells[3,t];
+   DtsObjetos.FieldValues['Objeto']:=grilladebitos.Cells[4,t];
+   DtsObjetos.FieldValues['Detalle']:=grilladebitos.Cells[5,t] + ' / ' + grilladebitos.Cells[6,t];
+   DtsObjetos.Post;
+   y:=y+1;
+  end;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+
+ //Imprimiendo
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsObjetos;
+  frxDB1.UserName:='frxDBDataset1';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Conf_Debitos.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\logoformosa.jpg');
+  ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(elcontrib);
+  ReporteRst.Variables['NroDni'] := QuotedStr(eldni);
+  ReporteRst.Variables['NroPlan'] := QuotedStr(lacuenta);
+  ReporteRst.Variables['NroRespo'] := QuotedStr(tipocta);
+  ReporteRst.Variables['DomTitular'] := QuotedStr(elbank);
+  ReporteRst.Variables['CuimTitular'] := QuotedStr(lasucur);
+  ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(FechaAct,'DDMMAAAA'));
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(frxDB1);
+ FreeAndNil(ReporteRst);
+ FreeAndNil(DtsObjetos);
+end;
+
+procedure TCons_Contrib.Coloca1(nro:byte);
+var t:integer;
+    txt:string;
+    Cnx2:TADOConnection;
+begin
+Cnx2:=TADOConnection.Create(nil);
+Cnx2.LoginPrompt:=false;
+Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+ if nro=1 then begin
+  if trim(ONOMB.Text) = '' then txt:='NULL'
+    else txt:=chr(39) + trim(ONOMB.Text) + chr(39);
+  if trim(ODNI.Text) = '' then txt:=txt + ' , NULL'
+    else txt:=txt + ' , ' +  trim(ODNI.Text);
+  if trim(OCUIT.Text) = '' then txt:=txt + ' , NULL'
+    else txt:=txt + ' , ' + chr(39) + trim(OCUIT.Text) + chr(39);
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=Cnx2;
+  DataSource1.DataSet:=CONTRIBUYENTE;
+  CONTRIBUYENTE.CommandText:='EXEC SPP_Contribuyentes ' + txt;
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+   messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+   odni.SetFocus;
+  end
+  else begin
+   JvDBGrid2.Columns[0].Width:=60;             JvDBGrid2.Columns[1].Width:=250;
+   JvDBGrid2.Columns[2].Width:=70;             JvDBGrid2.Columns[3].Width:=80;
+   JvDBGrid2.Columns[4].Width:=60;             JvDBGrid2.Columns[5].Width:=70;
+   JvDBGrid2.Columns[6].Width:=120;            JvDBGrid2.Columns[7].Width:=80;
+   JvDBGrid2.Columns[8].Width:=80;             JvDBGrid2.Columns[9].Width:=50;
+   JvDBGrid2.Columns[10].Width:=80;            JvDBGrid2.Columns[11].Width:=90;
+  end;
+  CONTRIBUYENTE.Connection:=nil;
+ end;
+ if nro= 2 then  begin
+  CONTRIBCTASBANCOS.Close;
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+  CONTRIBCTASBANCOS.Connection:=Cnx2;
+  CONTRIBCTASBANCOS.CommandText:='SPP_ContribuyentesCuentasBanco ' + CONTRIBUYENTE.Fields[0].AsString + ' , 2';
+  CONTRIBCTASBANCOS.Open;
+  if not CONTRIBCTASBANCOS.IsEmpty then BEGIN
+   for t:=1 to CONTRIBCTASBANCOS.RecordCount do begin
+    grillactabancos.RowCount:=t+1;
+    CONTRIBCTASBANCOS.RecNo:=t;
+    grillactabancos.Cells[0,t]:=StrFill(IntToStr(t),2,'0','');
+    grillactabancos.Cells[1,t]:=CONTRIBCTASBANCOS.Fields[0].AsString;
+    grillactabancos.Cells[2,t]:=CONTRIBCTASBANCOS.Fields[1].AsString;
+    grillactabancos.Cells[3,t]:=CONTRIBCTASBANCOS.Fields[2].AsString;
+    grillactabancos.Cells[4,t]:=CONTRIBCTASBANCOS.Fields[3].AsString;
+    grillactabancos.Cells[5,t]:=CONTRIBCTASBANCOS.Fields[4].AsString;
+    grillactabancos.Cells[6,t]:=CONTRIBCTASBANCOS.Fields[5].AsString;
+    grillactabancos.Cells[7,t]:=CONTRIBCTASBANCOS.Fields[13].AsString;
+    grillactabancos.Cells[8,t]:=CONTRIBCTASBANCOS.Fields[7].AsString;
+    grillactabancos.Cells[9,t]:=CONTRIBCTASBANCOS.Fields[8].AsString;
+    grillactabancos.Cells[10,t]:=CONTRIBCTASBANCOS.Fields[9].AsString;
+    grillactabancos.Cells[11,t]:=CONTRIBCTASBANCOS.Fields[10].AsString;
+    grillactabancos.Cells[12,t]:=CONTRIBCTASBANCOS.Fields[11].AsString;
+    grillactabancos.Cells[13,t]:=CONTRIBCTASBANCOS.Fields[12].AsString;
+   end;
+  END
+  else  begin
+   messagedlg('Este Contribuyente No Posee ninguna Cuenta Bancaria y Debitos asociados' + chr(13)
+   + 'Por favor, realice otra busqueda...',mtWarning,[mbok,mbCancel],0);
+   odni.SetFocus;
+  end;
+  CONTRIBCTASBANCOS.Connection:=nil;
+ end;
+ if nro=3 then  begin
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+  DataSet.Connection:=Cnx2;
+  DataSet.CommandText:='SPP_ContribuyentesDebitos ' + laidcuenta + ' , 2';
+  DataSet.Open;
+  for t:=1 to DataSet.RecordCount do begin
+   grilladebitos.RowCount:=t+1;
+   DataSet.RecNo:=t;
+   grilladebitos.Cells[0,t]:=StrFill(IntToStr(t),2,'0','');
+   grilladebitos.Cells[1,t]:=DataSet.Fields[0].AsString;
+   grilladebitos.Cells[2,t]:=DataSet.Fields[1].AsString;
+   grilladebitos.Cells[3,t]:=DataSet.Fields[2].AsString;
+   grilladebitos.Cells[4,t]:=DataSet.Fields[3].AsString;
+   grilladebitos.Cells[5,t]:=DataSet.Fields[4].AsString;
+   grilladebitos.Cells[6,t]:=DataSet.Fields[5].AsString;
+   grilladebitos.Cells[7,t]:=DataSet.Fields[6].AsString;
+   grilladebitos.Cells[8,t]:=DataSet.Fields[7].AsString;
+   grilladebitos.Cells[9,t]:=DataSet.Fields[8].AsString;
+   grilladebitos.Cells[10,t]:=DataSet.Fields[9].AsString;
+   grilladebitos.Cells[11,t]:=DataSet.Fields[10].AsString;
+   grilladebitos.Cells[12,t]:=DataSet.Fields[11].AsString;
+  end;
+  DataSet.Close;
+  DataSet.Connection:=nil;
+ end;
+Cnx2.Close;
+FreeAndNil(Cnx2);
+end;
+
+procedure TCons_Contrib.ConfirmarCuentaBancaria1Click(Sender: TObject);
+var t,p,gf:integer;
+    bt:boolean;
+    txt1:widestring;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Realmente CONFIRMAR esta Cuenta Bancaria' + chr(13)
+             + 'Con los Debitos Anexados a este?...',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  try
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+   Com1:=TADOCommand.Create(nil);
+   Com1.Connection:=Cnx2;
+   Com1.CommandText:='SPConf_ContribuyentesCuentasBanco ' + grillactabancos.Cells[1,grillactabancos.Row]
+   + ' , ' + grillactabancos.Cells[2,grillactabancos.Row]
+   + ' , ' + modulo2.Usuario.UsuNro
+   + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+   + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+   Com1.Execute;
+   messagedlg('Cuenta Bancaria y Debitos CONFIRMADA correctamente!',mtWarning,[mbok],0);
+   borra.Click;
+   //Coloca1(2);
+  except
+   EnviarLog(self.Caption,Com1.CommandText);
+   messagedlg('ERROR al Confirmar esta Cuenta Bancaria',mterror,[mbok],0);
+  end;
+  FreeAndNil(Com1);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+ end;
+end;
+
+procedure TCons_Contrib.ConfirmarDebitoSeleccionado1Click(Sender: TObject);
+var t,p,gf:integer;
+    bt:boolean;
+    txt1:widestring;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Realmente CONFIRMAR este Debito Seleccionado',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  try
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+   Com1:=TADOCommand.Create(nil);
+   Com1.Connection:=Cnx2;
+   Com1.CommandText:='SPConf_ContribuyentesDebitos ' + grilladebitos.Cells[1,grilladebitos.Row]
+   + ' , ' + grilladebitos.Cells[2,grilladebitos.Row]
+   + ' , ' + modulo2.Usuario.UsuNro
+   + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+   + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+   Com1.Execute;
+   messagedlg('Debito CONFIRMADO correctamente!',mtWarning,[mbok],0);
+  except
+   EnviarLog(self.Caption,Com1.CommandText);
+   messagedlg('ERROR al Confirmar este Debito',mterror,[mbok],0);
+  end;
+  FreeAndNil(Com1);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+ end;
+end;
+
+procedure TCons_Contrib.ConfirmarTODOSlosDebitos1Click(Sender: TObject);
+var t,p,gf:integer;
+    bt:boolean;
+    txt1:widestring;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Realmente CONFIRMAR todos Los Debitos de la Grilla?',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  try
+   for gf:=1 to grilladebitos.RowCount-1 do begin
+    if grilladebitos.Cells[1,gf] <> '?' then begin
+     Com1.CommandText:='SPConf_ContribuyentesDebitos ' + grilladebitos.Cells[1,gf]
+     + ' , ' +  grilladebitos.Cells[2,gf]
+     + ' , ' + modulo2.Usuario.UsuNro
+     + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+     + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+     Com1.Execute;
+    end;
+   end;
+    messagedlg('Debitos Confirmados correctamente!',mtWarning,[mbok],0);
+  except
+    EnviarLog(self.Caption,Com1.CommandText);
+    messagedlg('ERROR al Confirmar los Debitos de esta Grilla',mterror,[mbok],0);
+  end;
+  FreeAndNil(Com1);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+ end;
+end;
+
+procedure TCons_Contrib.DarBAJADebitoSeleccionado1Click(Sender: TObject);
+var t,p,gf:integer;
+    Cnx2:TADOConnection;
+begin
+ if trim(grilladebitos.Cells[0,1]) <> '' then begin
+  gf:=1;
+  t:=0;
+  if grilladebitos.Cells[1,grilladebitos.Row] = '?' then t:=1
+  else gf:=messagedlg('Desea Realmente dar de BAJA este Debito Seleccionado?',mtWarning,[mbok,mbCancel],0);
+  if gf = 1 then begin
+   if t=0 then begin
+    try
+     Cnx2:=TADOConnection.Create(nil);
+     Cnx2.LoginPrompt:=false;
+     Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+     Com1:=TADOCommand.Create(nil);
+     Com1.Connection:=Cnx2;
+     Com1.CommandText:='SPB_ContribuyentesDebitos ' + grilladebitos.Cells[1,grilladebitos.Row]
+     + ' , ' +  grilladebitos.Cells[2,grilladebitos.Row]
+     + ' , ' + modulo2.Usuario.UsuNro
+     + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+     + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+     Com1.Execute;
+     messagedlg('Debito dado de BAJA correctamente!',mtWarning,[mbok],0);
+     Coloca1(3);
+     ImprimeBaja(2);
+    except
+     EnviarLog(self.Caption,Com1.CommandText);
+     messagedlg('ERROR al dar de baja los datos',mterror,[mbok],0);
+    end;
+    FreeAndNil(Com1);
+    Cnx2.Close;
+    FreeAndNil(Cnx2);
+   end;
+  end;
+ end;
+end;
+
+procedure TCons_Contrib.DarBAJATODOSlosDebitos1Click(Sender: TObject);
+var t,p,gf:integer;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Realmente dar de BAJA Todos Los Debitos de la Grilla?',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  try
+   for gf:=1 to grilladebitos.RowCount-1 do begin
+    if grilladebitos.Cells[1,gf] <> '?' then begin
+     Com1.CommandText:='SPB_ContribuyentesDebitos ' + grilladebitos.Cells[1,gf]
+     + ' , ' +  grilladebitos.Cells[2,gf]
+     + ' , ' + modulo2.Usuario.UsuNro
+     + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+     + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+     Com1.Execute;
+    end;
+   end;
+    messagedlg('Debitos dados de BAJA correctamente!',mtWarning,[mbok],0);
+    Coloca1(3);
+    ImprimeBaja(1);
+  except
+    EnviarLog(self.Caption,Com1.CommandText);
+    messagedlg('ERROR al dar de baja los Debitos de esta Grilla',mterror,[mbok],0);
+  end;
+ FreeAndNil(Com1);
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+ end;
+end;
+
+procedure TCons_Contrib.DardeBAJACuentaBancaria1Click(Sender: TObject);
+var t,p,gf,a:integer;
+    bt:boolean;
+    Cnx2:TADOConnection;
+begin
+if VerificaGrilla('grilladebitos') = false then begin
+   messagedlg('ERROR Imposible dar de BAJA esta Cuenta por poseer Debitos Anexados...'+ chr(13)
+   +'Por favor realice las Bajas de los Debitos primeramente, para luego poder dar de Baja esta Cuenta Bancaria',mterror,[mbok],0);
+end
+else begin
+ if trim(grillactabancos.Cells[0,1]) <> '' then begin
+  gf:=1;
+  t:=0;
+  if grillactabancos.Cells[1,grillactabancos.Row] = '?' then t:=1
+  else gf:=messagedlg('Desea Realmente dar de BAJA esta Cuenta Bancaria Seleccionada'  + chr(13)
+                     + 'Con todos los Debtios Anexados a esta Cuenta?...',mtWarning,[mbok,mbCancel],0);
+  if gf = 1 then begin
+   if t=0 then begin
+    try
+     Cnx2:=TADOConnection.Create(nil);
+     Cnx2.LoginPrompt:=false;
+     Cnx2.ConnectionString:=modulo2.Sistema.ConectSeg;
+     Com1:=TADOCommand.Create(nil);
+     Com1.Connection:=Cnx2;
+     Com1.CommandText:='SPB_ContribuyentesCuentasBanco ' + grillactabancos.Cells[1,grillactabancos.Row]
+     + ' , ' + elidcontrib
+     + ' , ' + modulo2.Usuario.UsuNro
+     + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+     + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+     Com1.Execute;
+     for a:=1 to grilladebitos.RowCount-1 do begin
+      if grilladebitos.Cells[1,a] <> '?' then begin
+       Com1.CommandText:='SPB_ContribuyentesDebitos ' + grilladebitos.Cells[1,a]
+       + ' , ' +  grilladebitos.Cells[2,a]
+       + ' , ' + modulo2.Usuario.UsuNro
+       + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+       + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+       Com1.Execute;
+      end;
+     end;
+     messagedlg('Cuenta Bancaria dada de BAJA correctamente!',mtWarning,[mbok],0);
+     ImprimeBaja(1);
+     borra.Click;
+    except
+     EnviarLog(self.Caption,Com1.CommandText);
+     messagedlg('ERROR al dar de baja los datos',mterror,[mbok],0);
+    end;
+    FreeAndNil(Com1);
+    Cnx2.Close;
+    FreeAndNil(Cnx2);
+   end;
+  end;
+ end;
+end;
+end;
+
+procedure TCons_Contrib.JvDBGrid2CellClick(Column: TColumn);
+begin
+if not CONTRIBUYENTE.IsEmpty then begin
+  elidcontrib:=CONTRIBUYENTE.Fields[0].AsString;
+  elcontrib:=CONTRIBUYENTE.Fields[1].AsString;
+  elcuit:=trim(CONTRIBUYENTE.Fields[4].AsString);
+  eldni:=strcut_midle(trim(CONTRIBUYENTE.Fields[4].AsString),3,10);
+  Coloca1(2);
+end;
+end;
+
+procedure TCons_Contrib.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TCons_Contrib.BORRAClick(Sender: TObject);
+var p,u:integer;
+begin
+  for p:=0 to grillactabancos.ColCount-1 do
+    for u:=1 to grillactabancos.RowCount-1 do grillactabancos.Cells[p,u]:='';
+  grillactabancos.RowCount:=2;
+
+  for p:=0 to grilladebitos.ColCount-1 do
+    for u:=1 to grilladebitos.RowCount-1 do grilladebitos.Cells[p,u]:='';
+  grilladebitos.RowCount:=2;
+
+  CONTRIBUYENTE.Close;
+  CONTRIBCTASBANCOS.Close;
+  dataset.Close;
+  edit3.Clear;
+  edit1.Clear;
+  edit2.Clear;
+  ocuit.Clear;
+  onomb.Clear;
+  odni.Clear;
+  odni.SetFocus;
+end;
+
+procedure TCons_Contrib.ODNIKeyPress(Sender: TObject; var Key: Char);
+begin
+if key =#13 then begin
+  Key := #0;
+  ONOMB.SetFocus;
+end
+else begin
+  if ( StrScan('0123456789',Key) <> nil ) or ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+end;
+end;
+
+procedure TCons_Contrib.ONOMBKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  buscar.SetFocus;
+  //OCUIT.SetFocus;
+end
+else begin
+  if ( StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ-/ °',Key) <> nil ) or  ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+end;
+end;
+
+procedure TCons_Contrib.OCUITKeyPress(Sender: TObject; var Key: Char);
+begin
+if key =#13 then begin
+  Key := #0;
+  BUSCAR.SetFocus;
+end
+else begin
+  if ( StrScan('0123456789',Key) <> nil ) or  ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+end;
+end;
+
+procedure TCons_Contrib.BuscarClick(Sender: TObject);
+begin
+Coloca1(1);
+end;
+
+end.

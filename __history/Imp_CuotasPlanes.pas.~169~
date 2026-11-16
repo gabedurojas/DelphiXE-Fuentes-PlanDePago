@@ -1,0 +1,1970 @@
+unit Imp_CuotasPlanes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, Grids, DBGrids, StdCtrls, Mask, ComCtrls, ExtCtrls,
+  Buttons,   DBCtrls, StrUtils, JvExButtons,
+  JvBitBtn, JvgGroupBox, Vcl.ToolWin, JvExComCtrls, JvToolBar, JvComponentBase,
+  JvEmbeddedForms, Vcl.Menus, RzTreeVw, Objetos, Vcl.ImgList, frxClass, frxDBSet,
+  DBClient, MidasLib, frxBarcode;
+
+type
+  TImpresionPlanes = class(TForm)
+    Barra1: TStatusBar;
+    DataSource1: TDataSource;
+    DataSource2: TDataSource;
+    PageControl2: TPageControl;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    Imprime: TBitBtn;
+    NUMPLAN: TMaskEdit;
+    Label18: TLabel;
+    IMPUESTO: TComboBox;
+    Label23: TLabel;
+    CUOTA: TComboBox;
+    Label24: TLabel;
+    VALCUOTA1: TEdit;
+    Label25: TLabel;
+    VEC1: TMaskEdit;
+    Label19: TLabel;
+    VALCUOTA2: TEdit;
+    VEC2: TMaskEdit;
+    Label20: TLabel;
+    Label21: TLabel;
+    Image1: TImage;
+    RESUMEN: TBitBtn;
+    Panel5: TPanel;
+    Label27: TLabel;
+    CONTRIB: TLabel;
+    Label28: TLabel;
+    DNI: TLabel;
+    Label29: TLabel;
+    CUIM: TLabel;
+    FormularioEmb: TJvEmbeddedFormLink;
+    JvToolBar1: TJvToolBar;
+    ToolButton1: TToolButton;
+    SALE: TJvBitBtn;
+    Label12: TLabel;
+    JvgGroupBox1: TJvgGroupBox;
+    LB1: TLabel;
+    Label52: TLabel;
+    Label53: TLabel;
+    Label54: TLabel;
+    L1: TLabel;
+    codobjeto: TEdit;
+    nrodeplan: TEdit;
+    JvBitBtn1: TJvBitBtn;
+    titular: TEdit;
+    fecplan: TMaskEdit;
+    C1: TCheckBox;
+    FEC: TMaskEdit;
+    JvgGroupBox8: TJvgGroupBox;
+    DBGrid2: TDBGrid;
+    TabSheet7: TTabSheet;
+    JvgGroupBox3: TJvgGroupBox;
+    JvgGroupBox2: TJvgGroupBox;
+    DBGrid3: TDBGrid;
+    PopupMenu1: TPopupMenu;
+    ImprimirEstadodeCuenta1: TMenuItem;
+    ImprimirLiquidacindeCtaSeleccionada1: TMenuItem;
+    Arbol: TRzTreeView;
+    ImageList1: TImageList;
+    Liquidacin1: TMenuItem;
+    ImprimirCuotaconfechade2doVencimiento1: TMenuItem;
+    ImageList2: TImageList;
+    frxReport1: TfrxReport;
+    Reimpresin1: TMenuItem;
+    ReimpresindePlanillaDDJJ1: TMenuItem;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    GroupBox2: TGroupBox;
+    Label3: TLabel;
+    Shape2: TShape;
+    GrupoAdmin: TGroupBox;
+    CheckBox1: TCheckBox;
+    Reimpresin2: TMenuItem;
+    CambiaCuota: TJvgGroupBox;
+    ReasignarCuotasPagadas1: TMenuItem;
+    Label4: TLabel;
+    elplan: TEdit;
+    Label5: TLabel;
+    elrecibo: TEdit;
+    Label6: TLabel;
+    LASCUOTAS: TComboBox;
+    JvBitBtn2: TJvBitBtn;
+    Shape1: TShape;
+    Label7: TLabel;
+    block: TGroupBox;
+    eldatoblock: TEdit;
+    IMPCTAESP: TJvBitBtn;
+    Label8: TLabel;
+    PANEL: TPanel;
+    ACEPTA: TJvBitBtn;
+    CANCELA: TJvBitBtn;
+    Bevel1: TBevel;
+    grilla5: TStringGrid;
+    Label9: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Coloca1(nro:byte);
+    procedure DBGrid2CellClick(Column: TColumn);
+    procedure VEC2KeyPress(Sender: TObject; var Key: Char);
+    Function los_periodos():widestring;
+    procedure DBGrid4DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGrid3DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure C1Click(Sender: TObject);
+    procedure FECExit(Sender: TObject);
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure nrodeplanKeyPress(Sender: TObject; var Key: Char);
+    procedure codobjetoKeyPress(Sender: TObject; var Key: Char);
+    procedure titularKeyPress(Sender: TObject; var Key: Char);
+    procedure fecplanKeyPress(Sender: TObject; var Key: Char);
+    procedure fecplanExit(Sender: TObject);
+    procedure JvBitBtn2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ImprimirLiquidacindeCtaSeleccionada1Click(Sender: TObject);
+    procedure ImprimirEstadodeCuenta1Click(Sender: TObject);
+    Function  GuardaRecibo():boolean;
+    procedure ImprimeRecibo();
+    procedure ImprimeResumen();
+    procedure ImprimirCuotaconfechade2doVencimiento1Click(Sender: TObject);
+    procedure DBGrid3CellClick(Column: TColumn);
+    procedure ReimpresindePlanillaDDJJ1Click(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
+    procedure VerArea(nro:byte);
+    procedure ReasignarCuotasPagadas1Click(Sender: TObject);
+    procedure ColocaCombo(nro:byte);
+    procedure LASCUOTASExit(Sender: TObject);
+    procedure LASCUOTASKeyPress(Sender: TObject; var Key: Char);
+    procedure IMPCTAESPClick(Sender: TObject);
+    procedure CANCELAClick(Sender: TObject);
+    Function  GuardaReciboCtaMultiple():boolean;
+    procedure ACEPTAClick(Sender: TObject);
+    procedure ImprimeReciboMultipleCtas();
+  private
+    FechaAct,Fec2doVenc,EstadoAct,ElNumPlan,dato,elnroplan,laobserv,detcuotas,dato1,intereDtopagototal,primercta:string;
+    gh,titrespo:boolean;
+    CantCuotas:integer;
+    tot1,tot2, deudatot,impanticipo,impprimercta:real;
+    cont:widestring;
+    PLANES, ESTCUENTA, ESTCUENTASININT,DataSet2,DataSetRec,OBSERV,DataSet11:TADODataSet;
+    DtsGrilla2:TClientDataSet;{ Private declarations }
+  public
+    Recibo:TRecibo;
+    Objetos:TObjetos;{ Public declarations }
+  end;
+
+var
+  ImpresionPlanes: TImpresionPlanes;
+
+implementation
+
+uses modulo, Unidad, Sel_Fecha;
+
+{$R *.dfm}
+procedure TImpresionPlanes.FormCreate(Sender: TObject);
+var
+  Btn: TButton;
+  R: TRect;
+begin
+  gh:=false;
+  DataSet11:=TADODataSet.Create(nil);
+  DataSet2:=TADODataSet.Create(nil);
+  DataSetRec:=TADODataSet.Create(nil);
+  PLANES:=TADODataSet.Create(nil);
+  ESTCUENTA:=TADODataSet.Create(nil);
+  ESTCUENTASININT:=TADODataSet.Create(nil);
+  OBSERV:=TADODataSet.Create(nil);
+  Recibo:=TRecibo.Create;
+  Objetos:=TObjetos.Create;
+end;
+
+procedure TImpresionPlanes.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FreeAndNil(PLANES);
+  FreeAndNil(ESTCUENTA);
+  FreeAndNil(ESTCUENTASININT);
+  FreeAndNil(OBSERV);
+  FreeAndNil(Recibo);
+  FreeAndNil(DataSet11);
+  FreeAndNil(DataSet2);
+  FreeAndnil(DataSetRec);
+  FreeAndNil(Self);
+end;
+
+procedure TImpresionPlanes.VerArea(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+ if nro=1 then begin
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_PlanPagoUsuariosAdmin  (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato:=DataSet2.Fields[0].AsString
+   else dato:='0';
+  DataSet2.Connection:=nil;
+ end;
+ Cnx2.Close;
+ block.Visible:=false;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TImpresionPlanes.FormActivate(Sender: TObject);
+begin
+ if not(gh) then begin
+   gh:=true;
+   titrespo:=false;
+   PANEL.Visible:=FALSE;
+   IMPCTAESP.Visible :=FALSE;
+   PageControl2.ActivePage:=PageControl2.Pages[0];
+   FechaAct:=LeftStr(Fec_System(),10);
+   if Modulo2.ObtenerNivelAcceso('152') <> 1 then C1.Enabled:=false
+   else C1.Enabled:=true;
+   nrodeplan.SetFocus;
+   CambiaCuota.Visible:=false;
+   VerArea(1);
+   if dato <> '0' then begin
+    GrupoAdmin.Visible :=true;
+    PopupMenu1.Items[6].Enabled:=true;
+    PopupMenu1.Items[7].Enabled:=true;
+   end
+   else begin
+    GrupoAdmin.Visible:=false;
+    PopupMenu1.Items[6].Enabled:=false;
+    PopupMenu1.Items[7].Enabled:=false;
+   end;
+   Coloca1(6);
+ end;
+end;
+
+procedure TImpresionPlanes.ColocaCombo(nro:byte);
+begin
+if nro=1 then Modulo2.CargaCombo(LASCUOTAS,'SELECT NroCuota FROM PlanPagoCuota WHERE (NROPLAN = ' + elnroplan + ') ORDER BY 1',Modulo2.Sistema.ConectDb, false);
+//if nro=2 then Modulo2.CargaCombo(BARRIO,'SELECT Detalle, Id FROM Barrios ORDER BY Detalle',Modulo2.Sistema.ConectSeg, false);
+//if nro=3 then Modulo2.CargaCombo(CALLE,'SELECT Descrip,calle FROM CALLES WHERE (Dpto_Polit=1) AND (LOCALIDAD=1) ORDER BY DESCRIP',Modulo2.Sistema.ConectUsu, false);
+//if nro=4 then Modulo2.CargaCombo(CUOTAS,'select NroCuota,Id from Fn_PlanPagoCuotas(' + chr(39) + RubrosInc + chr(39) + ')',Modulo2.Sistema.ConectDb, false);
+//if nro=5 then Modulo2.CargaCombo(CARACTER,'SELECT Detalle ,Id FROM TipoContribuyente',Modulo2.Sistema.ConectDb, false);
+end;
+
+procedure TImpresionPlanes.Coloca1(nro:byte);
+var param,dmi,tmp:string;
+    Comando:widestring;
+    DataSet1, DataSet2:TADODataSet;
+    Nivel1, Nivel2, Nivel3, Nivel4, Nivel5, Nivel6:TTreeNode;
+    t,y,b:integer;
+    Cnx2:TADOConnection;
+begin
+Cnx2:=TADOConnection.Create(nil);
+if nro = 1 then begin
+ try
+  PLANES.Close;
+  if trim(nrodeplan.Text) <> '' then comando:=trim(nrodeplan.Text)
+   else comando:='null';
+  if trim(titular.Text) <> '' then comando:= comando +  ' , ' + chr(39) + trim(titular.Text) + chr(39)
+   else comando:=comando + ' , null';
+  if trim(fecplan.Text) <> '/  /' then comando:=comando + ' , ' + chr(39) + trim(fecplan.Text) + chr(39)
+    else comando:=comando + ' , null';
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+  Cnx2.LoginPrompt:=false;
+  DataSource2.DataSet:=PLANES;
+  PLANES.Connection:=Cnx2;
+  PLANES.CommandText:='SELECT NroPlan,Contribuyente,TipoContribuyente,CantCuotas,ImporteCuota,IdTipoContribuyente,'
+  + 'Estado,ParaImpresion,IdTipoEstado,NroCuim,FechaCarga,PrimerVto,UltimoVto,Capital,InteresDevengado,'
+  + ' TotalAdeudado,InteresCondonado,InteresFinanciado,TotalFinanciado, Mail FROM dbo.Fn_PlanPago (' + comando + ') ';
+  PLANES.Open;
+  if not PLANES.IsEmpty then begin
+   Barra1.Panels[1].Text:='Cant. Registros: ' + IntToStr(PLANES.RecordCount);
+  end
+  else begin
+   messagedlg('Atencion no existen resultados de la busqueda, por favor ingrese otro valor',mtWarning,[mbok],0);
+   nrodeplan.SetFocus;
+  end;
+  PLANES.Connection:=nil;
+ except
+  on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+    EnviarLog(Self.Caption, comando);
+  end;
+ end;
+end;
+if nro = 2 then begin
+  Arbol.Items.Clear;
+  Arbol.Items.Add(nil,'DATOS DEL PLAN');
+  Arbol.Items[0].ImageIndex:=3;
+  Arbol.Items[0].SelectedIndex:=3;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'N° Plan: ' + PLANES.FieldByName('NroPlan').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Tipo Contribuyente: ' + PLANES.FieldByName('TipoContribuyente').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Contribuyente: ' + PLANES.FieldByName('Contribuyente').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Fecha Plan: ' + PLANES.FieldByName('FechaCarga').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Cant. Cuotas: ' + PLANES.FieldByName('CantCuotas').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Imp. Cuota: ' + PLANES.FieldByName('ImporteCuota').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'1er. Vto.: ' + PLANES.FieldByName('PrimerVto').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Ult. Vto.: ' + PLANES.FieldByName('UltimoVto').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.Add(Arbol.Items[0],'Contribuyentes');
+  Nivel1.ImageIndex:=1;Nivel1.SelectedIndex:=1;
+  try
+    Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+    Cnx2.LoginPrompt:=false;
+    DataSet2:=TADODataSet.Create(nil);
+    DataSet2.Connection:=Cnx2;
+    DataSet1:=TADODataSet.Create(nil);
+    DataSet1.Connection:=Cnx2;
+    DataSet1.CommandText:='SELECT Id,Cuim,Contribuyente,TipoContribuyente,Provincia,Barrio,Calle,Altura,Piso,'
+    + 'Depto,Manzana,Casa,Torre,Sector,Parcela,LoteRural,Telefono,Domicilio,Dni,'
+    + 'TipoDoc FROM dbo.Fn_PlanPagoContribuyente(' + PLANES.FieldByName('NroPlan').AsString + ',null)';
+    DataSet1.Open;
+    for t:=1 to DataSet1.RecordCount do begin
+     DataSet1.RecNo:=t;
+     dmi:=DataSet1.FieldByName('Barrio').AsString + ' - ';
+     if DataSet1.FieldByName('Calle').AsString <> '' then dmi:=dmi + DataSet1.FieldByName('Calle').AsString + '  ';
+     if DataSet1.FieldByName('Altura').AsString <> '' then dmi:=dmi + DataSet1.FieldByName('Altura').AsString + ' - ';
+     for y:=8 to 15 do begin
+      if trim(DataSet1.Fields[y].AsString) <> '' then dmi:=dmi + DataSet1.Fields[y].FieldName + ' ' + trim(DataSet1.Fields[y].AsString) + ' - ';
+     end;
+     if DataSet1.FieldByName('TipoContribuyente').AsString = 'TITULAR' then begin
+           titrespo:=false;
+      Recibo.NombreTit:=DataSet1.FieldByName('Contribuyente').AsString;
+      Recibo.CuimTit:=DataSet1.FieldByName('Cuim').AsString;
+      Recibo.DomicilioTit:=dmi;
+     end
+     else begin
+          titrespo:=true;
+      Recibo.NombreRespo:=DataSet1.FieldByName('Contribuyente').AsString;
+      Recibo.CuimRespo:=DataSet1.FieldByName('Cuim').AsString;
+      Recibo.DomicilioRespo:=dmi;
+     end;
+     Nivel2:=Arbol.Items.AddChild(Nivel1,DataSet1.FieldByName('TipoContribuyente').AsString + ' -> ' + DataSet1.FieldByName('Contribuyente').AsString);
+     Nivel2.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'N° Cuim: ' + DataSet1.FieldByName('Cuim').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'TipoDoc: ' + DataSet1.FieldByName('TipoDoc').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'N° Dni: ' + DataSet1.FieldByName('Dni').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Provincia: ' + DataSet1.FieldByName('Provincia').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Barrio: ' + DataSet1.FieldByName('Barrio').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Calle: ' + DataSet1.FieldByName('Calle').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Altura: ' + DataSet1.FieldByName('Altura').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Piso: ' + DataSet1.FieldByName('Piso').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Depto: ' + DataSet1.FieldByName('Depto').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Manzana: ' + DataSet1.FieldByName('Manzana').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Casa: ' + DataSet1.FieldByName('Casa').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Torre: ' + DataSet1.FieldByName('Torre').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Sector: ' + DataSet1.FieldByName('Sector').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Parcela: ' + DataSet1.FieldByName('Parcela').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'LoteRural: ' + DataSet1.FieldByName('LoteRural').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Domicilio: ' + DataSet1.FieldByName('Domicilio').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'N° Telefono: ' + DataSet1.FieldByName('Telefono').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+    end;
+    Nivel1:=Arbol.Items.Add(Arbol.Items[0],'Estados');
+    Nivel1.ImageIndex:=9;
+    Nivel1.SelectedIndex:=9;
+    DataSet1.Close;
+    DataSet1.CommandText:='SELECT Id,IdTipoEstado,Detalle,Fecha,Activo,NroUsuario,Observaciones '
+      + ' FROM dbo.Fn_PlanPagoEstado(' + PLANES.FieldByName('NroPlan').AsString + ')';
+    DataSet1.Open;
+    for t:=1 to DataSet1.RecordCount do begin
+     DataSet1.RecNo:=t;
+     Nivel2:=Arbol.Items.AddChild(Nivel1,DataSet1.FieldByName('Detalle').AsString);
+     if DataSet1.FieldByName('Activo').AsBoolean then begin
+      Nivel2.ImageIndex:=17;
+      Nivel2.SelectedIndex:=17;
+      EstadoAct:=DataSet1.FieldByName('Detalle').AsString;
+     end
+     else begin
+      Nivel2.ImageIndex:=15;
+      Nivel2.SelectedIndex:=15;
+     end;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Fecha: ' + DataSet1.FieldByName('Fecha').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'NroUsuario: ' + DataSet1.FieldByName('NroUsuario').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Observaciones: ' + DataSet1.FieldByName('Observaciones').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+    end;
+    Nivel1:=Arbol.Items.Add(Arbol.Items[0],'Objetos');
+    Nivel1.ImageIndex:=11;
+    Nivel1.SelectedIndex:=11;
+    DataSet1.Close;
+    param:='';dmi:='';tmp:='';
+    Objetos.CantObjetos:=0;
+    Objetos.Identidad.Clear;
+    Objetos.EsContenedor.Clear;
+    Objetos.Rubro.Clear;
+    Objetos.ConDeuda.Clear;
+    Objetos.CodObjeto.Clear;
+    Objetos.Descripcion.Clear;
+    DataSet1.CommandText:='SELECT Id,Identificador,IdSubRubro,Objeto,DetalleObjeto,Rubro,DetalleConcatenado '
+    + ' FROM dbo.Fn_PlanPagoObjeto(' + PLANES.FieldByName('NroPlan').AsString + ')';
+    DataSet1.Open;
+    Recibo.CantObj:=IntToStr(DataSet1.RecordCount);
+    Objetos.CantObjetos:=DataSet1.RecordCount;
+    Recibo.Objetos:=DataSet1.FieldByName('DetalleConcatenado').AsString;
+    for t:=1 to DataSet1.RecordCount do begin
+     DataSet1.RecNo:=t;
+     Objetos.CodObjeto.Append(DataSet1.FieldByName('Objeto').AsString);
+     Objetos.Descripcion.Add(trim(DataSet1.FieldByName('DetalleObjeto').AsString));
+     Objetos.Rubro.Add(trim(DataSet1.FieldByName('Rubro').AsString));
+     if param <> DataSet1.FieldByName('IdSubRubro').AsString then begin
+      Nivel2:=Arbol.Items.AddChild(Nivel1,DataSet1.FieldByName('IdSubRubro').AsString + ' - ' + DataSet1.FieldByName('Rubro').AsString);
+      param:=DataSet1.FieldByName('IdSubRubro').AsString;
+     end;
+     Nivel3:=Arbol.Items.AddChild(Nivel2,'Objeto: ' + DataSet1.FieldByName('Objeto').AsString);
+     Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+     Nivel4:=Arbol.Items.AddChild(Nivel3,'Identificador: ' + DataSet1.FieldByName('Identificador').AsString);
+     Nivel4.ImageIndex:=-1;Nivel4.SelectedIndex:=-1;
+     Nivel4:=Arbol.Items.AddChild(Nivel3,'DetalleObjeto: ' + DataSet1.FieldByName('DetalleObjeto').AsString);
+     Nivel4.ImageIndex:=-1;Nivel4.SelectedIndex:=-1;
+     Nivel4:=Arbol.Items.AddChild(Nivel3,'Periodos Adeudados');
+     Nivel4.ImageIndex:=5;
+     Nivel4.SelectedIndex:=5;
+     DataSet2.CommandText:='SELECT Id,Periodo,convert(varchar(10),FechaVencimiento,103) as FechaVencimiento, '
+     + 'Capital,Interes,SubTotal,PorcientoDescuento,TotalDescuento,TotalPeriodo FROM dbo.PlanPagoObjetoPeriodo '
+     + 'WHERE (IdPlanObjeto = ' +  DataSet1.FieldByName('Id').AsString + ') Order by Periodo';
+     DataSet2.Open;
+     for y:=1 to DataSet2.RecordCount do begin
+      DataSet2.RecNo:=y;
+      Nivel5:=Arbol.Items.AddChild(Nivel4,DataSet2.FieldByName('Periodo').AsString + ' -> ' + DataSet2.FieldByName('FechaVencimiento').AsString);
+      Nivel5.ImageIndex:=-1;Nivel5.SelectedIndex:=-1;
+      Nivel6:=Arbol.Items.AddChild(Nivel5,'Capital: ' + DataSet2.FieldByName('Capital').AsString);
+      Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+      Nivel6:=Arbol.Items.AddChild(Nivel5,'Interes: ' + DataSet2.FieldByName('Interes').AsString);
+      Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+      Nivel6:=Arbol.Items.AddChild(Nivel5,'SubTotal: ' + DataSet2.FieldByName('SubTotal').AsString);
+      Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+      Nivel6:=Arbol.Items.AddChild(Nivel5,'PorcientoDescuento: ' + DataSet2.FieldByName('PorcientoDescuento').AsString);
+      Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+      Nivel6:=Arbol.Items.AddChild(Nivel5,'TotalDescuento: ' + DataSet2.FieldByName('TotalDescuento').AsString);
+      Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+      Nivel6:=Arbol.Items.AddChild(Nivel5,'TotalPeriodo: ' + DataSet2.FieldByName('TotalPeriodo').AsString);
+      Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+     end;
+     DataSet2.Close;
+    end;
+    DataSet1.Close;
+    Recibo.NroUsuario:=Modulo2.Usuario.UsuNro;
+    Recibo.TituloDesc:='PLAN DE FACILIDADES DE PAGO';
+    Recibo.DetalleRecibo:='MULTIPLES PERIODOS - VERIFICAR DOCUMENTACION PLAN';
+    Recibo.Anio:=RightStr(FechaAct,4);
+    Recibo.NroPlan:=PLANES.FieldByName('NroPlan').AsString;
+    Recibo.FechaIni:=FechaAct;
+  except
+    on E: Exception do begin
+      EnviarLog(Self.Caption, E.Message);
+      EnviarLog(Self.Caption, comando);
+    end;
+  end;
+  DataSet1.Connection:=nil;
+  DataSet2.Connection:=nil;
+  FreeAndNil(DataSet2);
+  FreeAndNil(DataSet1);
+end;
+if nro = 3 then begin
+ try
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+  Cnx2.LoginPrompt:=false;
+  ESTCUENTA.Close;
+  DataSource1.DataSet:=ESTCUENTA;
+  ESTCUENTA.Connection:=Cnx2;
+  if CheckBox1.Checked then begin
+   ESTCUENTA.CommandText:='SELECT ''Imp.Cta'' as ImpCta, NroPlan, case when NroCuota = 0 then ''Anticipo'' else convert(nvarchar(10),NroCuota) end as NroCuota,'
+   + 'FechaVencimiento,ImporteCuota, 0 as Punitorios,ImporteCuota as TotalCuota,Estado,Origen,NroRecibo,Importe,FechaPago,TipoEstado,PuntoV,Idrubro,'
+   + 'detallerubro FROM dbo.EstadoCuentaPlanPago (' + chr(39) + FechaAct + chr(39) + ' , ' + ElNumPlan + ') where (estado <> ''ERROR'')';
+  end
+  else begin
+   ESTCUENTA.CommandText:='SELECT ''Imp.Cta'' as ImpCta,NroPlan, case when NroCuota = 0 then ''Anticipo'' else convert(nvarchar(10),NroCuota) end as NroCuota,'
+   + 'FechaVencimiento,ImporteCuota,Punitorios,TotalCuota,Estado,Origen,NroRecibo,Importe,FechaPago,TipoEstado,PuntoV,Idrubro,'
+   + 'detallerubro FROM dbo.EstadoCuentaPlanPago (' + chr(39) + FechaAct + chr(39) + ' , ' + ElNumPlan + ') where (estado <> ''ERROR'')';
+  end;
+  ESTCUENTA.Open;
+      //cargo la grilla de las cuotas de los planes CON anticipos
+  if strtoint(ElNumPlan) >= 338660  then begin
+    for b:=0 to grilla5.ColCount-1 do
+     for t:=1 to grilla5.RowCount-1 do  grilla5.Cells[b,t]:='';
+    grilla5.RowCount:=2;
+    if not ESTCUENTA.IsEmpty then begin
+     for t:=1 to ESTCUENTA.RecordCount do begin
+      ESTCUENTA.RecNo:=t;
+      grilla5.RowCount:=t + 1;
+      grilla5.Cells[0,t]:=ESTCUENTA.FieldByName('NroCuota').AsString;
+      grilla5.Cells[1,t]:=ESTCUENTA.FieldByName('FechaVencimiento').AsString;
+      grilla5.Cells[2,t]:=ESTCUENTA.FieldByName('ImporteCuota').AsString;  //    DataSet1.FieldByName('Total').AsString
+      grilla5.Cells[3,t]:=ESTCUENTA.FieldByName('Punitorios').AsString; //   DataSet1.FieldByName('Capital').AsString
+      grilla5.Cells[4,t]:=ESTCUENTA.FieldByName('TotalCuota').AsString; //  DataSet1.FieldByName('Interes').AsString
+      grilla5.Cells[5,t]:=ESTCUENTA.FieldByName('TipoEstado').AsString;
+     end;
+    end;
+    label9.Caption:= trim(grilla5.Cells[0,1]) ;
+    if trim(grilla5.Cells[0,1]) = '1' then begin
+      impanticipo:=strtofloat(grilla5.Cells[2,1]);
+      primercta:=trim(grilla5.Cells[1,1]);
+      impprimercta:=strtofloat(grilla5.Cells[2,1]);
+    end
+    else begin
+      impanticipo:=strtofloat(grilla5.Cells[2,1]);
+      primercta:=trim(grilla5.Cells[1,2]);
+      impprimercta:=strtofloat(grilla5.Cells[2,2]);
+    end;
+  end;
+  ESTCUENTA.Connection:=nil;
+  except
+   on E: Exception do begin
+     EnviarLog(Self.Caption, E.Message);
+     EnviarLog(Self.Caption, comando);
+   end;
+ end;
+ tot1:=0;
+ tot2:=0;
+ try
+  DataSource1.dataset.disablecontrols;
+  DataSource1.dataset.first;
+  while not DataSource1.dataset.eof do begin
+   //   if (trim(DataSource1.DataSet.Fields[6].Value)='DEUDA') then begin
+   if (trim(DataSource1.DataSet.Fields[7].Value)='DEUDA') then begin
+    tot2 := tot2 + DBGrid3.datasource.dataset.fieldbyname('TotalCuota').asfloat;
+   end;
+   DataSource1.dataset.next;
+  end;
+ finally
+  DataSource1.dataset.enablecontrols;
+ end;
+
+ for t:=1 to ESTCUENTA.RecordCount do begin
+  ESTCUENTA.RecNo:=t;
+  tot1:=tot1 + ESTCUENTA.FieldByName('ImporteCuota').AsFloat;
+ end;
+ edit1.Text:=floattostr(tot1);
+ edit2.Text:=floattostr(tot2);
+end;
+if nro = 4 then begin
+ try
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+  Cnx2.LoginPrompt:=false;
+  ESTCUENTASININT.Close;
+  DataSource1.DataSet:=ESTCUENTASININT;
+  ESTCUENTASININT.Connection:=Cnx2;
+  if CheckBox1.Checked then begin
+   ESTCUENTASININT.CommandText:='SELECT NroPlan,NroCuota,FechaVencimiento,ImporteCuota, 0 as Punitorios,'
+   + 'ImporteCuota as TotalCuota,Estado,Origen,NroRecibo,Importe,FechaPago,TipoEstado,PuntoV,Idrubro,'
+   + 'detallerubro FROM dbo.EstadoCuentaPlanPago (' + chr(39) + FechaAct + chr(39) + ' , ' + ElNumPlan + ') where (estado <> ''ERROR'')';
+  end
+  else begin
+   ESTCUENTASININT.CommandText:='SELECT NroPlan,NroCuota,FechaVencimiento,ImporteCuota,Punitorios,'
+   + 'TotalCuota,Estado,Origen,NroRecibo,Importe,FechaPago,TipoEstado,PuntoV,Idrubro,'
+   + 'detallerubro FROM dbo.EstadoCuentaPlanPago (' + chr(39) + FechaAct + chr(39) + ' , ' + ElNumPlan + ')';// where (estado <> ''ERROR'')';
+  end;
+  ESTCUENTASININT.Open;
+  ESTCUENTASININT.Connection:=nil;
+ except
+  on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+    EnviarLog(Self.Caption, comando);
+  end;
+ end;
+ tot1:=0;
+ tot2:=0;
+ try
+  DataSource1.dataset.disablecontrols;
+  DataSource1.dataset.first;
+  while not DataSource1.dataset.eof do begin
+   if (trim(DataSource1.DataSet.Fields[6].Value)='DEUDA') then begin
+    tot2 := tot2 + DBGrid3.datasource.dataset.fieldbyname('TotalCuota').asfloat;
+   end;
+   DataSource1.dataset.next;
+  end;
+ finally
+  DataSource1.dataset.enablecontrols;
+ end;
+
+ for t:=1 to ESTCUENTASININT.RecordCount do begin
+  ESTCUENTASININT.RecNo:=t;
+  tot1:=tot1 + ESTCUENTASININT.FieldByName('ImporteCuota').AsFloat;
+ end;
+ edit1.Text:=floattostr(tot1);
+ edit2.Text:=floattostr(tot2);
+end;
+if nro = 5 then begin
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+  Cnx2.LoginPrompt:=false;
+  OBSERV.Close;
+  OBSERV.Connection:=Cnx2;
+  OBSERV.CommandText:='SELECT Observaciones FROM PlanPagoEstado WHERE (IdTipoEstado = 9) AND (Activo = 1) AND (NroPlan = ' + ElNumPlan +')';
+  OBSERV.Open;
+  if not OBSERV.IsEmpty  then begin
+   laobserv:=OBSERV.FieldByName('Observaciones').AsString;
+   eldatoblock.Text :=laobserv;
+  end
+  else eldatoblock.Clear;
+end;
+if nro = 6 then begin
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+  Cnx2.LoginPrompt:=false;
+  DataSet11.Close;
+  DataSet11.Connection:=Cnx2;
+  DataSet11.CommandText:='SELECT PorcDescPagoAnticipado FROM PlanPagoConfig where PorcDescPagoAnticipado is not null';
+  DataSet11.Open;
+  if not Dataset11.IsEmpty then begin
+   impctaesp.Visible :=true;
+   intereDtopagototal:= DataSet11.FieldByName('PorcDescPagoAnticipado').AsString;
+  end
+  else impctaesp.Visible :=false;
+  DataSet11.Connection:=nil;
+end;
+Cnx2.Close;
+FreeAndNil(Cnx2);
+end;
+
+procedure TImpresionPlanes.DBGrid2CellClick(Column: TColumn);
+begin
+ if not PLANES.IsEmpty  then begin
+  if trim(DBGrid2.Fields[8].Text) = '9'  then begin
+   messagedlg('ATENCION, este Plan seleccionado esta ''BLOQUEADO'', Imposible realizar la impresión de Cuotas...'
+              + chr(13) + 'Por favor dirijase a la Agencia de RECAUDACION...',mtInformation,[mbok],0);
+   nrodeplan.SetFocus;
+   Coloca1(2);
+   ElNumPlan:=PLANES.FieldByName('NroPlan').AsString ;
+   Coloca1(5);
+   block.Visible:=true;
+  end
+  else begin
+   if trim(DBGrid2.Fields[8].Text) = '1'  then begin
+    messagedlg('ATENCION, este Plan seleccionado esta de ''BAJA'', Imposible realizar la impresión de Cuotas...'
+               + chr(13) + 'Por favor busque realice otra busqueda...',mtInformation,[mbok],0);
+    nrodeplan.SetFocus;
+    Coloca1(2);
+    block.Visible:=false;
+   end
+   else begin
+    block.Visible:=false;
+    Imprime.Enabled:=false;
+    NUMPLAN.Text:='000000';
+    VEC1.Clear;
+    VEC2.Clear;
+    VALCUOTA1.Text:='0';
+    VALCUOTA2.Text:='0';
+    ElNumPlan:=PLANES.FieldByName('NroPlan').AsString ;
+    Coloca1(2);
+    Coloca1(3);
+    PageControl2.ActivePage:=PageControl2.Pages[2];
+   end;
+  end;
+ end;
+ Barra1.SimpleText:='...';
+end;
+
+procedure TImpresionPlanes.VEC2KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = chr(13) then Imprime.SetFocus;
+end;
+
+procedure TImpresionPlanes.JvBitBtn1Click(Sender: TObject);
+begin
+Coloca1(1);
+end;
+
+procedure TImpresionPlanes.JvBitBtn2Click(Sender: TObject);
+var t,b:integer;
+    Cnx2:TADOConnection;
+    clav1:string;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+ t:=messagedlg('Confirma la Asignacion de este Recibo a la Cuota Nro.' + trim(lascuotas.Text),mtWarning,[mbok,mbCancel],0);
+ if t = 1 then begin
+  DataSetRec.Connection:=Cnx2;
+  DataSetRec.CommandText:='SPM_PlanPagoMueveCuotasPagadas' + trim(elplan.Text)
+  + ' , ' + trim(elrecibo.Text)
+  + ' , ' + trim(lascuotas.Text) + ';';
+  DataSetRec.Open;
+  clav1:=DataSetRec.Fields[0].AsString;
+  DataSetRec.Close;
+  if clav1 <> 'OK' then begin
+    messagedlg('ERROR!.. No se pudo Actualizar el pago de esta Cuota.. Consulte con un Administrador',mterror,[mbok],0);
+  end
+  else begin
+   messagedlg('La Asignacion del Pago se ha realizado Exitosamente... ',mtConfirmation,[mbok],0);
+   Coloca1(3);
+   cambiacuota.Visible:=false;
+  end
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TImpresionPlanes.IMPCTAESPClick(Sender: TObject);
+begin
+ PANEL.Visible:=TRUE;
+ cancela.CAPTION:='CANCELAR';
+ ACEPTA.SetFocus;
+end;
+
+procedure TImpresionPlanes.LASCUOTASExit(Sender: TObject);
+begin
+ if LASCUOTAS.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione un Nro. de Cuota válida',mterror,[mbok],0);
+  LASCUOTAS.SetFocus;
+ end;
+end;
+
+procedure TImpresionPlanes.LASCUOTASKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  JvBitBtn2.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789',Key) <> nil ) or ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+Function TImpresionPlanes.los_periodos():widestring;
+var j,an:integer;
+    pran:string;
+    kf:boolean;
+begin
+{Damos los Periodos involucrados}
+ cont:='';
+ kf:=false;
+ an:=0;
+ for j:=1 to PLANES.RecordCount do begin
+  PLANES.RecNo:=j;
+  pran:=strcut(trim(PLANES.Fields[1].AsString),4);
+  if an <> strtoint(pran) then begin
+   if trim(cont) <> '' then cont:=cont + '/' + inttostr(an) + ' - '
+   else begin
+     if an=0 then an:=strtoint(pran)
+     else cont:=cont + '/' + inttostr(an) + ' - ';
+   end;
+   an:=strtoint(pran);
+   kf:=false;
+  end;
+  if not(kf) then begin
+   cont:=cont + strcut_midle(trim(PLANES.Fields[1].Text),5,6);
+   kf:=true;
+  end
+  else cont:=cont + ',' + strcut_midle(trim(PLANES.Fields[1].Text),5,6);
+ end;
+ cont:=cont + '/' + inttostr(an) + ' - ';
+end;
+
+procedure TImpresionPlanes.SALEClick(Sender: TObject);
+begin
+close;
+end;
+
+procedure TImpresionPlanes.titularKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  jvbitbtn1.SetFocus;
+ end
+ else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ%. /°-',Key) <> nil ) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TImpresionPlanes.DBGrid4DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+var t:byte;
+begin
+
+end;
+
+procedure TImpresionPlanes.nrodeplanKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+   Key := #0;
+   jvbitbtn1.SetFocus;
+ end
+ else begin
+   if (StrScan('0123456789',Key) <> nil ) or ( Key = Char(VK_BACK) ) then
+    else Key := #0;
+ end;
+end;
+
+procedure TImpresionPlanes.DBGrid3CellClick(Column: TColumn);
+var gf:integer;
+var txt:string;
+    comando:widestring;
+    Cnx2:TADOConnection;
+begin
+
+ if not ESTCUENTA.IsEmpty  then begin
+  //if trim(DBGrid3.Fields[6].Text) = 'DEUDA' then begin
+   if trim(DBGrid3.Fields[7].Text) = 'DEUDA' then begin
+     PopupMenu1.Items[2].Enabled:=true;
+    PopupMenu1.Items[3].Enabled:=true;
+   end
+   else begin
+    PopupMenu1.Items[2].Enabled:=false;
+    PopupMenu1.Items[3].Enabled:=false;
+   end;
+
+   if dato <> '0' then   begin
+     //if trim(DBGrid3.Fields[6].Text) = 'PAGADO' then begin
+    if trim(DBGrid3.Fields[7].Text) = 'PAGADO' then begin
+      PopupMenu1.Items[6].Enabled:=true;
+      PopupMenu1.Items[7].Enabled:=true;
+      elnroplan:=trim(DBGrid3.Fields[1].Text);  //trim(DBGrid3.Fields[0].Text)
+      elplan.Text:=trim(DBGrid3.Fields[1].Text); //trim(DBGrid3.Fields[0].Text)
+      elrecibo.Text:=trim(DBGrid3.Fields[9].Text); //trim(DBGrid3.Fields[8].Text)
+      ColocaCombo(1);
+    end
+    else begin
+      PopupMenu1.Items[6].Enabled:=false;
+      PopupMenu1.Items[7].Enabled:=false;
+    end;
+   end;
+  end;
+
+  if Column.FieldName = 'ImpCta' then
+    if trim(DBGrid3.Fields[7].Text) = 'PAGADO' then begin
+      messagedlg('La Cuota Nro: ' + DBGrid3.Fields[2].AsString  + ' se encuentra PAGADO.. Imposible Imprimir la Liquidadion..',mtError,[mbok,mbCancel],0);
+    end
+    else begin
+      gf:=messagedlg('Confirma la Impresion de la cuota Seleccionada?',mtWarning,[mbok,mbCancel],0);
+      if gf = 1 then begin
+        try
+         ShowMessage('Botón virtual presionado en nroplan ' + DBGrid3.Fields[1].AsString + ' Nrocuota: ' + DBGrid3.Fields[2].AsString );
+        except
+         messagedlg('Error a la Modificar el estado de este Plan de Pago...!',mtError,[mbok],0);
+        end
+      end
+      else begin
+       messagedlg('Ud.. ha Cancelado la Opcion!',mtWarning,[mbok],0);
+     end;
+   end;
+
+ {if not ESTCUENTA.IsEmpty  then begin
+  //if trim(DBGrid3.Fields[6].Text) = 'DEUDA' then begin
+  if trim(DBGrid3.Fields[7].Text) = 'DEUDA' then begin
+   PopupMenu1.Items[2].Enabled:=true;
+   PopupMenu1.Items[3].Enabled:=true;
+  end
+  else begin
+   PopupMenu1.Items[2].Enabled:=false;
+   PopupMenu1.Items[3].Enabled:=false;
+  end;
+  if dato <> '0' then   begin
+   //if trim(DBGrid3.Fields[6].Text) = 'PAGADO' then begin
+   if trim(DBGrid3.Fields[7].Text) = 'PAGADO' then begin
+    PopupMenu1.Items[6].Enabled:=true;
+    PopupMenu1.Items[7].Enabled:=true;
+    elnroplan:=trim(DBGrid3.Fields[1].Text);  //trim(DBGrid3.Fields[0].Text)
+    elplan.Text:=trim(DBGrid3.Fields[1].Text); //trim(DBGrid3.Fields[0].Text)
+    elrecibo.Text:=trim(DBGrid3.Fields[9].Text); //trim(DBGrid3.Fields[8].Text)
+    ColocaCombo(1);
+   end
+   else begin
+    PopupMenu1.Items[6].Enabled:=false;
+    PopupMenu1.Items[7].Enabled:=false;
+   end;
+  end;
+ end;  }
+end;
+
+procedure TImpresionPlanes.DBGrid3DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+var t:byte;
+begin
+  if Column.FieldName = 'ImpCta' then
+  begin
+    DBGrid3.Canvas.FillRect(Rect);
+    DrawFrameControl(DBGrid3.Canvas.Handle, Rect, DFC_BUTTON, DFCS_BUTTONPUSH);
+    DBGrid3.Canvas.TextOut(Rect.Left + 5, Rect.Top + 2, 'Imp.Cta');
+  end;
+  {if trim(DBGrid3.Fields[6].Text) = 'ERROR' then t:=1;
+  if trim(DBGrid3.Fields[6].Text) = 'PAGADO' then t:=2;
+  if trim(DBGrid3.Fields[6].Text) = 'DEUDA' then t:=3;
+  case t of
+   1:begin
+     DBGrid3.Canvas.Brush.Color:=$00C6C6FF;
+     DBGrid3.Canvas.FillRect(Rect);
+     DBGrid3.Canvas.Font.Color:= clBlack;
+   end;
+   2:begin
+     DBGrid3.Canvas.Brush.Color:=clWindow;
+     DBGrid3.Canvas.FillRect(Rect);
+     DBGrid3.Canvas.Font.Color:= clBlack;
+   end;
+   3:begin
+     DBGrid3.Canvas.Brush.Color:=$00EDEDDC;
+     DBGrid3.Canvas.FillRect(Rect);
+     DBGrid3.Canvas.Font.Color:= clBlack;
+   end;
+  end;
+  DBGrid3.DefaultDrawColumnCell(Rect,Datacol,Column,State);  }
+end;
+
+procedure TImpresionPlanes.ACEPTAClick(Sender: TObject);
+var comando:widestring;
+   Com1:TADOCommand;
+   Cnx2:TADOConnection;
+   t,j: integer;
+   descto:real;
+begin
+ t:=messagedlg('Confirma la Impresión de la Liquidacion de Multiples Cuotas?',mtWarning,[mbok,mbCancel],0);
+ if t = 1 then begin
+  CantCuotas:=0;
+  // RECORRO EL DATASET
+  try
+   DataSource1.dataset.disablecontrols;
+   DataSource1.dataset.first;
+   while not DataSource1.dataset.eof do begin
+    if (trim(DataSource1.DataSet.Fields[6].Value)='DEUDA') then begin
+     CantCuotas := CantCuotas + 1;
+    end;
+    DataSource1.dataset.next;
+   end;
+  finally
+    DataSource1.dataset.enablecontrols;
+  end;
+
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  comando:='SPA_PlanPagoDescPagoAnticipado ' + trim(nrodeplan.Text)
+  + ' , ' + inttostr(CantCuotas)
+  + ' , ' + chr(39) + FechaAct + chr(39)
+  + ' , ' + modulo2.Usuario.UsuNro
+  + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+  + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+  Com1.CommandText:=comando;
+  Com1.Execute;
+  ElNumPlan:=PLANES.FieldByName('NroPlan').AsString ;
+  PageControl2.ActivePage:=PageControl2.Pages[2];
+  detcuotas:='';
+  try
+   DataSource1.dataset.disablecontrols;
+   DataSource1.dataset.first;
+   while not DataSource1.dataset.eof do begin
+    if (trim(DataSource1.DataSet.Fields[6].Value)='DEUDA') then begin
+     detcuotas := detcuotas + '/' + DataSource1.dataset.fieldbyname('nrocuota').AsString
+    end;
+    DataSource1.dataset.next;
+   end;
+  finally
+   DataSource1.dataset.enablecontrols;
+  end;
+  descto:= strtofloat(edit2.Text) * strtofloat(intereDtopagototal) / 100 ;
+  if CheckBox1.Checked then  edit2.Text := floattostr(strtofloat(edit2.Text))
+   else edit2.Text := floattostr(strtofloat(edit2.Text) - descto);
+  if GuardaReciboCtaMultiple then ImprimeReciboMultipleCtas;
+ end;
+end;
+
+Function  TImpresionPlanes.GuardaReciboCtaMultiple():boolean;
+var dmi,tmp,imp,ger:string;
+    DataSet3:TADODataSet;
+    Com1:TADOCommand;
+    Cnx2:TADOConnection;
+    txt1:widestring;
+begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectUsu;
+  Cnx2.LoginPrompt:=false;
+  try
+   DataSet3:=TADODataSet.Create(nil);
+   DataSet3.Connection:=Cnx2;
+   DataSet3.CommandText:='EXEC darmaximonro ' + chr(39) + 'TASAANUALLIQUIDACION' + chr(39) + ' , ' + modulo2.Sistema.PuntoV ;
+   DataSet3.Open;
+   Recibo.NroLiquidacion:=StrFill(DataSet3.Fields[0].AsString,7,'0','');
+   DataSet3.Close;
+  except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+  end;
+  Recibo.NroCuota:=inttostr(CantCuotas);//PLANES.FieldByName('CantCuotas').AsString;
+  if CantCuotas > 1  then Recibo.CuotaDe:='Anticipo'
+   else Recibo.CuotaDe:='1 DE ' + inttostr(CantCuotas);
+  //Recibo.CuotaDe:='MULTIPLES';//ESTCUENTA.FieldByName('NroCuota').AsString + ' DE ' + PLANES.FieldByName('CantCuotas').AsString;
+  Recibo.NroUsuario:=Modulo2.Usuario.UsuNro;
+  if strtofloat(trim(edit2.Text)) < 1000000.00 then begin
+    imp:='30';
+    Recibo.SubRubro:='1111104';
+    Recibo.PrimerV:=FechaAct;
+    Recibo.SegundoV:=FechaAct;//Fec2doVenc;
+    Recibo.Importe1:=AnsiReplaceStr(trim(edit2.Text),',','.');
+    Recibo.Importe2:=AnsiReplaceStr(trim(edit2.Text),',','.');
+    Recibo.NroCobro:=modulo2.Sistema.PuntoV + RightStr(FechaAct,2) + ' - ' + imp + '90';
+    Recibo.Importe1:=FormatFloat('000000.00',StrToFloat(Recibo.Importe1));
+    dmi:='927' + StrFill(AnsiReplaceStr(Recibo.Importe1,'.',''),8,'0','');
+    tmp:=FechaAct;
+    dmi:=dmi + RightStr(tmp,2);
+    dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),Recibo.PrimerV),3,'0','');
+    dmi:=dmi + StrFill(modulo2.Sistema.PuntoV,2,'0','') + RightStr(tmp,2);
+    dmi:=dmi + imp + '01';
+    dmi:=dmi + Recibo.NroLiquidacion + '0';
+    dmi:=dmi + StrFill(AnsiReplaceStr(Recibo.Importe1,'.',''),8,'0','');
+    dmi:=dmi + RightStr(tmp,2);
+    dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),Recibo.SegundoV),3,'0','');
+    dmi:=dmi + digitos(dmi, 1);
+    Recibo.NroCodBar:=dmi;
+  end
+  else begin
+   Recibo.SubRubro:='1111104';
+   tmp:=FechaAct;
+   Recibo.Importe1:=FormatFloat('0000000.00',StrToFloat(edit2.Text));
+   Recibo.SegundoV:=FechaAct;//Fec2doVenc;
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+   DataSet3:=TADODataSet.Create(nil);
+   DataSet3.Connection:=Cnx2;
+   DataSet3.CommandText:='select codbar from [ComercioTasa].[dbo].[TodosCorbar] ('
+    + chr(39) + trim(edit2.Text) + chr(39)
+    + ' , ' + chr(39) + FechaAct + chr(39)
+    + ' , ' + chr(39) + trim(edit2.Text) + chr(39)
+    + ' , ' + chr(39) + FechaAct + chr(39)
+    + ' , ' + chr(39) + Recibo.SubRubro + chr(39) + ' , 0 '
+    //+ ' , ' + chr(39) + trim(grilla5.Cells[0,1]) + chr(39)
+    + ' , ' + chr(39) + Recibo.NroLiquidacion + chr(39)
+    + ' , ' + chr(39) + modulo2.Sistema.PuntoV + chr(39) + ')';
+   DataSet3.Open;
+   dmi:=DataSet3.Fields[0].AsString;
+   Recibo.NroCodBar:=dmi;
+   DataSet3.Close;
+  end;
+
+  try
+   Com1:=TADOCommand.Create(nil);
+   Com1.Connection:=Cnx2;
+   if titrespo =false  then begin
+     DataSet3.CommandText:='EXEC SPA_tasaanualLiquidacion '   + chr(39) + Recibo.CuimTit + chr(39)
+     + ' , ' + Recibo.NroPlan
+     + ' ,NULL, NULL, '  + MidStr(Recibo.CuimTit,4,8)
+     + ' , ' + chr(39) + LeftStr(Recibo.NombreTit,50) + chr(39)
+     + ' , ' + 'NULL, ' + Recibo.Importe1
+     + ' , ' + chr(39) + Recibo.SegundoV  + chr(39)
+     + ' , ' + Recibo.Importe1
+     + ' , ' + chr(39) + Recibo.SegundoV + chr(39)
+     + ' , ' + RightStr(tmp,4)
+     + ' , ' + imp + '90 ,' + Recibo.NroLiquidacion
+     + ' , ' + chr(39) + Recibo.NroCodBar + chr(39)
+     + ' , ' + Modulo2.Sistema.PuntoV
+     + ' , ' + Modulo2.Usuario.UsuNro
+     + ' , ' + LeftStr(Recibo.SubRubro,5) + ' , NULL, NULL, 1, 1, 0, 0, ' + Recibo.SubRubro;
+     DataSet3.Open;
+     Recibo.IdRegistro:=DataSet3.Fields[0].AsString;
+     DataSet3.Close;
+   end
+   else begin
+     DataSet3.CommandText:='EXEC SPA_tasaanualLiquidacion '   + chr(39) + Recibo.CuimRespo + chr(39)
+     + ' , ' + Recibo.NroPlan
+     + ' ,NULL, NULL, '  + MidStr(Recibo.CuimRespo,4,8)
+     + ' , ' + chr(39) + LeftStr(Recibo.NombreRespo,50) + chr(39)
+     + ' , ' + 'NULL, ' + Recibo.Importe1
+     + ' , ' + chr(39) + Recibo.SegundoV  + chr(39)
+     + ' , ' + Recibo.Importe1
+     + ' , ' + chr(39) + Recibo.SegundoV + chr(39)
+     + ' , ' + RightStr(tmp,4)
+     + ' , ' + imp + '90 ,' + Recibo.NroLiquidacion
+     + ' , ' + chr(39) + Recibo.NroCodBar + chr(39)
+     + ' , ' + Modulo2.Sistema.PuntoV
+     + ' , ' + Modulo2.Usuario.UsuNro
+     + ' , ' + LeftStr(Recibo.SubRubro,5) + ' , NULL, NULL, 1, 1, 0, 0, ' + Recibo.SubRubro;
+     DataSet3.Open;
+     Recibo.IdRegistro:=DataSet3.Fields[0].AsString;
+     DataSet3.Close;
+   end;
+   //DataSet3.CommandText:='EXEC SPA_tasaanualLiquidacion '   + chr(39) + Recibo.CuimTit + chr(39)
+   //+ ' , ' + Recibo.NroPlan
+   //+ ' ,NULL, NULL, '  + MidStr(Recibo.CuimTit,4,8)
+   //+ ' , ' + chr(39) + LeftStr(Recibo.NombreTit,50) + chr(39)
+   //+ ' , ' + 'NULL, ' + Recibo.Importe1
+   //+ ' , ' + chr(39) + Recibo.SegundoV  + chr(39)
+   //+ ' , ' + Recibo.Importe1
+   //+ ' , ' + chr(39) + Recibo.SegundoV + chr(39)
+   //+ ' , ' + RightStr(tmp,4)
+   //+ ' , ' + imp + '90 ,' + Recibo.NroLiquidacion
+   //+ ' , ' + chr(39) + Recibo.NroCodBar + chr(39)
+   //+ ' , ' + Modulo2.Sistema.PuntoV
+   //+ ' , ' + Modulo2.Usuario.UsuNro
+   //+ ' , ' + LeftStr(Recibo.SubRubro,5) + ' , NULL, NULL, 1, 1, 0, 0, ' + Recibo.SubRubro;
+   //DataSet3.Open;
+   //Recibo.IdRegistro:=DataSet3.Fields[0].AsString;
+   //DataSet3.Close;
+
+   try
+    DataSource1.dataset.disablecontrols;
+    DataSource1.dataset.first;
+    while not DataSource1.dataset.eof do begin
+     if (trim(DataSource1.DataSet.Fields[6].Value)='DEUDA') then begin
+      txt1:= Recibo.IdRegistro  //idLiquidacion
+      + ' , ' + RightStr(tmp,4)     //anio
+      + ' , ' + DataSource1.DataSet.Fields[1].AsString
+      + ' , ' + DataSource1.DataSet.Fields[1].AsString + StrFill(trim(PLANES.FieldByName('CantCuotas').AsString),2,'0','')  //periodo
+      + ' , ' + Recibo.NroLiquidacion  //recibo
+      + ' , ' + modulo2.Sistema.PuntoV  //puntov
+      + ' , NULL , ' + Recibo.Importe1  //Importe
+      + ' , 0 , ' + Recibo.Importe1  //ImporteCuota
+      + ' , 0 , 0 , 0 , ' + Recibo.SubRubro;
+      Com1.CommandText:='EXEC SPA_TasaAnualLiquidacionCuotas ' + txt1;
+      Com1.Execute;
+     end;
+     DataSource1.dataset.next;
+    end;
+   finally
+    DataSource1.dataset.enablecontrols;
+   end;
+
+   Result:=true;
+  except
+   on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+    Result:=false;
+   end;
+  end;
+  FreeAndNil(DataSet3);
+  FreeAndNil(Com1);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+end;
+
+procedure  TImpresionPlanes.ImprimeReciboMultipleCtas();
+var ReporteRst: TfrxReport;
+    t,y:integer;
+    dmi:widestring;
+    tmp:string;
+begin
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  //if strtofloat(Recibo.Importe1) < 1000000.00 then ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\LiquidacionPP.fr3')
+  // else ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\LiquidacionPP2.fr3');
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\LiquidacionPP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo3')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo4')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  ReporteRst.Variables['NombreTit'] := QuotedStr(Recibo.NombreTit);
+  ReporteRst.Variables['CuimTit'] := QuotedStr(Recibo.CuimTit);
+  ReporteRst.Variables['DomicilioTit'] := QuotedStr(Recibo.DomicilioTit);
+  ReporteRst.Variables['NombreRespo'] := QuotedStr(Recibo.NombreRespo);
+  ReporteRst.Variables['CuimRespo'] := QuotedStr(Recibo.CuimRespo);
+  ReporteRst.Variables['DomicilioRespo'] := QuotedStr(Recibo.DomicilioRespo);
+  ReporteRst.Variables['CuotaDe'] := QuotedStr(Recibo.CuotaDe);
+  ReporteRst.Variables['Anio'] := QuotedStr(Recibo.Anio);
+  ReporteRst.Variables['NroPlan'] := QuotedStr(Recibo.NroPlan);
+  ReporteRst.Variables['NroCuota'] := QuotedStr('MULTIPLES'); //QuotedStr(Recibo.NroCuota);
+  ReporteRst.Variables['FechaIni'] := QuotedStr(Recibo.FechaIni);
+  ReporteRst.Variables['CantObj'] := QuotedStr(Recibo.NroCuota);//QuotedStr(Recibo.CantObj);
+  ReporteRst.Variables['Objetos'] := QuotedStr('Detalle de cuotas a pagar: ' + detcuotas);//QuotedStr(Recibo.Objetos);
+  ReporteRst.Variables['DetalleRecibo'] := QuotedStr(Recibo.DetalleRecibo);
+  ReporteRst.Variables['NroCobro'] := QuotedStr(Recibo.NroCobro);
+  ReporteRst.Variables['NroLiquidacion'] := QuotedStr(Recibo.NroLiquidacion);
+  ReporteRst.Variables['PrimerV'] := QuotedStr(Recibo.PrimerV);
+  ReporteRst.Variables['Importe1'] := QuotedStr(Recibo.Importe1);
+  ReporteRst.Variables['SegundoV'] := QuotedStr(Recibo.PrimerV);
+  ReporteRst.Variables['Importe2'] := QuotedStr(Recibo.Importe2);
+  Recibo.CodBar:=codigo_bar(Recibo.NroCodBar);
+  ReporteRst.Variables['CodBar'] := QuotedStr(Recibo.CodBar);
+  ReporteRst.Variables['NroCodBar'] := QuotedStr(Recibo.NroCodBar);
+  ReporteRst.Variables['TituloDesc'] := QuotedStr(Recibo.TituloDesc);
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(ReporteRst);
+ cancela.CAPTION:='CERRAR' ;
+end;
+
+
+procedure TImpresionPlanes.C1Click(Sender: TObject);
+begin
+ if C1.Checked = true then begin
+  FEC.Visible:=true;
+  L1.Visible:=true;
+ end
+ else begin
+  FEC.Visible:=false;
+  L1.Visible:=false;
+ end;
+end;
+
+procedure TImpresionPlanes.CANCELAClick(Sender: TObject);
+begin
+PANEL.Visible:=FALSE;
+Coloca1(3);
+end;
+
+procedure TImpresionPlanes.CheckBox1Click(Sender: TObject);
+var g:integer;
+    Cnx2:TADOConnection;
+begin
+ coloca1(3);
+end;
+
+procedure TImpresionPlanes.codobjetoKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = chr(13) then jvbitbtn1.SetFocus;
+end;
+
+procedure TImpresionPlanes.FECExit(Sender: TObject);
+var kl:Tdatetime;
+begin
+ try
+  kl:=strtodate(trim(FEC.Text));
+ except
+  messagedlg('La Fecha Ingresada No es Válida',mterror,[mbok],0);
+  FEC.SetFocus;
+ end;
+end;
+
+procedure TImpresionPlanes.fecplanExit(Sender: TObject);
+var kl:Tdatetime;
+begin
+ try
+  kl:=strtodate(trim(fecplan.Text));
+ except
+  messagedlg('La Fecha Ingresada No es Válida',mterror,[mbok],0);
+  fecplan.SetFocus;
+ end;
+end;
+
+procedure TImpresionPlanes.fecplanKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = chr(13) then jvbitbtn1.SetFocus;
+end;
+
+procedure TImpresionPlanes.DBGrid2DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+var t:byte;
+begin
+  if trim(DBGrid2.Fields[8].Text) = '3' then t:=1
+  ELSE  if trim(DBGrid2.Fields[8].Text) = '9' then t:=3
+     else t:=2;
+  case t of
+   1:begin
+    DBGrid2.Canvas.Brush.Color:=clLime;
+    DBGrid2.Canvas.FillRect(Rect);
+    DBGrid2.Canvas.Font.Color:= clBlack;
+   end;
+   2:begin
+    DBGrid2.Canvas.Brush.Color:=clWindow;
+    DBGrid2.Canvas.FillRect(Rect);
+    DBGrid2.Canvas.Font.Color:= clBlack;
+   end;
+   3:begin
+    DBGrid2.Canvas.Brush.Color:=clYellow;
+    DBGrid2.Canvas.FillRect(Rect);
+    DBGrid2.Canvas.Font.Color:= clBlack;
+   end;
+  end;
+  DBGrid2.DefaultDrawColumnCell(Rect,Datacol,Column,State);
+end;
+
+procedure TImpresionPlanes.ImprimirEstadodeCuenta1Click(Sender: TObject);
+var t:integer;
+begin
+t:=messagedlg('Confirma la Impresión del Resumen?',mtWarning,[mbok,mbCancel],0);
+ if t = 1 then begin
+  tot1:=0;
+  tot2:=0;
+  try
+   DataSource1.dataset.disablecontrols;
+   DataSource1.dataset.first;
+   while not DataSource1.dataset.eof do begin
+    if (trim(DataSource1.DataSet.Fields[6].Value)='DEUDA') then begin
+     tot2 := tot2 + DBGrid3.datasource.dataset.fieldbyname('TotalCuota').asfloat;
+    end;
+    DataSource1.dataset.next;
+   end;
+  finally
+   DataSource1.dataset.enablecontrols;
+  end;
+
+  for t:=1 to ESTCUENTA.RecordCount do begin
+    ESTCUENTA.RecNo:=t;
+    tot1:=tot1 + ESTCUENTA.FieldByName('ImporteCuota').AsFloat;
+  end;
+  edit1.Text:=floattostr(tot1);
+  edit2.Text:=floattostr(tot2);
+  ImprimeResumen;
+ end;
+end;
+
+procedure TImpresionPlanes.ImprimirCuotaconfechade2doVencimiento1Click(
+  Sender: TObject);
+var IngresoFecha:TIngresoFecha;
+    t:integer;
+begin
+ try
+  IngresoFecha:=TIngresoFecha.Create(self);
+  IngresoFecha.FechaAct:=FechaAct;
+  IngresoFecha.ShowModal;
+  if (IngresoFecha.ConCod) and (IngresoFecha.FechaImp.Text <> FechaAct) then Fec2doVenc:=IngresoFecha.FechaImp.Text
+  else begin
+   messagedlg('La Fecha del 2do vencimiento no se ha validado. Se tomará la fecha actual',mtwarning,[mbok],0);
+   Fec2doVenc:=FechaAct;
+  end;
+  t:=messagedlg('Confirma la Impresión de la Cuota Seleccionada?',mtWarning,[mbok,mbCancel],0);
+  if t = 1 then begin
+   if GuardaRecibo then ImprimeRecibo;
+  end;
+ except
+ end;
+ FreeAndNil(IngresoFecha);
+end;
+
+procedure TImpresionPlanes.ImprimirLiquidacindeCtaSeleccionada1Click(
+  Sender: TObject);
+var t:integer;
+    pso:boolean;
+begin
+ pso:=false;
+ t:=messagedlg('Confirma la Impresión de la Cuota Seleccionada?',mtWarning,[mbok,mbCancel],0);
+ if t = 1 then begin
+  if (trim(DataSource1.DataSet.Fields[11].Value)='VENCIDO') then Fec2doVenc:=FechaAct
+     else Fec2doVenc:=trim(DBGrid3.Fields[2].Text);
+  if GuardaRecibo then ImprimeRecibo;
+ end;
+end;
+
+Function  TImpresionPlanes.GuardaRecibo():boolean;
+var dmi,tmp,imp,ger,anticipo:string;
+    DataSet3:TADODataSet;
+    Com1:TADOCommand;
+    Cnx2:TADOConnection;
+begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectUsu;
+  Cnx2.LoginPrompt:=false;
+  try
+   DataSet3:=TADODataSet.Create(nil);
+   DataSet3.Connection:=Cnx2;
+   DataSet3.CommandText:='EXEC darmaximonro ' + chr(39) + 'TASAANUALLIQUIDACION' + chr(39) + ' , ' + modulo2.Sistema.PuntoV ;
+   DataSet3.Open;
+   Recibo.NroLiquidacion:=StrFill(DataSet3.Fields[0].AsString,7,'0','');
+   DataSet3.Close;
+  except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+  end;
+
+  Recibo.NroCuota:=PLANES.FieldByName('CantCuotas').AsString;
+  if ESTCUENTA.FieldByName('NroCuota').AsString = '0' then Recibo.CuotaDe:='Anticipo'
+   else Recibo.CuotaDe:=ESTCUENTA.FieldByName('NroCuota').AsString + ' DE ' + PLANES.FieldByName('CantCuotas').AsString;
+  //Recibo.CuotaDe:=ESTCUENTA.FieldByName('NroCuota').AsString + ' DE ' + PLANES.FieldByName('CantCuotas').AsString;
+  Recibo.NroUsuario:=Modulo2.Usuario.UsuNro;
+  if strtofloat(trim(ESTCUENTA.FieldByName('TotalCuota').AsString)) < 1000000.00 then begin
+   imp:='30';
+   Recibo.SubRubro:='1111104';
+   Recibo.PrimerV:=FechaAct;
+   Recibo.SegundoV:=Fec2doVenc;
+   Recibo.Importe1:=AnsiReplaceStr(trim(ESTCUENTA.FieldByName('TotalCuota').AsString),',','.');
+   Recibo.Importe2:=AnsiReplaceStr(trim(ESTCUENTA.FieldByName('TotalCuota').AsString),',','.');
+   Recibo.NroCobro:=modulo2.Sistema.PuntoV + RightStr(FechaAct,2) + ' - ' + imp + '90';
+   Recibo.Importe1:=FormatFloat('000000.00',StrToFloat(Recibo.Importe1));
+   dmi:='927' + StrFill(AnsiReplaceStr(Recibo.Importe1,'.',''),8,'0','');
+   tmp:=FechaAct;
+   dmi:=dmi + RightStr(tmp,2);
+   dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),Recibo.PrimerV),3,'0','');
+   dmi:=dmi + StrFill(modulo2.Sistema.PuntoV,2,'0','') + RightStr(tmp,2);
+   dmi:=dmi + imp + '01';
+   dmi:=dmi + Recibo.NroLiquidacion + '0';
+   dmi:=dmi + StrFill(AnsiReplaceStr(Recibo.Importe1,'.',''),8,'0','');
+   dmi:=dmi + RightStr(tmp,2);
+   dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),Recibo.SegundoV),3,'0','');
+   dmi:=dmi + digitos(dmi, 1);
+   Recibo.NroCodBar:=dmi;
+  end
+  else begin
+   Recibo.SubRubro:='1111104';
+   imp:='30';
+   Recibo.PrimerV:=FechaAct;
+   Recibo.SegundoV:=Fec2doVenc;
+   Recibo.Importe1:=AnsiReplaceStr(trim(ESTCUENTA.FieldByName('TotalCuota').AsString),',','.');
+   Recibo.Importe2:=AnsiReplaceStr(trim(ESTCUENTA.FieldByName('TotalCuota').AsString),',','.');
+   Recibo.NroCobro:=modulo2.Sistema.PuntoV + RightStr(FechaAct,2) + ' - ' + imp + '90';
+   Recibo.Importe1:=FormatFloat('0000000.00',StrToFloat(Recibo.Importe1));
+   tmp:=FechaAct;
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+   DataSet3:=TADODataSet.Create(nil);
+   DataSet3.Connection:=Cnx2;
+   DataSet3.CommandText:='select codbar from [ComercioTasa].[dbo].[TodosCodbar] ('
+   + chr(39) + trim(ESTCUENTA.FieldByName('TotalCuota').AsString) + chr(39)
+   + ' , ' + chr(39) + FechaAct + chr(39)
+   + ' , ' + chr(39) + trim(ESTCUENTA.FieldByName('TotalCuota').AsString) + chr(39)
+   + ' , ' + chr(39) + Fec2doVenc + chr(39)
+   + ' , ' + chr(39) + Recibo.SubRubro + chr(39) + ' , 0 '
+   //+ ' , ' + chr(39) + trim(grilla5.Cells[0,1]) + chr(39)
+   + ' , ' + chr(39) + Recibo.NroLiquidacion + chr(39)
+   + ' , ' + chr(39) + modulo2.Sistema.PuntoV + chr(39) + ')';
+   DataSet3.Open;
+   dmi:=DataSet3.Fields[0].AsString;
+   Recibo.NroCodBar:=dmi;
+   //Recibo.NroLiquidacion:=StrFill(DataSet3.Fields[0].AsString,7,'0','');
+   DataSet3.Close;
+  end;
+
+  try
+   Com1:=TADOCommand.Create(nil);
+   Com1.Connection:=Cnx2;
+   if titrespo =false  then begin
+     DataSet3.CommandText:='EXEC SPA_tasaanualLiquidacion '   + chr(39) + Recibo.CuimTit + chr(39)
+     + ' , ' + Recibo.NroPlan
+     + ' ,NULL, NULL, '  + MidStr(Recibo.CuimTit,4,8)
+     + ' , ' + chr(39) + LeftStr(Recibo.NombreTit,50) + chr(39)
+     + ' , ' + 'NULL, ' + Recibo.Importe1
+     //+ ' , ' + chr(39) + Fec2doVenc + chr(39)
+     + ' , ' + chr(39) + Recibo.SegundoV  + chr(39)
+     + ' , ' + Recibo.Importe1
+     + ' , ' + chr(39) + Recibo.SegundoV + chr(39)
+     + ' , ' + RightStr(tmp,4)
+     + ' , ' + imp + '90 ,' + Recibo.NroLiquidacion
+     + ' , ' + chr(39) + Recibo.NroCodBar + chr(39)
+     + ' , ' + Modulo2.Sistema.PuntoV
+     + ' , ' + Modulo2.Usuario.UsuNro
+     + ' , ' + LeftStr(Recibo.SubRubro,5) + ' , NULL, NULL, 1, 1, 0, 0, ' + Recibo.SubRubro;
+     DataSet3.Open;
+     Recibo.IdRegistro:=DataSet3.Fields[0].AsString;
+     DataSet3.Close;
+   end
+   else begin
+     DataSet3.CommandText:='EXEC SPA_tasaanualLiquidacion '   + chr(39) + Recibo.CuimRespo + chr(39)
+     + ' , ' + Recibo.NroPlan
+     + ' ,NULL, NULL, '  + MidStr(Recibo.CuimRespo,4,8)
+     + ' , ' + chr(39) + LeftStr(Recibo.NombreRespo,50) + chr(39)
+     + ' , ' + 'NULL, ' + Recibo.Importe1
+     //+ ' , ' + chr(39) + Fec2doVenc + chr(39)
+     + ' , ' + chr(39) + Recibo.SegundoV  + chr(39)
+     + ' , ' + Recibo.Importe1
+     + ' , ' + chr(39) + Recibo.SegundoV + chr(39)
+     + ' , ' + RightStr(tmp,4)
+     + ' , ' + imp + '90 ,' + Recibo.NroLiquidacion
+     + ' , ' + chr(39) + Recibo.NroCodBar + chr(39)
+     + ' , ' + Modulo2.Sistema.PuntoV
+     + ' , ' + Modulo2.Usuario.UsuNro
+     + ' , ' + LeftStr(Recibo.SubRubro,5) + ' , NULL, NULL, 1, 1, 0, 0, ' + Recibo.SubRubro;
+     DataSet3.Open;
+     Recibo.IdRegistro:=DataSet3.Fields[0].AsString;
+     DataSet3.Close;
+   end;
+   //DataSet3.CommandText:='EXEC SPA_tasaanualLiquidacion ' + chr(39) + Recibo.CuimTit + chr(39)
+   //+ ' , ' + Recibo.NroPlan + ' , NULL, NULL, ' + MidStr(Recibo.CuimTit,4,8)
+   //+ ' , ' + chr(39) + LeftStr(Recibo.NombreTit,50) + chr(39)
+   //+ ' , NULL, ' + Recibo.Importe1
+   //+ ' , ' + chr(39) + Fec2doVenc + chr(39)   //+ chr(39) + Recibo.PrimerV + chr(39) + ' , '
+   //+ ' , ' + Recibo.Importe1
+   //+ ' , ' + chr(39) + Recibo.SegundoV + chr(39)
+   //+ ' , ' + RightStr(tmp,4)
+   //+ ' , ' + imp + '90 ,'+ Recibo.NroLiquidacion
+   //+ ' , ' + chr(39) + Recibo.NroCodBar + chr(39)
+   //+ ' , ' + Modulo2.Sistema.PuntoV
+   //+ ' , ' + Modulo2.Usuario.UsuNro
+   //+ ' , ' + LeftStr(Recibo.SubRubro,5) + ', NULL, NULL, 1, 1, 0, 0, ' + Recibo.SubRubro;
+   //DataSet3.Open;
+   //Recibo.IdRegistro:=DataSet3.Fields[0].AsString;
+   //DataSet3.Close;
+
+   if ESTCUENTA.FieldByName('NroCuota').AsString = 'Anticipo' then anticipo:='0'
+    else anticipo:=ESTCUENTA.FieldByName('NroCuota').AsString;
+
+   Com1.CommandText:='EXEC SPA_TasaAnualLiquidacionCuotas ' + Recibo.IdRegistro
+   + ' , ' + RightStr(tmp,4)
+   //+ ' , ' + ESTCUENTA.FieldByName('NroCuota').AsString
+   //+ ' , ' + ESTCUENTA.FieldByName('NroCuota').AsString + StrFill(trim(PLANES.FieldByName('CantCuotas').AsString),2,'0','')
+   + ' , ' + anticipo
+   + ' , ' + anticipo + StrFill(trim(PLANES.FieldByName('CantCuotas').AsString),2,'0','')
+   + ' , ' + Recibo.NroLiquidacion
+   + ' , ' + modulo2.Sistema.PuntoV
+   + ' , NULL , ' + Recibo.Importe1  + ' ,0 , ' + Recibo.Importe1 + ' , 0, 0, 0, '  + Recibo.SubRubro;
+   Com1.Execute;
+   Result:=true;
+  except
+   on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+    Result:=false;
+   end;
+  end;
+  FreeAndNil(DataSet3);
+  FreeAndNil(Com1);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+end;
+
+procedure  TImpresionPlanes.ImprimeRecibo();
+var ReporteRst: TfrxReport;
+    t,y:integer;
+    dmi:widestring;
+    tmp:string;
+begin
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  //if strtofloat(Recibo.Importe1) < 1000000.00 then ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\LiquidacionPP.fr3')
+  // else ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\LiquidacionPP2.fr3');
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\LiquidacionPP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo3')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo4')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  ReporteRst.Variables['NombreTit'] := QuotedStr(Recibo.NombreTit);
+  ReporteRst.Variables['CuimTit'] := QuotedStr(Recibo.CuimTit);
+  ReporteRst.Variables['DomicilioTit'] := QuotedStr(Recibo.DomicilioTit);
+  ReporteRst.Variables['NombreRespo'] := QuotedStr(Recibo.NombreRespo);
+  ReporteRst.Variables['CuimRespo'] := QuotedStr(Recibo.CuimRespo);
+  ReporteRst.Variables['DomicilioRespo'] := QuotedStr(Recibo.DomicilioRespo);
+  ReporteRst.Variables['CuotaDe'] := QuotedStr(Recibo.CuotaDe);
+  ReporteRst.Variables['Anio'] := QuotedStr(Recibo.Anio);
+  ReporteRst.Variables['NroPlan'] := QuotedStr(Recibo.NroPlan);
+  ReporteRst.Variables['NroCuota'] := QuotedStr(Recibo.NroCuota);
+  ReporteRst.Variables['FechaIni'] := QuotedStr(Recibo.FechaIni);
+  ReporteRst.Variables['CantObj'] := QuotedStr(Recibo.CantObj);
+  ReporteRst.Variables['Objetos'] := QuotedStr(Recibo.Objetos);
+  ReporteRst.Variables['DetalleRecibo'] := QuotedStr(Recibo.DetalleRecibo);
+  ReporteRst.Variables['NroCobro'] := QuotedStr(Recibo.NroCobro);
+  ReporteRst.Variables['NroLiquidacion'] := QuotedStr(Recibo.NroLiquidacion);
+  ReporteRst.Variables['PrimerV'] := QuotedStr(Fec2doVenc);
+  ReporteRst.Variables['Importe1'] := QuotedStr(Recibo.Importe1);
+  ReporteRst.Variables['SegundoV'] := QuotedStr(Recibo.SegundoV);
+  ReporteRst.Variables['Importe2'] := QuotedStr(Recibo.Importe2);
+  Recibo.CodBar:=codigo_bar(Recibo.NroCodBar);
+  ReporteRst.Variables['CodBar'] := QuotedStr(Recibo.CodBar);
+  ReporteRst.Variables['NroCodBar'] := QuotedStr(Recibo.NroCodBar);
+  ReporteRst.Variables['TituloDesc'] := QuotedStr(Recibo.TituloDesc);
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(ReporteRst);
+end;
+
+procedure  TImpresionPlanes.ImprimeResumen();
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2: TfrxDBDataset;
+    DtsObjetos :TClientDataSet;
+    t,y:integer;
+begin
+ try
+  DtsObjetos:=TClientDataSet.Create(nil);
+  DtsObjetos.FieldDefs.Clear;
+  DtsObjetos.Active:=False;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Orden';DataType:=ftInteger;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Impuesto';DataType:=ftString;Size:=50;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Objeto';DataType:=ftString;Size:=20;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Detalle';DataType:=ftString;Size:=50;
+  end;
+  DtsObjetos.CreateDataSet;
+  DtsObjetos.Active:=True;
+  y:=1;
+  for t:=0 to Objetos.CantObjetos-1 do begin
+   DtsObjetos.Append;
+   DtsObjetos.FieldValues['Orden']:=y;
+   DtsObjetos.FieldValues['Impuesto']:=Objetos.Rubro.Strings[t];
+   DtsObjetos.FieldValues['Objeto']:=Objetos.CodObjeto.Strings[t];
+   DtsObjetos.FieldValues['Detalle']:=Objetos.Descripcion.Strings[t];
+   DtsObjetos.Post;
+   y:=y+1;
+  end;
+ except
+    on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+
+//Imprimiendo
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB2:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsObjetos;
+  frxDB2.DataSet:=ESTCUENTA;
+  frxDB1.UserName:='frxDBDataset1';
+  frxDB2.UserName:='frxDBDataset2';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.DataSets.Add(frxDB2);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\ResumenPP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  ReporteRst.Variables['NroPlan'] := QuotedStr(PLANES.FieldByName('NroPlan').AsString);
+  ReporteRst.Variables['NomTitular'] := QuotedStr(Recibo.NombreTit);
+  ReporteRst.Variables['DomTitular'] := QuotedStr(Recibo.DomicilioTit);
+  ReporteRst.Variables['NomRespo'] := QuotedStr(Recibo.NombreRespo);
+  ReporteRst.Variables['DomRespo'] := QuotedStr(Recibo.DomicilioRespo);
+  ReporteRst.Variables['CuimTitular'] := QuotedStr(Recibo.CuimTit);
+  ReporteRst.Variables['FechaPlan'] := QuotedStr(Recibo.FechaIni);   //QuotedStr('03/12/2015');//
+  ReporteRst.Variables['EstadoPlan'] := QuotedStr(EstadoAct);
+  ReporteRst.Variables['TotalPlan'] := QuotedStr(FloatToStr(tot1));
+  ReporteRst.Variables['ParaCancelar'] := QuotedStr(FloatToStr(tot2));
+  ReporteRst.Variables['CantCuotas'] := QuotedStr(PLANES.FieldByName('CantCuotas').AsString);
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);  //326; //
+  ReporteRst.ShowReport;
+ except
+    on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(frxDB1);
+ FreeAndNil(frxDB2);
+ FreeAndNil(ReporteRst);
+ FreeAndNil(DtsObjetos);
+end;
+
+procedure TImpresionPlanes.ReasignarCuotasPagadas1Click(Sender: TObject);
+begin
+ CambiaCuota.Visible:=true;
+ lascuotas.SetFocus;
+end;
+
+procedure TImpresionPlanes.ReimpresindePlanillaDDJJ1Click(Sender: TObject);
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2,frxDB3: TfrxDBDataset;
+    DtsObjetos, DtsCuotas:TClientDataSet;
+    DataSet3:TADODataSet;
+    t,y,r:integer;
+    dmi, impCta:string;
+    ps:boolean;
+    Cnx2:TADOConnection;
+begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectDb;
+  Cnx2.LoginPrompt:=false;
+ try
+  DtsObjetos:=TClientDataSet.Create(nil);
+  DtsObjetos.FieldDefs.Clear;
+  DtsObjetos.Active:=False;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Orden';DataType:=ftInteger;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Impuesto';DataType:=ftString;Size:=50;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Objeto';DataType:=ftString;Size:=20;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Detalle';DataType:=ftString;Size:=50;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='IdSubRubro';DataType:=ftString;Size:=20;
+  end;
+  DataSet3:=TADODataSet.Create(nil);
+  DataSet3.Connection:=Cnx2;
+  DataSet3.CommandText:='SELECT Id, Identificador, IdSubRubro, Objeto, DetalleObjeto,Rubro, '
+  + 'DetalleConcatenado FROM dbo.Fn_PlanPagoObjeto (' + PLANES.FieldByName('NroPlan').AsString + ') ORDER BY Id';
+  DataSet3.Open;
+  DtsObjetos.CreateDataSet;
+  DtsObjetos.Active:=True;
+  y:=1;
+  for t:=1 to DataSet3.RecordCount do begin
+   DataSet3.RecNo:=t;
+   DtsObjetos.Append;
+   DtsObjetos.FieldValues['Orden']:=y;
+   DtsObjetos.FieldValues['Impuesto']:=DataSet3.FieldByName('Rubro').AsString;
+   DtsObjetos.FieldValues['Objeto']:=DataSet3.FieldByName('Objeto').AsString;
+   DtsObjetos.FieldValues['Detalle']:=DataSet3.FieldByName('DetalleObjeto').AsString;
+   DtsObjetos.FieldValues['IdSubRubro']:=DataSet3.FieldByName('IdSubRubro').AsString;
+   DtsObjetos.Post;
+   y:=y+1;
+  end;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+ DataSet3.Close;
+
+ try
+  DtsCuotas:=TClientDataSet.Create(nil);
+  DtsCuotas.FieldDefs.Clear;
+  DtsCuotas.Active:=False;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='NroCuota';DataType:=ftInteger;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='FecVen';DataType:=ftString;Size:=50;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='Capital';DataType:=ftString;Size:=20;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='Interes';DataType:=ftString;Size:=50;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='Total';DataType:=ftString;Size:=20;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='cuota';DataType:=ftString;Size:=20;
+  end;
+  DtsCuotas.CreateDataSet;
+  DtsCuotas.Active:=True;
+  DataSet3.CommandText:='SELECT NroCuota , convert(char(10),FechaVencimiento,103) as FechaVencimiento, Capital, Interes, ImporteTotal ,'
+  + 'case when NroCuota = 0 then ''Anticipo'' else convert(nvarchar(10),NroCuota) end as cuota '
+  + 'FROM PlanPagoCuota WHERE (NroPlan = ' + PLANES.FieldByName('NroPlan').AsString + ') ORDER BY Id';
+  DataSet3.Open;
+  impCta:='';
+  for t:=1 to DataSet3.RecordCount do begin
+   DataSet3.RecNo:=t;
+   if t = 1 then impCta:=DataSet3.FieldByName('ImporteTotal').AsString;
+   DtsCuotas.Append;
+   //DtsCuotas.FieldValues['NroCuota']:=DataSet3.FieldByName('NroCuota').AsString;
+   DtsCuotas.FieldValues['Cuota']:=DataSet3.FieldByName('Cuota').AsString;
+   DtsCuotas.FieldValues['FecVen']:=DataSet3.FieldByName('FechaVencimiento').AsString;
+   DtsCuotas.FieldValues['Capital']:=DataSet3.FieldByName('Capital').AsString;
+   DtsCuotas.FieldValues['Interes']:=DataSet3.FieldByName('Interes').AsString;
+   DtsCuotas.FieldValues['Total']:=DataSet3.FieldByName('ImporteTotal').AsString;
+   DtsCuotas.Post;
+  end;
+  DataSet3.Close;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+
+ try
+  DtsGrilla2:=TClientDataSet.Create(nil);
+  DtsGrilla2.FieldDefs.Clear;
+  DtsGrilla2.Active:=False;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Rubro';DataType:=ftString;Size:=50;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Descripcion';DataType:=ftString;Size:=50;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Objeto';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Periodo';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Importe';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='IntDev';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='ElSubtotal';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='CapitalRef';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='IntRem';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+     Name:='FechaDesde';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+     Name:='FechaHasta';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Saldo';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='CantPeriodos';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='TotalDesc';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='TotalFinal';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='SubRubro';DataType:=ftString;Size:=18;
+  end;
+  DtsGrilla2.CreateDataSet;
+  DtsGrilla2.Active:=True;
+  y:=1;
+  dmi:='';
+  DataSet3.CommandText:='SELECT dbo.PlanPagoObjeto.IdSubRubro, dbo.PlanPagoObjeto.Identificador, '
+  + 'dbo.PlanPagoObjeto.CodigoObjeto,dbo.PlanPagoRubro.Abreviatura, SUM(dbo.PlanPagoObjetoPeriodo.Capital) AS Capital, '
+  + 'SUM(dbo.PlanPagoObjetoPeriodo.Interes) AS Interes, SUM(dbo.PlanPagoObjetoPeriodo.SubTotal) AS SubTotal, '
+  + 'SUM(dbo.PlanPagoObjetoPeriodo.CapitalRef) AS CapitalRef, SUM(dbo.PlanPagoObjetoPeriodo.InteresRef) AS InteresRef, '
+  + 'SUM(dbo.PlanPagoObjetoPeriodo.SubTotalRef) AS SubTotalRef, SUM(dbo.PlanPagoObjetoPeriodo.TotalDescuento) AS TotalDescuento, '
+  + 'SUM(dbo.PlanPagoObjetoPeriodo.TotalPeriodo) AS TotalPeriodo, MIN(dbo.PlanPagoObjetoPeriodo.FechaVencimiento) AS FecDesde, '
+  + 'MAX(dbo.PlanPagoObjetoPeriodo.FechaVencimiento) AS FecHasta, Count(*) as CantPeriodos'
+  + ' FROM dbo.PlanPagoObjeto INNER JOIN '
+  + 'dbo.PlanPagoObjetoPeriodo ON dbo.PlanPagoObjeto.Id = dbo.PlanPagoObjetoPeriodo.IdPlanObjeto INNER JOIN '
+  + 'dbo.PlanPagoRubro ON dbo.PlanPagoRubro.IdSubRubro = dbo.PlanPagoObjeto.IdSubRubro '
+  + 'WHERE (dbo.PlanPagoObjeto.NroPlan = ' + PLANES.FieldByName('NroPlan').AsString
+  + ') GROUP BY dbo.PlanPagoObjeto.IdSubRubro, dbo.PlanPagoObjeto.Identificador, dbo.PlanPagoObjeto.CodigoObjeto, '
+  + 'dbo.PlanPagoRubro.Abreviatura ORDER BY 1';
+  DataSet3.Open;
+  for y:=1 to DataSet3.RecordCount do begin
+   DataSet3.RecNo:=y;
+   DtsGrilla2.Append;
+   DtsGrilla2.FieldValues['Rubro']:=DataSet3.FieldByName('Abreviatura').AsString;
+   DtsGrilla2.FieldValues['Descripcion']:=DataSet3.FieldByName('Abreviatura').AsString;
+   DtsGrilla2.FieldValues['Objeto']:=DataSet3.FieldByName('CodigoObjeto').AsString;
+   DtsGrilla2.FieldValues['Periodo']:='MULTIPLES';
+   DtsGrilla2.FieldValues['Importe']:=DataSet3.FieldByName('Capital').AsString;
+   DtsGrilla2.FieldValues['IntDev']:=DataSet3.FieldByName('Interes').AsString;
+   DtsGrilla2.FieldValues['ElSubtotal']:=DataSet3.FieldByName('SubTotal').AsString;
+   DtsGrilla2.FieldValues['CapitalRef']:=DataSet3.FieldByName('CapitalRef').AsString;
+   DtsGrilla2.FieldValues['IntRem']:=DataSet3.FieldByName('InteresRef').AsString;
+   DtsGrilla2.FieldValues['Saldo']:=DataSet3.FieldByName('SubTotalRef').AsString;
+   DtsGrilla2.FieldValues['CantPeriodos']:=DataSet3.FieldByName('CantPeriodos').AsString;
+   DtsGrilla2.FieldValues['TotalDesc']:=DataSet3.FieldByName('TotalDescuento').AsString;
+   DtsGrilla2.FieldValues['TotalFinal']:=DataSet3.FieldByName('TotalPeriodo').AsString;
+   DtsGrilla2.FieldValues['SubRubro']:=DataSet3.FieldByName('IdSubRubro').AsString;
+   DtsGrilla2.FieldValues['FechaDesde']:=DataSet3.FieldByName('FecDesde').AsString;
+   DtsGrilla2.FieldValues['FechaHasta']:=DataSet3.FieldByName('FecHasta').AsString;
+   DtsGrilla2.Post;
+  end;
+  DataSet3.Close;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+
+//Imprimiendo
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB2:=TfrxDBDataset.Create(nil);
+  frxDB3:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsObjetos;
+  frxDB2.DataSet:=DtsGrilla2;
+  frxDB3.DataSet:=DtsCuotas;
+  frxDB1.UserName:='frxDBDataset1';
+  frxDB2.UserName:='frxDBDataset2';
+  frxDB3.UserName:='frxDBDataset3';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.DataSets.Add(frxDB2);
+  ReporteRst.DataSets.Add(frxDB3);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\NewDecJuradaPP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  ReporteRst.Variables['NroPlan'] := QuotedStr(PLANES.FieldByName('NroPlan').AsString);
+
+  DataSet3.CommandText:='SELECT DISTINCT Cuim,Contribuyente as Nombre,TipoContribuyente,TipoDoc,DNI,Provincia,Barrio,Calle,'
+  + 'Altura,Piso,Depto,Manzana,Casa,Torre,Sector,Parcela,LoteRural,Domicilio,IdTipoContribuyente '
+  + ' FROM PlanesPagos.dbo.Fn_PlanPagoContribuyente (' + PLANES.FieldByName('NroPlan').AsString + ',1) ORDER BY Contribuyente';
+  DataSet3.Open;
+  for t:=1 to 2 do begin
+   DataSet3.Filtered:=false;
+   if t = 1 then DataSet3.Filter:='IdTipoContribuyente = 1'
+   else DataSet3.Filter:='IdTipoContribuyente <> 1';
+   DataSet3.Filtered:=true;
+   dmi:=trim(DataSet3.FieldByName('Barrio').AsString) + ' - ' + trim(DataSet3.FieldByName('Calle').AsString)
+        + trim(DataSet3.FieldByName('Altura').AsString);
+   if trim(DataSet3.FieldByName('Piso').AsString) <> '' then dmi:=dmi + ' - Pso: ' + DataSet3.FieldByName('Piso').AsString + ' - ';
+   if trim(DataSet3.FieldByName('Depto').AsString) <> '' then dmi:=dmi + ' - Dpto: ' + DataSet3.FieldByName('Depto').AsString + ' - ';
+   if trim(DataSet3.FieldByName('Manzana').AsString) <> '' then dmi:=dmi + ' - Mz: ' + DataSet3.FieldByName('Manzana').AsString + ' - ';
+   if trim(DataSet3.FieldByName('Casa').AsString) <> '' then dmi:=dmi + ' - Csa: ' + DataSet3.FieldByName('Casa').AsString + ' - ';
+   if trim(DataSet3.FieldByName('Torre').AsString) <> '' then dmi:=dmi + ' - Tr: ' + DataSet3.FieldByName('Torre').AsString + ' - ';
+   if trim(DataSet3.FieldByName('Sector').AsString) <> '' then dmi:=dmi + ' - Sct: ' + DataSet3.FieldByName('Sector').AsString + ' - ';
+   if trim(DataSet3.FieldByName('Parcela').AsString) <> '' then dmi:=dmi + ' - Prla: ' + DataSet3.FieldByName('Parcela').AsString + ' - ';
+   if trim(DataSet3.FieldByName('LoteRural').AsString) <> '' then dmi:=dmi + ' - Ltr: ' + DataSet3.FieldByName('LoteRural').AsString + ' - ';
+   if t = 1 then begin
+    ReporteRst.Variables['NomTitular'] := QuotedStr(DataSet3.FieldByName('Nombre').AsString);
+    ReporteRst.Variables['DomTitular'] := QuotedStr(dmi);
+    ReporteRst.Variables['CuimTitular'] := QuotedStr(DataSet3.FieldByName('Cuim').AsString);
+    ReporteRst.Variables['TpoCaracter'] := QuotedStr(DataSet3.FieldByName('TipoContribuyente').AsString);
+    ReporteRst.Variables['NroDni'] := QuotedStr(DataSet3.FieldByName('DNI').AsString);
+    ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(DataSet3.FieldByName('Nombre').AsString);
+    ReporteRst.Variables['ElDomSuscribe'] := QuotedStr(dmi);
+   end
+   else begin
+    ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(DataSet3.FieldByName('Nombre').AsString);
+    ReporteRst.Variables['NomRespo'] := QuotedStr(DataSet3.FieldByName('Nombre').AsString);
+    ReporteRst.Variables['DomRespo'] := QuotedStr(dmi);
+    ReporteRst.Variables['CuimRespo'] := QuotedStr(DataSet3.FieldByName('Cuim').AsString);
+    ReporteRst.Variables['TpoCaracter'] := QuotedStr(DataSet3.FieldByName('TipoContribuyente').AsString);
+    ReporteRst.Variables['NroDni'] := QuotedStr(DataSet3.FieldByName('DNI').AsString);
+   end;
+  end;
+  DataSet3.Close;
+  DataSet3.Connection:=nil;
+
+  if strtoint(PLANES.FieldByName('NroPlan').AsString) <= 338660  then begin
+    // planes viejos SIN cuota anticipo
+    ReporteRst.Variables['TotalDeuda'] := QuotedStr(PLANES.FieldByName('TotalAdeudado').AsString);
+    ReporteRst.Variables['TotalDeven'] := QuotedStr(PLANES.FieldByName('InteresDevengado').AsString);
+    ReporteRst.Variables['TotalRemit'] := QuotedStr(PLANES.FieldByName('InteresCondonado').AsString);
+    ReporteRst.Variables['TotInteres'] := QuotedStr(PLANES.FieldByName('InteresFinanciado').AsString);
+    ReporteRst.Variables['TotalSaldo'] := QuotedStr(PLANES.FieldByName('TotalFinanciado').AsString);
+    ReporteRst.Variables['CantCuotas'] := QuotedStr(PLANES.FieldByName('CantCuotas').AsString);
+    ReporteRst.Variables['ImporteCuota'] := QuotedStr(impCta);
+    ReporteRst.Variables['Vencimiento1'] := QuotedStr(PLANES.FieldByName('PrimerVto').AsString);
+    ReporteRst.Variables['Vencimiento2'] := QuotedStr(PLANES.FieldByName('UltimoVto').AsString);
+    ReporteRst.Variables['ElDomElectronico']:=QuotedStr(PLANES.FieldByName('Mail').AsString);;
+    ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(PLANES.FieldByName('PrimerVto').AsString,'DDMMAAAA'));
+    ReporteRst.Variables['FecActual'] := QuotedStr(FechaAct);
+    ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+    // ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, 31 de Enero de 2023');
+    // ReporteRst.Variables['FecActual'] := QuotedStr('31/01/2023');
+    // ReporteRst.Variables['NroUsuario'] := QuotedStr('769');
+  end
+  else begin
+    /// planes CON cuota anticipo
+    ReporteRst.Variables['TotalDeuda'] := QuotedStr(PLANES.FieldByName('TotalAdeudado').AsString);
+    ReporteRst.Variables['TotalDeven'] := QuotedStr(PLANES.FieldByName('InteresDevengado').AsString);
+    deudatot:= strtofloat(PLANES.FieldByName('TotalAdeudado').AsString) - impanticipo;
+    ReporteRst.Variables['TotalRemit'] := QuotedStr(floattostr(impanticipo));
+    ReporteRst.Variables['TotInteres'] := QuotedStr(PLANES.FieldByName('InteresFinanciado').AsString);
+    ReporteRst.Variables['TotalSaldo'] := QuotedStr(floattostr(deudatot));
+    ReporteRst.Variables['CantCuotas'] := QuotedStr(PLANES.FieldByName('CantCuotas').AsString);
+    ReporteRst.Variables['ImporteCuota'] := QuotedStr(floattostr(impprimercta));
+    ReporteRst.Variables['Vencimiento1'] := QuotedStr(primercta);
+    ReporteRst.Variables['Vencimiento2'] := QuotedStr(PLANES.FieldByName('UltimoVto').AsString);
+    ReporteRst.Variables['ElDomElectronico']:=QuotedStr(PLANES.FieldByName('Mail').AsString);;
+    ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(PLANES.FieldByName('PrimerVto').AsString,'DDMMAAAA'));
+    ReporteRst.Variables['FecActual'] := QuotedStr(FechaAct);
+    ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+    // ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, 31 de Enero de 2023');
+    // ReporteRst.Variables['FecActual'] := QuotedStr('31/01/2023');
+    // ReporteRst.Variables['NroUsuario'] := QuotedStr('769');
+  end;
+
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(DataSet3);
+ FreeAndNil(frxDB1);
+ FreeAndNil(frxDB2);
+ FreeAndNil(frxDB3);
+ FreeAndNil(ReporteRst);
+ FreeAndNil(DtsGrilla2);
+ FreeAndNil(DtsCuotas);
+ FreeAndNil(DtsObjetos);
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+end.

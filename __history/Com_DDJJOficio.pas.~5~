@@ -1,0 +1,490 @@
+unit Com_DDJJOficio;
+
+interface
+
+uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Menus, Vcl.StdCtrls, Vcl.Mask, RzEdit, Vcl.Grids,
+  Vcl.DBGrids, JvExDBGrids, JvDBGrid, JvgGroupBox, RzTabs, JvExStdCtrls,
+  JvBehaviorLabel, JvExExtCtrls, JvExtComponent, JvPanel, Vcl.ExtCtrls, ADODB,
+  StrUtils, Vcl.Buttons, JvExButtons, JvBitBtn, Data.DB, Vcl.ImgList,
+  Vcl.ToolWin, RzLabel, JvExGrids, JvStringGrid;
+
+
+type
+  TComercioDDJJOficio = class(TForm)
+    Panel0: TPanel;
+    JvPanel2: TJvPanel;
+    JvBehaviorLabel2: TJvBehaviorLabel;
+    Label20: TLabel;
+    Label14: TLabel;
+    PC1: TRzPageControl;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    GUARDA: TJvBitBtn;
+    ToolButton2: TToolButton;
+    JvBitBtn3: TJvBitBtn;
+    ToolButton3: TToolButton;
+    BORRA: TJvBitBtn;
+    JvgGroupBox2: TJvgGroupBox;
+    RzLabel3: TRzLabel;
+    RzLabel4: TRzLabel;
+    IDTH: TRzNumericEdit;
+    BUSCA: TJvBitBtn;
+    PERIO: TRzNumericEdit;
+    JvgGroupBox4: TJvgGroupBox;
+    JvDBGrid1: TJvDBGrid;
+    JvgGroupBox3: TJvgGroupBox;
+    Grilla1: TJvStringGrid;
+    MODIF1: TJvBitBtn;
+    BASEIMP: TRzNumericEdit;
+    RzLabel1: TRzLabel;
+    Label2: TLabel;
+    MOTIVO: TEdit;
+    procedure Panel0MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Label20Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    Function Consultas(nro: byte):string;
+    procedure Label14Click(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure MODIF1Click(Sender: TObject);
+    procedure Grilla1Click(Sender: TObject);
+    procedure JvDBGrid1CellClick(Column: TColumn);
+    procedure MOTIVOKeyPress(Sender: TObject; var Key: Char);
+    procedure MOTIVOExit(Sender: TObject);
+    procedure BASEIMPKeyPress(Sender: TObject; var Key: Char);
+    procedure BASEIMPChange(Sender: TObject);
+    procedure BORRAClick(Sender: TObject);
+    procedure GUARDAClick(Sender: TObject);
+    procedure JvDBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure BUSCAClick(Sender: TObject);
+    procedure IDTHKeyPress(Sender: TObject; var Key: Char);
+    procedure IDTHExit(Sender: TObject);
+    procedure PERIOKeyPress(Sender: TObject; var Key: Char);
+
+
+  private
+    gh, EsModif, ConDet:boolean;
+    DataSet1:TADODataSet;
+    DTS1: TDataSource;
+    FechaAct:string;
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  ComercioDDJJOficio: TComercioDDJJOficio;
+
+implementation
+
+{$R *.dfm}
+
+uses Unidad, Modulo, Sel_Periodo;
+
+procedure TComercioDDJJOficio.Label14Click(Sender: TObject);
+begin
+if Self.WindowState = wsNormal then Self.WindowState:=wsMaximized
+else Self.WindowState:=wsNormal;
+end;
+
+
+procedure TComercioDDJJOficio.Panel0MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ReleaseCapture();
+Perform( WM_SYSCOMMAND, $F012, 0 );
+end;
+
+
+procedure TComercioDDJJOficio.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+
+
+procedure TComercioDDJJOficio.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(DataSet1);
+end;
+
+procedure TComercioDDJJOficio.Label20Click(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TComercioDDJJOficio.FormCreate(Sender: TObject);
+begin
+gh:=false;
+DataSet1:=TADODataSet.Create(nil);
+DTS1:=TDataSource.Create(nil);
+DTS1.DataSet := DataSet1;
+JvDBGrid1.DataSource:= DTS1;
+end;
+
+procedure TComercioDDJJOficio.FormActivate(Sender: TObject);
+begin
+ if not(gh) then begin
+  FechaAct:=LeftStr(Fec_System(),10);
+  ConDet := false;
+  grilla1.Cells[0,0]:='N° Orden';
+  grilla1.Cells[1,0]:='N° Act';
+  grilla1.Cells[2,0]:='Cod. Rentas';
+  grilla1.Cells[3,0]:='Descripción';   //    Imp. Cuota
+  grilla1.Cells[4,0]:='Base Imponible';      //    Capital
+  grilla1.Cells[5,0]:='Alicuota';      //    Interes
+  grilla1.Cells[6,0]:='Minimo';
+  grilla1.Cells[7,0]:='Id';
+  grilla1.Cells[8,0]:='Mdf';
+
+  IDTH.SetFocus;
+ end;
+end;
+
+
+Function TComercioDDJJOficio.Consultas(nro: byte):string;
+var t, y:integer;
+    valor:string;
+    comando:widestring;
+    Cnx1:TADOConnection;
+    DataSet2: TADODataSet;
+begin
+ if nro = 1 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectComercio;
+
+    DataSet1.Close;
+    DataSet1.Connection:=Cnx1;
+    for t:=1 to grilla1.RowCount-1 do
+      for y:=0 to grilla1.ColCount-1 do grilla1.Cells[y,t]:='';
+
+    comando:='SELECT Id, Fecha, Periodo, BaseImponible, Interes, Monto, IdInscripcion, '
+    + 'Comentario, FECHABLQ FROM ComerciosDeudas WHERE (IDTH = ' + IDTH.Text + ') AND (Periodo = '
+    + PERIO.Text + ') AND (FechaBaja IS NULL)';
+    DataSet1.CommandText:=comando;
+    DataSet1.Open;
+    DataSet1.Connection:=nil;
+    Result:='';
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+ end;
+ if nro = 2 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectComercio;
+    ConDet := false;
+
+    DataSet2:=TADODataSet.Create(nil);
+    DataSet2.Connection:=Cnx1;
+
+    comando:='SELECT B.IdActividad, B.CodRenta, B.Concepto, A.BaseImponible, '
+    + 'A.Alicuota, A.Minimo, A.Id FROM ComerciosDeudasDet A INNER JOIN TiposActividades B ON '
+    + 'A.IdClasificacionActividad = B.IdActividad WHERE (IdDeuda = ' + DataSet1.FieldByName('Id').AsString
+    + ') ORDER BY A.ID;';
+    DataSet2.CommandText:=comando;
+    DataSet2.Open;
+    {grilla1.Cells[0,0]:='N° Orden';
+  grilla1.Cells[1,0]:='N° Act';
+  grilla1.Cells[2,0]:='Cod. Rentas';
+  grilla1.Cells[3,0]:='Descripción';   //    Imp. Cuota
+  grilla1.Cells[4,0]:='Base Imponible';      //    Capital
+  grilla1.Cells[5,0]:='Alicuota';      //    Interes
+  grilla1.Cells[6,0]:='Minimo';
+  grilla1.Cells[7,0]:='Id';
+  grilla1.Cells[8,0]:='Mdf';}
+
+    for t:=1 to DataSet2.RecordCount do begin
+      DataSet2.RecNo:=t;
+      grilla1.RowCount:=t+1;
+      grilla1.Cells[0,t]:=IntToStr(t);
+      grilla1.Cells[1,t]:=DataSet2.FieldByName('IdActividad').AsString;
+      grilla1.Cells[2,t]:=DataSet2.FieldByName('CodRenta').AsString;
+      grilla1.Cells[3,t]:=DataSet2.FieldByName('Concepto').AsString;
+      grilla1.Cells[4,t]:=DataSet2.FieldByName('BaseImponible').AsString;
+      grilla1.Cells[5,t]:=DataSet2.FieldByName('Alicuota').AsString;
+      grilla1.Cells[6,t]:=DataSet2.FieldByName('Minimo').AsString;
+      grilla1.Cells[7,t]:=DataSet2.FieldByName('Id').AsString;
+    end;
+
+
+    DataSet2.Connection:=nil;
+    FreeAndNil(DataSet2);
+    Result:='';
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+ end;
+
+ FreeAndNil(Cnx1);
+end;
+
+
+procedure TComercioDDJJOficio.IDTHExit(Sender: TObject);
+begin
+if trim(IDTH.Text) = '' then begin
+  messagedlg('El ID de TH no puede estar vacío',mtError,[mbok],0);
+  IDTH.SetFocus;
+end;
+
+end;
+
+procedure TComercioDDJJOficio.IDTHKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  PERIO.SetFocus;
+end;
+end;
+
+procedure TComercioDDJJOficio.PERIOKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  BUSCA.SetFocus;
+end;
+end;
+
+
+procedure TComercioDDJJOficio.JvDBGrid1CellClick(Column: TColumn);
+begin
+if DataSet1.RecordCount > 0 then begin
+  EsModif := false;
+  if DataSet1.FieldByName('FECHABLQ').AsString <> '' then begin
+    MOTIVO.Text := DataSet1.FieldByName('Comentario').AsString;
+    EsModif := true;
+  end;
+  Consultas(2) ;
+  MOTIVO.SetFocus
+end
+else messagedlg('No hay Cabecera de DDJJ para buscar su Detalle.',mtError,[mbok],0);
+end;
+
+procedure TComercioDDJJOficio.JvDBGrid1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+if trim(DataSet1.FieldByName('FECHABLQ').AsString) = '' then begin
+  JvDBGrid1.Canvas.Brush.Color:=clWindow;
+  JvDBGrid1.Canvas.FillRect(Rect);
+  JvDBGrid1.Canvas.Font.Color:= clBlack;
+end
+else begin
+  JvDBGrid1.Canvas.Brush.Color:=$00CECEFF;
+  JvDBGrid1.Canvas.FillRect(Rect);
+  JvDBGrid1.Canvas.Font.Color:= clBlack;
+end;
+JvDBGrid1.DefaultDrawColumnCell(Rect,Datacol,Column,State);
+end;
+
+procedure TComercioDDJJOficio.MOTIVOExit(Sender: TObject);
+begin
+if IDTH.Focused or PERIO.Focused or JvDBGrid1.Focused then
+else begin
+  if trim(MOTIVO.Text) = '' then begin
+    messagedlg('No se puede crear una DDJJ de oficio sin un Motivo',mtError,[mbok],0);
+    MOTIVO.SetFocus;
+  end;
+end;
+end;
+
+procedure TComercioDDJJOficio.BUSCAClick(Sender: TObject);
+begin
+GUARDA.Enabled:=false;
+Consultas(1);
+end;
+
+procedure TComercioDDJJOficio.MOTIVOKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  GRILLA1.SetFocus;
+end
+else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ-/ °@_',Key) <> nil) or (Key = Char(VK_BACK)) then
+  else Key := #0;
+end;
+end;
+
+
+procedure TComercioDDJJOficio.Grilla1Click(Sender: TObject);
+begin
+if grilla1.Cells[0,grilla1.Row] <> '' then begin
+   BASEIMP.Text:=grilla1.Cells[4,grilla1.Row];
+   BASEIMP.SetFocus;
+end
+else messagedlg('No existe aún un registro ACTIVO.',mtError,[mbok],0);
+end;
+
+
+procedure TComercioDDJJOficio.BASEIMPChange(Sender: TObject);
+begin
+MODIF1.Enabled:=true;
+end;
+
+procedure TComercioDDJJOficio.BASEIMPKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  if MODIF1.Enabled then MODIF1.SetFocus;
+end;
+end;
+
+
+procedure TComercioDDJJOficio.MODIF1Click(Sender: TObject);
+begin
+{grilla1.Cells[0,0]:='N° Orden';
+  grilla1.Cells[1,0]:='N° Act';
+  grilla1.Cells[2,0]:='Cod. Rentas';
+  grilla1.Cells[3,0]:='Descripción';   //    Imp. Cuota
+  grilla1.Cells[4,0]:='Base Imponible';      //    Capital
+  grilla1.Cells[5,0]:='Alicuota';      //    Interes
+  grilla1.Cells[6,0]:='Minimo';
+  grilla1.Cells[7,0]:='Id';
+  grilla1.Cells[8,0]:='Mdf';}
+
+grilla1.Cells[4,grilla1.Row]:=trim(BASEIMP.Text);
+grilla1.Cells[8,grilla1.Row]:='X';
+ConDet := true;
+BASEIMP.Text:='0';
+Modif1.Enabled:=false;
+GUARDA.Enabled:=true;
+end;
+
+procedure TComercioDDJJOficio.BORRAClick(Sender: TObject);
+var t,y:integer;
+begin
+ConDet := false;
+for t:=1 to grilla1.RowCount-1 do
+  for y:=0 to grilla1.ColCount-1 do grilla1.Cells[y,t]:='';
+BASEIMP.Text:='0';
+MOTIVO.Clear;
+DataSet1.Close;
+MODIF1.Enabled:=false;
+GUARDA.Enabled:=false;
+end;
+
+procedure TComercioDDJJOficio.GUARDAClick(Sender: TObject);
+var t: integer;
+    Cnx1:TADOConnection;
+    DataSet2: TADODataSet;
+    Com1:TADOCommand;
+    Comando:widestring;
+    BaseImponible, Id:string;
+
+    Function CalcBaseImponible():real;
+    var y : integer;
+        Total, MaxMin: real;
+
+    begin
+    Total := 0;MaxMin := 0;
+    for y := 1 to grilla1.RowCount-1 do begin
+      if StrToFloat(trim(grilla1.Cells[6,y])) > MaxMin then
+        MaxMin := StrToFloat(trim(grilla1.Cells[6,y]));
+
+      if StrToFloat(trim(grilla1.Cells[4,y])) <> 0 then
+        Total := Total + (StrToFloat(trim(grilla1.Cells[4,y])) * StrToFloat(trim(grilla1.Cells[5,y])));
+    end;
+    if Total > MaxMin then
+      Result := Total
+    else
+      Result := MaxMin;
+    end;
+
+begin
+t:=messagedlg('Desea GUARDAR los Datos de esta DDJJ de Oficio?',mtInformation,[mbok,mbCancel],0);
+if t = 1 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectComercio;
+
+    Com1:=TADOCommand.Create(nil);
+    Com1.Connection:=Cnx1;
+
+
+    if not EsModif then begin
+      if ConDet then begin
+        DataSet2:=TADODataSet.Create(nil);
+        DataSet2.Connection:=Cnx1;
+
+        BaseImponible := FloatToStr(CalcBaseImponible);
+
+        Comando := 'SPA_ComerciosDeudasDdjjOficio '
+        + DataSet1.FieldByName('Id').AsString + ' , '
+        + DataSet1.FieldByName('IdTH').AsString + ' , '
+        + DataSet1.FieldByName('Periodo').AsString + ' , '
+        + chr(39) + FechaAct + chr(39) + ' , '
+        + BaseImponible + ' , 0 , ' + BaseImponible + ' , '
+        + DataSet1.FieldByName('IdInscripcion').AsString + ' , '
+        + chr(39) + trim(MOTIVO.Text) + chr(39) + ' , '
+        + modulo2.Usuario.UsuNro;
+        DataSet2.CommandText := Comando;
+        DataSet2.Open;
+        Id := DataSet2.FieldByName('Id').AsString;
+        {grilla1.Cells[0,0]:='N° Orden';
+        grilla1.Cells[1,0]:='N° Act';
+        grilla1.Cells[2,0]:='Cod. Rentas';
+        grilla1.Cells[3,0]:='Descripción';   //    Imp. Cuota
+        grilla1.Cells[4,0]:='Base Imponible';      //    Capital
+        grilla1.Cells[5,0]:='Alicuota';      //    Interes
+        grilla1.Cells[6,0]:='Minimo';
+        grilla1.Cells[7,0]:='Id';
+        grilla1.Cells[8,0]:='Mdf';}
+        for t:=1 to grilla1.RowCount-1 do begin
+          Comando := 'SPA_ComerciosDeudasDetDdjjOficio '
+          + Id + ' , '
+          + ' , ' + grilla1.Cells[4,t]
+          + ' , ' + grilla1.Cells[5,t]
+          + ' , ' + grilla1.Cells[6,t]
+          + ' , ' + grilla1.Cells[1,t];
+          Com1.CommandText := Comando;
+          Com1.Execute;
+        end;
+        DataSet2.Close;
+        FreeAndNil(DataSet2);
+
+        Application.ProcessMessages;
+        messagedlg('Los datos de la DDJJ de Oficio se han guardado correctamente!!',mtConfirmation,[mbok],0);
+      end
+      else messagedlg('Solo se puede generar un DDJJ de Oficio si ha cambiado algún valor de Base Imponible',mterror,[mbok],0);
+    end
+    else begin
+      BaseImponible := FloatToStr(CalcBaseImponible);
+
+      Comando := 'SPM_ComerciosDeudasDdjjOficio '
+      + DataSet1.FieldByName('Id').AsString + ' , '
+      + BaseImponible + ' , 0 , ' + BaseImponible + ' , '
+      + chr(39) + trim(MOTIVO.Text) + chr(39);
+      Com1.CommandText := Comando;
+      Com1.Execute;
+
+      for t:=1 to grilla1.RowCount-1 do begin
+        Comando := 'SPM_ComerciosDeudasDetDdjjOficio '
+        + Id + ' , '
+        + ' , ' + grilla1.Cells[4,t];
+        Com1.CommandText := Comando;
+        Com1.Execute;
+      end;
+
+      Application.ProcessMessages;
+      messagedlg('Los datos de la DDJJ de Oficio se han Modificado correctamente!!',mtConfirmation,[mbok],0);
+    end;
+
+  except
+    on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+end;
+end;
+
+
+
+
+end.

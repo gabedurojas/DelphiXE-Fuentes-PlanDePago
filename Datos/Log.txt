@@ -1,0 +1,20 @@
+Busqueda de Deudas - 20/03/2026 10:02:11 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:02:22 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:03:02 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:26:45 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:27:08 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:28:39 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:31:55 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:33:58 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+Busqueda de Deudas - 20/03/2026 10:47:48 - Access violation at address 004D2078 in module 'PlanesPagos.exe'. Read of address 0000003C
+... - 07/04/2026 12:18:43 - [DBNETLIB][ConnectionRead (recv()).]Error general de red. Consulte la documentación de la red
+... - 07/04/2026 12:18:43 - SELECT Id, Texto, Identidad, EsContenedor, Rubro, Condeuda, CodObjeto, Descripcion, ImportePagado, Esplan, DetalleImpu, BajaProvisoria FROM Fn_ObjetosTree (95812 , 0)
+... - 07/04/2026 12:18:43 -  - 
+... - 15/07/2026 08:43:20 - La entidad de seguridad de servidor "AplPlanes" no puede tener acceso a la base de datos "MunicipalidadDigital" en el contexto de seguridad actual
+... - 15/07/2026 08:43:20 - SPP_PlanPagoDeuda 502 , '192.168.0.85' , 1111157 , 105 , 0 , '15/07/2026' , '15/07/2026'
+... - 24/08/2026 18:43:39 - La subconsulta ha devuelto más de un valor, lo que no es correcto cuando va a continuación de =, !=, <, <=, >, >= o cuando se utiliza como expresión
+... - 24/08/2026 18:43:39 - SPP_PlanPagoDeuda 502 , '192.168.0.85' , 1111201 , 5233 , 0 , '24/08/2026' , '24/08/2026'
+Busqueda de Deudas - 25/08/2026 10:34:56 - Access violation at address 004D2098 in module 'PlanesPagos.exe'. Read of address 0000003C
+... - 25/08/2026 18:11:03 - La subconsulta ha devuelto más de un valor, lo que no es correcto cuando va a continuación de =, !=, <, <=, >, >= o cuando se utiliza como expresión
+... - 25/08/2026 18:11:03 - SPP_PlanPagoDeuda 502 , '192.168.0.85' , 1111601 , 8085 , 0 , '25/08/2026' , '25/08/2026'
+Impresion de Intimaciones - 17/09/2026 08:30:55 - Error de conversión al convertir el valor nvarchar 'TASA DE UTILIZ. DE LA VIA PUB.' al tipo de datos int

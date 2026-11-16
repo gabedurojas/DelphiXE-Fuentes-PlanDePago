@@ -1,0 +1,533 @@
+unit AM_PlanPagpPagare;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Grids,
+  StdCtrls, Mask, ExtCtrls, ADODB, Buttons, JvExButtons,
+  JvBitBtn, JvExControls, JvScrollText, JvaScrollText, JvExExtCtrls,
+  JvExtComponent, JvContentScroller, Vcl.ToolWin, JvComponentBase,
+  JvEmbeddedForms, StrUtils, frxClass, frxDBSet, DB, DBClient, MIdasLib,
+  Vcl.ImgList;
+
+type
+  TAM_Pagares = class(TForm)
+    Barra1: TStatusBar;
+    PC1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    GroupBox1: TGroupBox;
+    Label48: TLabel;
+    L9: TEdit;
+    Label33: TLabel;
+    L8: TEdit;
+    L10: TEdit;
+    Label3: TLabel;
+    Label8: TLabel;
+    OBSERV: TEdit;
+    Label5: TLabel;
+    NROPAG: TEdit;
+    FECHA: TMaskEdit;
+    Label6: TLabel;
+    L11: TEdit;
+    Label4: TLabel;
+    Agrega: TJvBitBtn;
+    Imprime: TJvBitBtn;
+    GroupBox2: TGroupBox;
+    grilla2: TStringGrid;
+    GroupBox3: TGroupBox;
+    Label14: TLabel;
+    Label12: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label38: TLabel;
+    Label40: TLabel;
+    Label47: TLabel;
+    Label46: TLabel;
+    Label41: TLabel;
+    Label45: TLabel;
+    Label27: TLabel;
+    Label44: TLabel;
+    Label35: TLabel;
+    Label13: TLabel;
+    Label39: TLabel;
+    Label42: TLabel;
+    Label43: TLabel;
+    Label16: TLabel;
+    CUIM1: TMaskEdit;
+    CONTRIB: TEdit;
+    TPODOC: TEdit;
+    DNI: TEdit;
+    CALLE1: TEdit;
+    SECTOR1: TEdit;
+    PARCELA1: TEdit;
+    LOTERURAL1: TEdit;
+    Agrega_T: TJvBitBtn;
+    TORRE1: TEdit;
+    CASA1: TEdit;
+    CARACTER: TEdit;
+    MANZANA1: TEdit;
+    BARRIO1: TEdit;
+    PROVINCIA: TEdit;
+    ALTURA1: TMaskEdit;
+    PISO1: TEdit;
+    DPTO1: TEdit;
+    DOMI1: TEdit;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    SALE: TJvBitBtn;
+    ST1: TJvaScrollText;
+    FormularioEmb: TJvEmbeddedFormLink;
+    Label7: TLabel;
+    BUSCUIM1: TJvBitBtn;
+    ImageList1: TImageList;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Coloca1(nro:byte);
+    procedure BUSCUIM1Click(Sender: TObject);
+    procedure NROPAGKeyPress(Sender: TObject; var Key: Char);
+    procedure FECHAKeyPress(Sender: TObject; var Key: Char);
+    procedure FECHAExit(Sender: TObject);
+    procedure OBSERVKeyPress(Sender: TObject; var Key: Char);
+    procedure AgregaClick(Sender: TObject);
+    procedure Agrega_TClick(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ImprimeClick(Sender: TObject);
+    Procedure ImprimirPagare;
+    Procedure ImprimirResumen;
+  private
+    DataSet1:TADODataSet;
+    { Private declarations }
+  public
+    gf:boolean;{ Public declarations }
+  end;
+
+var
+  AM_Pagares: TAM_Pagares;
+
+implementation
+
+uses Busc_Cont, modulo, Unidad, SelecContribu, Busqueda;
+
+{$R *.dfm}
+procedure TAM_Pagares.FormCreate(Sender: TObject);
+begin
+gf:=false;
+end;
+
+procedure TAM_Pagares.FormActivate(Sender: TObject);
+begin
+if not(gf) then begin
+  gf:=true;
+  grilla2.Cells[0,0]:='Ord';
+  grilla2.Cells[1,0]:='N° Plan';
+  grilla2.Cells[2,0]:='Fecha Creación';
+  grilla2.Cells[3,0]:='Cuotas Orig.';
+  grilla2.Cells[4,0]:='Cuotas Adeudadas';
+  grilla2.Cells[5,0]:='Importe Deuda';
+  grilla2.Cells[6,0]:='Importe Pagare';
+  FECHA.Text:=strcut(Fec_System(),10);
+  PC1.ActivePage:=PC1.Pages[0];
+  BUSCUIM1.SetFocus;
+end;
+end;
+
+procedure TAM_Pagares.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(DataSet1);
+FreeAndNil(Self);
+end;
+
+procedure TAM_Pagares.Coloca1(nro:byte);
+var t,j:integer;
+var tot,tot1:real;
+var Seleccion_Contribu: TSeleccion_Contribu;
+begin
+if nro = 2 then begin
+  DataSet1:=TADODataSet.Create(nil);
+  DataSet1.ConnectionString:=modulo2.Sistema.ConectDb;
+  DataSet1.CommandText:='SELECT NroCuim,Nombre,TipoDoc,DNI,Provincia,Barrio,Calle,'
+  + 'Puerta,Piso,Dpto,Manzana,Casa,Torre,Sector,Parcela,LoteRural,Domicilio,'
+  + 'TipoContribuyente FROM Fn_PlanPagoPagare(' + chr(39) + trim(CUIM1.Text) + chr(39) + ');';
+  DataSet1.Open;
+  if DataSet1.RecordCount <> 0 then begin
+    Seleccion_Contribu:= TSeleccion_Contribu.create(self);
+    try
+      for t:=1 to DataSet1.RecordCount do begin
+        DataSet1.RecNo:=t;
+        Seleccion_Contribu.grilla4.RowCount:=t+1;
+        Seleccion_Contribu.grilla4.Cells[0,t]:=DataSet1.Fields[0].AsString;
+        Seleccion_Contribu.grilla4.Cells[1,t]:=DataSet1.Fields[1].AsString;
+        Seleccion_Contribu.grilla4.Cells[2,t]:=DataSet1.Fields[16].AsString;
+        Seleccion_Contribu.grilla4.Cells[3,t]:=DataSet1.Fields[3].AsString;
+        Seleccion_Contribu.grilla4.Cells[4,t]:=DataSet1.Fields[17].AsString;
+      end;
+      Seleccion_Contribu.ShowModal;
+      t:=Seleccion_Contribu.fila;
+    finally
+       Seleccion_Contribu.Free;
+    end;
+    DataSet1.RecNo:=t;
+    TPODOC.Text:=trim(DataSet1.Fields[2].AsString);
+    DNI.Text:=trim(DataSet1.Fields[3].AsString);
+    PROVINCIA.Text:=trim(DataSet1.Fields[4].AsString);
+    BARRIO1.Text:=trim(DataSet1.Fields[5].AsString);
+    CALLE1.Text:=trim(DataSet1.Fields[6].AsString);
+    ALTURA1.Text:=trim(DataSet1.Fields[7].AsString);
+    PISO1.Text:=trim(DataSet1.Fields[8].AsString);
+    DPTO1.Text:=trim(DataSet1.Fields[9].AsString);
+    MANZANA1.Text:=trim(DataSet1.Fields[10].AsString);
+    CASA1.Text:=trim(DataSet1.Fields[11].AsString);
+    TORRE1.Text:=trim(DataSet1.Fields[12].AsString);
+    SECTOR1.Text:=trim(DataSet1.Fields[13].AsString);
+    PARCELA1.Text:=trim(DataSet1.Fields[14].AsString);
+    LOTERURAL1.Text:=trim(DataSet1.Fields[15].AsString);
+    DOMI1.Text:=AnsiReplaceStr(trim(DataSet1.Fields[16].AsString),chr(33),chr(39));
+    CARACTER.Text:=trim(DataSet1.Fields[17].AsString);
+    Agrega_T.Enabled:=true;
+  end
+  else begin
+    messagedlg('Error!! El Contribuyente Seleccionado no posee ningun Plan de Pagos' + chr(13)
+     + 'Imposible Determinar el CARACTER del Mismo.',mterror,[mbok],0);
+     BUSCUIM1.SetFocus;
+  end;
+  DataSet1.Close;
+  FreeAndNil(DataSet1);
+end;
+if nro = 3 then begin
+  Agrega.Enabled:=false;
+  for t:=0 to grilla2.ColCount-1 do
+    for j:=1 to grilla2.RowCount-1 do grilla2.Cells[t,j]:='';
+  grilla2.RowCount:=2;
+  DataSet1:=TADODataSet.Create(nil);
+  DataSet1.ConnectionString:=modulo2.Sistema.ConectDb;
+  DataSet1.CommandText:='SELECT NroPlan,FechaCreacion,CuotasOrig,CuotasAdeudadas,'
+  + 'ImporteDeuda,ImportePagare from Fn_PlanPagoCalculoPagare (' + chr(39) + trim(CUIM1.Text)
+  + chr(39) + ') ORDER BY NroPlan';
+  DataSet1.Open;
+  if DataSet1.RecordCount <> 0 then begin
+    tot:=0;tot1:=0;
+    for t:=1 to DataSet1.RecordCount do begin
+      DataSet1.RecNo:=t;
+      grilla2.RowCount:=t+1;
+      grilla2.Cells[0,t]:=completa1(inttostr(t),2,'0');
+      grilla2.Cells[1,t]:=trim(DataSet1.FieldByName('NroPlan').AsString);
+      grilla2.Cells[2,t]:=strcut(trim(DataSet1.FieldByName('FechaCreacion').AsString),10);
+      grilla2.Cells[3,t]:=trim(DataSet1.FieldByName('CuotasOrig').AsString);
+      grilla2.Cells[4,t]:=trim(DataSet1.FieldByName('CuotasAdeudadas').AsString);
+      grilla2.Cells[5,t]:=AnsiReplaceStr(trim(DataSet1.FieldByName('ImporteDeuda').AsString),',','.');
+      grilla2.Cells[6,t]:=AnsiReplaceStr(trim(DataSet1.FieldByName('ImportePagare').AsString),',','.');
+      tot:=tot + DataSet1.FieldByName('ImporteDeuda').AsFloat;
+      tot1:=tot1 + DataSet1.FieldByName('ImportePagare').AsFloat;
+    end;
+    L9.Text:=inttostr(DataSet1.RecordCount);
+    L8.Text:=floattostr(tot);
+    L10.Text:=floattostr(tot * 0.3);
+    L11.Text:=floattostr(tot1);
+    ST1.Lines.Clear;
+    if tot > 2500 then begin
+      Agrega.Enabled:=true;
+      ST1.Visible:=false;
+      //ST1.Scroll:=false;
+    end
+    else begin
+      ST1.Lines.Append(' EL IMPORTE');
+      ST1.Lines.Append(' NO ALCANZA');
+      ST1.Lines.Append(' PARA PAGARE');
+      ST1.Visible:=true;
+      //ST1.Scroll:=true;
+    end;
+  end
+  else messagedlg('Sin Planes Activos para Pagaré',mtWarning,[mbok],0);
+  DataSet1.Close;
+  FreeAndNil(DataSet1);
+end;
+end;
+
+procedure TAM_Pagares.BUSCUIM1Click(Sender: TObject);
+var Bus_Titulares:TBus_Titulares;
+begin
+try
+  CONTRIB.Clear;
+  ALTURA1.Text:='0';
+  PISO1.Clear;
+  DPTO1.Clear;
+  MANZANA1.Clear;
+  CASA1.Clear;
+  TORRE1.Clear;
+  SECTOR1.Clear;
+  PARCELA1.Clear;
+  LOTERURAL1.Clear;
+  DOMI1.Clear;
+  Agrega_T.Enabled:=False;
+  Bus_Titulares:=TBus_Titulares.Create(self);
+  Bus_Titulares.NroOpcion:=2;
+  Bus_Titulares.ShowModal;
+  if Bus_Titulares.ConSelec then begin
+    CONTRIB.Text:=Bus_Titulares.TITULARES.FieldByName('Nombre').AsString;
+    CUIM1.Text:=Bus_Titulares.TITULARES.FieldByName('CUIM').AsString;
+    TPODOC.Text:=Bus_Titulares.TITULARES.FieldByName('TipoDoc').AsString;
+    DNI.Text:=Bus_Titulares.TITULARES.FieldByName('DNI').AsString;
+    PROVINCIA.Text:=Bus_Titulares.TITULARES.FieldByName('PROVINCIA').AsString;
+    BARRIO1.Text:=Bus_Titulares.TITULARES.FieldByName('Barrio').AsString;
+    CALLE1.Text:=Bus_Titulares.TITULARES.FieldByName('Calle').AsString;
+    ALTURA1.Text:=Bus_Titulares.TITULARES.FieldByName('Altura').AsString;
+    PISO1.Text:=Bus_Titulares.TITULARES.FieldByName('Piso').AsString;
+    DPTO1.Text:=Bus_Titulares.TITULARES.FieldByName('Depto').AsString;
+    MANZANA1.Text:=Bus_Titulares.TITULARES.FieldByName('Manzana').AsString;
+    CASA1.Text:=Bus_Titulares.TITULARES.FieldByName('Casa').AsString;
+    TORRE1.Text:=Bus_Titulares.TITULARES.FieldByName('Torre').AsString;
+    SECTOR1.Text:=Bus_Titulares.TITULARES.FieldByName('Sector').AsString;
+    PARCELA1.Text:=Bus_Titulares.TITULARES.FieldByName('Parcela').AsString;
+    LOTERURAL1.Text:=Bus_Titulares.TITULARES.FieldByName('LoteRural').AsString;
+    DOMI1.Text:=Bus_Titulares.TITULARES.FieldByName('Domicilio').AsString;
+    CARACTER.Text:=Bus_Titulares.TITULARES.FieldByName('TipoContribuyente').AsString;
+    //CONTRIB.SetFocus;
+    Agrega_T.Enabled:=true;
+    Agrega_T.SetFocus;
+  end;
+finally
+  FreeAndNIl(Bus_Titulares);
+end;
+end;
+
+procedure TAM_Pagares.NROPAGKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then FECHA.SetFocus
+else begin
+  if ( StrScan('0123456789',Key) <> nil ) or
+     ( Key = Char(VK_BACK) ) then
+  else Key := #0;
+end;
+end;
+
+procedure TAM_Pagares.FECHAKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then OBSERV.SetFocus;
+end;
+
+procedure TAM_Pagares.FECHAExit(Sender: TObject);
+var kl:Tdatetime;
+begin
+try
+  kl:=strtodate(trim(FECHA.Text));
+except
+  messagedlg('La Fecha Ingresada No es Válida',mterror,[mbok],0);
+  FECHA.SetFocus;
+end;
+end;
+
+procedure TAM_Pagares.OBSERVKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  if Agrega.Enabled = true then Agrega.SetFocus;
+end;
+end;
+
+procedure TAM_Pagares.SALEClick(Sender: TObject);
+begin
+close;
+end;
+
+procedure TAM_Pagares.AgregaClick(Sender: TObject);
+var gf,t:integer;
+    id:string;
+    comando:widestring;
+    Com1:TADOCommand;
+begin
+gf:=messagedlg('Desea Guardar los Datos del Pagaré?' ,mtWarning,[mbok,mbCancel],0);
+if gf = 1 then begin
+  id:='0';
+  try
+    if strtoint(trim(NROPAG.Text)) <> 0 then id:=trim(NROPAG.Text);
+  except
+  end;
+  try
+    Com1:=TADOCommand.Create(nil);
+    Com1.ConnectionString:=modulo2.Sistema.ConectDb;
+
+    DataSet1:=TADODataSet.Create(nil);
+    if id = '0' then begin
+      DataSet1.ConnectionString:=modulo2.Sistema.ConectUsu;
+      comando:='darmaximonro ' + chr(39) + 'PAGARES' + chr(39);
+      DataSet1.CommandText:=comando;
+      DataSet1.Open;
+      id:=trim(DataSet1.Fields[0].AsString);
+      NROPAG.Text:=completa1(id,8,'0');
+      NROPAG.Enabled:=false;
+      DataSet1.Close;
+    end;
+
+    comando:='EXEC SPA_PlanPagoPagare '
+    + Id + ' , '
+    + chr(39) + trim(FECHA.Text) + chr(39) + ' , '
+    + chr(39) + trim(CUIM1.Text) + chr(39) + ' , '
+    + chr(39) + AnsiReplaceStr(trim(CONTRIB.Text),chr(39),chr(33)) + chr(39) + ' , '
+    + AnsiReplaceStr(trim(L11.Text),',','.') + ' , '
+    + AnsiReplaceStr(trim(L8.Text),',','.') + ' , '
+    + chr(39) + AnsiReplaceStr(trim(OBSERV.Text),chr(39),chr(33)) + chr(39) + ' , '
+    + modulo2.Usuario.UsuNro + ' , '
+    + chr(39) + modulo2.Sistema.MyHost + chr(39) + ' , '
+    + chr(39) + modulo2.Sistema.MyIP + chr(39);
+
+    DataSet1.ConnectionString:=modulo2.Sistema.ConectDb;
+    DataSet1.CommandText:=comando;
+    DataSet1.Open;
+    id:=DataSet1.Fields[0].AsString;
+    DataSet1.Close;
+
+    {grilla2.Cells[0,0]:='Ord';                      grilla2.Cells[1,0]:='N° Plan';
+    grilla2.Cells[2,0]:='Fecha Creación';            grilla2.Cells[3,0]:='Cuotas Orig.';
+    grilla2.Cells[4,0]:='Cuotas Adeudadas';          grilla2.Cells[5,0]:='Importe Deuda';
+    grilla2.Cells[6,0]:='Importe Pagare';       }
+    for t:=1 to grilla2.RowCount-1 do begin
+      comando:='EXEC SPA_PlanPagoPagarePlan '
+      + id + ' , '
+      + grilla2.Cells[1,t] + ' , '  //nroplan
+      + grilla2.Cells[3,t] + ' , '  // cant cuotas
+      + grilla2.Cells[6,t] + ' , '  // importe pagare
+      + modulo2.Usuario.UsuNro + ' , '
+      + chr(39) + modulo2.Sistema.MyHost + chr(39) + ' , '
+      + chr(39) + modulo2.Sistema.MyIP + chr(39);
+      Com1.CommandText:=comando;
+      Com1.Execute;
+    end;
+
+    Imprime.Enabled:=true;
+    Agrega.Enabled:=false;
+    messagedlg('Pagare Guardado Correctamente' ,mtConfirmation,[mbok],0);
+  except
+    EnviarLog(self.Caption,comando);
+    messagedlg('ERROR al Guardar los datos',mterror,[mbok],0);
+  end;
+  FreeAndNil(Com1);
+  FreeAndNil(DataSet1);
+end;
+end;
+
+procedure TAM_Pagares.Agrega_TClick(Sender: TObject);
+begin
+Coloca1(3);
+PC1.Enabled:=true;
+PC1.ActivePage:=PC1.Pages[0];
+FECHA.SetFocus;
+end;
+
+procedure TAM_Pagares.ImprimeClick(Sender: TObject);
+begin
+ImprimirPagare;
+ImprimirResumen;
+end;
+
+Procedure TAM_Pagares.ImprimirPagare;
+var ReporteRst: TfrxReport;
+    t,y:integer;
+    dmi:widestring;
+    tmp:string;
+begin
+try
+  ReporteRst:=TfrxReport.Create(nil);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\PagarePP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo3')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo4')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+
+  ReporteRst.Variables['NroPagare'] := QuotedStr(NROPAG.Text);
+  ReporteRst.Variables['Importe'] := QuotedStr(AnsiReplaceStr(trim(L11.Text),',','.'));
+  tmp:=numtopesos(trim(L11.Text));
+  ReporteRst.Variables['ImporteTxt'] := QuotedStr(tmp);
+  ReporteRst.Variables['Fecha'] := QuotedStr(trim(FECHA.Text));
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+
+except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+end;
+FreeAndNil(ReporteRst);
+end;
+
+Procedure TAM_Pagares.ImprimirResumen;
+var ReporteRst: TfrxReport;
+    frxDB1: TfrxDBDataset;
+    DtsGrilla2:TClientDataSet;
+    t,y:integer;
+    dmi:string;
+begin
+try
+{  grilla2.Cells[0,0]:='Ord';                 grilla2.Cells[1,0]:='N° Plan';
+  grilla2.Cells[2,0]:='Fecha Creación';       grilla2.Cells[3,0]:='Cuotas Orig.';
+  grilla2.Cells[4,0]:='Cuotas Adeudadas';     grilla2.Cells[5,0]:='Importe Deuda';
+  grilla2.Cells[6,0]:='Importe Pagare';}
+  //Cargamos la tabla de Objetos desde la grilla5
+  DtsGrilla2:=TClientDataSet.Create(nil);
+  DtsGrilla2.FieldDefs.Clear;
+  DtsGrilla2.Active:=False;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Orden';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='NroPlan';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Fecha';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='CuotasOri';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='CuotasDeu';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='ImpDeuda';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='ImpPagare';DataType:=ftString;Size:=18;
+  end;
+  DtsGrilla2.CreateDataSet;
+  DtsGrilla2.Active:=True;
+  y:=1;
+  for t:=1 to Grilla2.RowCount-1 do begin
+    DtsGrilla2.Append;
+    DtsGrilla2.FieldValues['Orden']:=grilla2.Cells[0,t];
+    DtsGrilla2.FieldValues['NroPlan']:=grilla2.Cells[1,t];
+    DtsGrilla2.FieldValues['Fecha']:=grilla2.Cells[2,t];
+    DtsGrilla2.FieldValues['CuotasOri']:=grilla2.Cells[3,t];
+    DtsGrilla2.FieldValues['CuotasDeu']:=grilla2.Cells[4,t];
+    DtsGrilla2.FieldValues['ImpDeuda']:=grilla2.Cells[5,t];
+    DtsGrilla2.FieldValues['ImpPagare']:=grilla2.Cells[6,t];
+    DtsGrilla2.Post;
+  end;
+  DtsGrilla2.SaveToFile(Modulo2.Sistema.Path_todo + '\Tmp\DtsGrilla2.xml',dfXML);
+except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+end;
+
+//Imprimiendo
+try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsGrilla2;
+  frxDB1.UserName:='frxDBDataset1';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\ResuPagarePP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+
+  ReporteRst.Variables['NroPagare'] := QuotedStr(NROPAG.Text);
+  ReporteRst.Variables['Importe'] := QuotedStr(AnsiReplaceStr(trim(L11.Text),',','.'));
+  ReporteRst.Variables['Fecha'] := QuotedStr(trim(FECHA.Text));
+  ReporteRst.Variables['NomTitular'] := QuotedStr(CONTRIB.Text);
+  ReporteRst.Variables['CuimTitular'] := QuotedStr(CUIM1.Text);
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+
+except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+end;
+FreeAndNil(frxDB1);
+FreeAndNil(ReporteRst);
+FreeAndNil(DtsGrilla2);
+end;
+end.

@@ -1,0 +1,159 @@
+object IngresoFecha: TIngresoFecha
+  Left = 347
+  Top = 187
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsNone
+  Caption = 'Cambio de Clave'
+  ClientHeight = 103
+  ClientWidth = 381
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object JvgGroupBox2: TJvgGroupBox
+    Left = 0
+    Top = 23
+    Width = 381
+    Height = 80
+    Align = alClient
+    Caption = 'Fecha Vencimiento'
+    TabOrder = 0
+    Border.Inner = bvSpace
+    Border.Outer = bvNone
+    Border.Bold = False
+    CaptionAlignment = fcaCenter
+    CaptionBorder.Inner = bvSpace
+    CaptionBorder.Outer = bvNone
+    CaptionBorder.Bold = False
+    CaptionGradient.Active = False
+    CaptionGradient.Orientation = fgdHorizontal
+    CaptionShift.X = 8
+    CaptionShift.Y = 0
+    Colors.Text = clHighlightText
+    Colors.TextActive = clHighlightText
+    Colors.Caption = clBtnShadow
+    Colors.CaptionActive = clPurple
+    Colors.Client = clBtnFace
+    Colors.ClientActive = clBtnFace
+    Gradient.FromColor = clBlack
+    Gradient.ToColor = clGray
+    Gradient.Active = False
+    Gradient.Orientation = fgdHorizontal
+    Options = [fgoFilledCaption, fgoFluentlyCollapse, fgoFluentlyExpand, fgoHideChildrenWhenCollapsed, fgoSaveChildFocus]
+    ExplicitWidth = 405
+    ExplicitHeight = 134
+    FullHeight = 0
+    object Label2: TLabel
+      Left = 10
+      Top = 36
+      Width = 118
+      Height = 13
+      Caption = 'Fecha 2do. Vencimiento:'
+    end
+    object Agrega1: TJvBitBtn
+      Left = 269
+      Top = 31
+      Width = 102
+      Height = 24
+      Caption = 'Confirmar'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      NumGlyphs = 2
+      ParentFont = False
+      TabOrder = 0
+      OnClick = Agrega1Click
+    end
+    object FechaImp: TRzDateTimeEdit
+      Left = 134
+      Top = 31
+      Width = 121
+      Height = 24
+      EditType = etDate
+      Format = 'dd/mm/yyyy'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      MaxLength = 10
+      ParentFont = False
+      TabOrder = 1
+      OnChange = FechaImpChange
+      OnKeyPress = FechaImpKeyPress
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 0
+    Width = 381
+    Height = 23
+    Align = alTop
+    BevelOuter = bvNone
+    Color = 11107192
+    TabOrder = 1
+    OnMouseDown = Panel3MouseDown
+    ExplicitWidth = 405
+    object JvPanel2: TJvPanel
+      Left = 0
+      Top = 0
+      Width = 381
+      Height = 23
+      Align = alTop
+      BevelOuter = bvNone
+      Color = 5966336
+      TabOrder = 0
+      OnMouseDown = Panel3MouseDown
+      ExplicitWidth = 405
+      object JvBehaviorLabel2: TJvBehaviorLabel
+        Left = 6
+        Top = 2
+        Width = 251
+        Height = 18
+        Caption = 'Ingreso de la Fecha de Vencimiento'
+        Color = 5966336
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindow
+        Font.Height = -15
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        OnMouseDown = Panel3MouseDown
+      end
+      object Label1: TLabel
+        Left = 357
+        Top = 0
+        Width = 24
+        Height = 23
+        Cursor = crHandPoint
+        Hint = 'Sale y Cierra ventana'
+        Align = alRight
+        Caption = 'r'
+        Color = 5966336
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWhite
+        Font.Height = -23
+        Font.Name = 'Marlett'
+        Font.Style = [fsBold, fsUnderline]
+        ParentColor = False
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = Label1Click
+        ExplicitLeft = 256
+      end
+    end
+  end
+end

@@ -1,0 +1,354 @@
+unit ConsuIntimacionContribuyente;
+
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Menus, DB, Grids, DBGrids, JvExDBGrids, JvDBGrid,
+  JvExControls, JvxCheckListBox, StdCtrls, JvgGroupBox, ADODB, ExtCtrls,
+  StrUtils, JvComponentBase, JvEmbeddedForms, frxClass, frxDBSet, Vcl.Buttons,
+  JvExButtons, JvBitBtn, Vcl.ToolWin, JvDBGridExport, Objetos, Vcl.Mask,
+  JvExGrids, JvStringGrid, RzTreeVw, RzTabs, RzButton, RzRadChk, RzPanel, RzEdit,
+  DBClient, MidasLib, Vcl.ImgList, JvExStdCtrls, JvGroupBox, frxBarcode, JvGIF,
+  JvExComCtrls, JvAnimate, JvExExtCtrls, JvExtComponent, JvCaptionPanel;
+
+type THackStringGrid = class(TStringGrid);
+type
+
+  TConsulta_IntimaContrib = class(TForm)
+    FormularioEmb: TJvEmbeddedFormLink;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    ToolBar1: TToolBar;
+    Label2: TLabel;
+    ToolButton1: TToolButton;
+    BORRA: TJvBitBtn;
+    ToolButton2: TToolButton;
+    SALE: TJvBitBtn;
+    JvgGroupBox4: TJvGroupBox;
+    ImageList1: TImageList;
+    frxReport1: TfrxReport;
+    PopupMenu2: TPopupMenu;
+    ExportaraExcelDetalledeuota1: TMenuItem;
+    grilla2: TJvStringGrid;
+    JvGroupBox1: TJvGroupBox;
+    Label12: TLabel;
+    Label14: TLabel;
+    NOMBRE: TEdit;
+    BUSCUIM1: TJvBitBtn;
+    IDCONT: TEdit;
+    JvgGroupBox3: TJvgGroupBox;
+    grilla5: TStringGrid;
+    nrodni: TEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Consultas(nro:byte);
+    procedure Coloca1(nro:byte);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BUSCUIM1Click(Sender: TObject);
+    procedure BORRAClick(Sender: TObject);
+    procedure Limpiar(nro:byte);
+    procedure OrdenaGrilla(Grid: TStringGrid; Col: integer);
+    procedure grilla5Click(Sender: TObject);
+  private
+    DataSet1,DataSet2,DataSet3,LOSOBJETOS,CONTRIBUYENTE:TADODataSet;
+    gh:boolean;
+    Recibo:TRecibo;
+    DtsGrilla2:TClientDataSet;
+     {Private declarations }
+  public
+    Parametro,ParamConCat,FechaAct,FechaAct1,CuimTit,DniTit,NroPlan,RubrosInc,
+    FechaHora,lafecactual,dato,fechacorte,idcintrib,titcontrib,diacorte,NroId:string;
+    Tiempo : TDateTime;
+    Objetos:TObjetos;
+    nrorubro,cantiplan:integer;
+    CuotaMinNorm, CuotaMinCom, totdto:real;
+    Limpiado,ctanormal:boolean;
+    { Public declarations }
+  end;
+
+var
+  Consulta_IntimaContrib: TConsulta_IntimaContrib;
+
+implementation
+
+uses Modulo, Unidad, Busc_Cont, Fecha_Fa;
+
+{$R *.dfm}
+
+procedure TConsulta_IntimaContrib.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(DataSet1);
+FreeAndNil(DataSet2);
+FreeAndNil(DataSet3);
+FreeAndNil(Self);
+end;
+
+procedure TConsulta_IntimaContrib.FormCreate(Sender: TObject);
+begin
+gh:=false;
+CONTRIBUYENTE:=TADODataSet.Create(nil);
+DataSet1:=TADODataSet.Create(nil);
+DataSet2:=TADODataSet.Create(nil);
+DataSet3:=TADODataSet.Create(nil);
+LOSOBJETOS:=TADODataSet.Create(nil);
+Objetos:=TObjetos.Create;
+end;
+
+procedure TConsulta_IntimaContrib.grilla5Click(Sender: TObject);
+begin
+  NroId:=trim(grilla5.Cells[6,grilla5.Row]);
+  Consultas(1);
+end;
+
+procedure TConsulta_IntimaContrib.FormActivate(Sender: TObject);
+var today : TDateTime;
+begin
+ if not(gh) then begin
+  gh:=true;
+  RubrosInc:='';
+  lafecactual:=LeftStr(Fec_System(),10);
+  FechaAct:=LeftStr(Fec_System(),10);
+  FechaAct1:=FechaAct;
+  today:= Now;
+  FechaHora:=MidStr(FechaAct,4,2) + LeftStr(FechaAct,2) +  LeftStr(TimeToStr(today),2) + MidStr(TimeToStr(today),4,2);
+  CuotaMinNorm:=0;
+
+  grilla5.Cells[0,0]:='Orden';
+  grilla5.Cells[1,0]:='NroLote';
+  grilla5.Cells[2,0]:='FechaLote';      //    Imp. Cuota
+  grilla5.Cells[3,0]:='Contribuyente';      //    Capital
+  grilla5.Cells[4,0]:='NroDni';   //    Interes
+  grilla5.Cells[5,0]:='ImporteDeuda';
+  grilla5.Cells[6,0]:='Id';
+
+  grilla2.Cells[0,0]:='Orden';
+  grilla2.Cells[1,0]:='Rubro';
+  grilla2.Cells[2,0]:='Capital';      //    Imp. Cuota
+  grilla2.Cells[3,0]:='Interes';      //    Capital
+  grilla2.Cells[4,0]:='ImporteDeuda';   //    Interes
+  grilla2.Cells[5,0]:='PeriodoDeuda';
+  grilla2.Cells[6,0]:='DomicilioObjeto';
+
+  PC1.ActivePage:=PC1.Pages[0];
+  buscuim1.SetFocus;
+  //pc1.Pages[1].TabVisible:=false;
+ end;
+end;
+
+procedure TConsulta_IntimaContrib.OrdenaGrilla(Grid: TStringGrid; Col: integer);
+var i, j: integer;
+prev: string;
+begin
+//in worst-case scenario we'll need RowCount-1 iterations to fully sort the grid
+ for j:= 0 to Grid.RowCount- 1 do
+ for i:= 2 to Grid.RowCount- 1 do  begin
+  if strtoint(Grid.Cells[Col, i])> strtoint(Grid.Cells[Col, i-1]) then begin // < if you want to reverse the sort order
+   prev:= Grid.Rows[i- 1].CommaText;
+   Grid.Rows[i- 1].CommaText:= Grid.Rows[i].CommaText;
+   Grid.Rows[i].CommaText:= prev;
+  end;
+ end;
+end;
+
+procedure TConsulta_IntimaContrib.Consultas(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;   // planespago
+ //if nro=1 then begin
+ if nro=1 then begin
+ for b:=0 to grilla2.ColCount-1 do
+     for t:=1 to grilla2.RowCount-1 do  grilla2.Cells[b,t]:='';
+  grilla2.RowCount:=2;
+  LOSOBJETOS.Close;
+  LOSOBJETOS.Connection:=Cnx2;
+  LOSOBJETOS.CommandText:='SELECT orden,rubro,capital,interes,ImporteDeuda ,PeriodoDeuda , DomicilioObj '
+  +' FROM [dbo].[Fn_ContribuyentesDeudaObjetosConDomicilio] (' + NroId + ')';
+  LOSOBJETOS.Open;
+  if LOSOBJETOS.IsEmpty then begin
+    messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   for t:=1 to CONTRIBUYENTE.RecordCount do begin
+    CONTRIBUYENTE.RecNo:=t;
+    grilla2.RowCount:=t + 1;
+    grilla2.Cells[0,t]:=LOSOBJETOS.FieldByName('orden').AsString;
+    grilla2.Cells[1,t]:=LOSOBJETOS.FieldByName('rubro').AsString;
+    grilla2.Cells[2,t]:=LOSOBJETOS.FieldByName('capital').AsString;
+    grilla2.Cells[3,t]:=LOSOBJETOS.FieldByName('interes').AsString;
+    grilla2.Cells[4,t]:=LOSOBJETOS.FieldByName('ImporteDeuda').AsString;
+    grilla2.Cells[5,t]:=LOSOBJETOS.FieldByName('PeriodoDeuda').AsString;
+    grilla2.Cells[6,t]:=LOSOBJETOS.FieldByName('DomicilioObj').AsString;
+    //    grilla2.Cells[5,t]:=LOSOBJETOS.FieldByName('').AsString;
+   end;
+   //Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(CONTRIBUYENTE.RecordCount);
+  end;
+  LOSOBJETOS.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TConsulta_IntimaContrib.BUSCUIM1Click(Sender: TObject);
+var Bus_Titulares:TBus_Titulares;
+    pso:boolean;
+    b,t:integer;
+    Cnx2:TADOConnection;
+begin
+ BORRA.Click;
+ try
+  Bus_Titulares:=TBus_Titulares.Create(self);
+  Bus_Titulares.NroOpcion:=1;
+  Bus_Titulares.ONOMB.Text:=NOMBRE.Text;
+  Bus_Titulares.ShowModal;
+  if Bus_Titulares.ConSelec then begin
+   IDCONT.Text:=Bus_Titulares.TITULARES.FieldByName('Id').AsString;
+   NOMBRE.Text:=Bus_Titulares.TITULARES.FieldByName('Contribuyente').AsString;
+   CuimTit:=Bus_Titulares.TITULARES.FieldByName('CUIM').AsString;
+   nrodni.Text:=Bus_Titulares.TITULARES.FieldByName('NroDni').AsString;
+   DniTit:=Bus_Titulares.TITULARES.FieldByName('NroDni').AsString;
+   if idcintrib='' then pso:=true
+   else
+   begin
+    messagedlg('ATENCION!!! Contribuyente ' + titcontrib  + ' con requerimientos pendientes. Deberá responder la solicitud de información previo a poder acceder al Plan de Faciliadades de Pagos' ,mtWarning,[mbok],0);
+    IDCONT.Clear;
+    NOMBRE.Clear;
+    nrodni.Clear;
+    pso:=false;
+   end;
+  end;
+ finally
+  FreeAndNIl(Bus_Titulares);
+ end;
+ Coloca1(1);
+end;
+
+procedure TConsulta_IntimaContrib.Coloca1(nro:byte);
+var t,y,b:integer;
+    TotInt:real;
+    Hijo,Nieto,Bisnieto:TTreeNode;
+    DataSet3:TADODataSet;
+    Cnx2:TADOConnection;
+    tx:string;
+    ps:boolean;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+ try
+  if nro=1 then begin
+  for b:=0 to grilla5.ColCount-1 do
+     for t:=1 to grilla5.RowCount-1 do  grilla5.Cells[b,t]:='';
+    grilla5.RowCount:=2;
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=Cnx2;
+  CONTRIBUYENTE.CommandText:='SELECT row_number() over (order by NroLote asc) as Orden, NroLote,'
+  +' convert(char(10),FechaLote,103) as FechaLote, Contribuyente, NroDni, ImporteDeuda, '
+  +' convert(char(10),FechaCalculo,103) as FechaCalculo,tit.Id FROM  IntimacionContribuyente tit '
+  +' inner join IntimacionContribuyenteEstado est on tit.Id= est.IdIntimacionContribuyente'
+  +' inner join TiposEstados tipoest on est.IdTipoEstado = tipoest.NroEstado    '
+  + 'WHERE  (NroDni = ' + nrodni.Text + ') and est.Activo = 1 and est.IdTipoEstado <> 4 and tipoest.BoletaDeuda = 0';
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+    messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   for t:=1 to CONTRIBUYENTE.RecordCount do begin
+    CONTRIBUYENTE.RecNo:=t;
+    {
+
+  grilla5.Cells[0,0]:='Orden';
+  grilla5.Cells[1,0]:='NroLote';
+  grilla5.Cells[2,0]:='FechaLote';      //    Imp. Cuota
+  grilla5.Cells[3,0]:='Contribuyente';      //    Capital
+  grilla5.Cells[4,0]:='NroDni';   //    Interes
+  grilla5.Cells[5,0]:='ImporteDeuda';
+  grilla5.Cells[6,0]:='Id';
+   }
+    grilla5.RowCount:=t + 1;
+    grilla5.Cells[0,t]:=CONTRIBUYENTE.FieldByName('Orden').AsString;
+    grilla5.Cells[1,t]:=CONTRIBUYENTE.FieldByName('NroLote').AsString;
+    grilla5.Cells[2,t]:=CONTRIBUYENTE.FieldByName('FechaLote').AsString;
+    grilla5.Cells[3,t]:=CONTRIBUYENTE.FieldByName('Contribuyente').AsString;
+    grilla5.Cells[4,t]:=CONTRIBUYENTE.FieldByName('ImporteDeuda').AsString;
+    grilla5.Cells[5,t]:=CONTRIBUYENTE.FieldByName('Id').AsString;
+   //grilla5.Cells[5,t]:=CONTRIBUYENTE.FieldByName('').AsString;
+   end;
+   //Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(CONTRIBUYENTE.RecordCount);
+  end;
+  CONTRIBUYENTE.Connection:=nil;
+   { for b:=0 to grilla5.ColCount-1 do
+     for t:=1 to grilla5.RowCount-1 do  grilla5.Cells[b,t]:='';
+    grilla5.RowCount:=2;
+    DataSet1.Close;
+    DataSet1.Connection:=Cnx2;
+    if not DataSet1.IsEmpty then begin
+     for t:=1 to DataSet1.RecordCount do begin
+      DataSet1.RecNo:=t;
+      grilla5.RowCount:=t + 1;
+      grilla5.Cells[0,t]:=DataSet1.FieldByName('Orden').AsString;
+      grilla5.Cells[1,t]:=DataSet1.FieldByName('NroLote').AsString;
+      grilla5.Cells[2,t]:=DataSet1.FieldByName('FechaLote').AsString;  //  DataSet1.FieldByName('Total').AsString
+      grilla5.Cells[3,t]:=DataSet1.FieldByName('Contribuyente').AsString;  //  DataSet1.FieldByName('Capital').AsString
+      grilla5.Cells[4,t]:=DataSet1.FieldByName('NroDni').AsString;    //  DataSet1.FieldByName('Interes').AsString
+      grilla5.Cells[5,t]:=DataSet1.FieldByName('ImporteDeuda').AsString;  //  DataSet1.FieldByName('Capital').AsString
+      grilla5.Cells[6,t]:=DataSet1.FieldByName('Id').AsString;
+     end;
+    end
+    else begin
+     messagedlg('Error!! El Valor de la Cuota no Puede ser menor a $ ' + floattostr(CuotaMinNorm) + chr(13)
+     + 'Por Favor intente nuevamente con otro valor de Cuota.',mterror,[mbok],0);
+     ctanormal:=false;
+    end;
+    DataSet1.Connection:=nil;  }
+    end;
+  except
+  on E: Exception do begin
+     EnviarLog(Self.Caption, E.Message);
+     EnviarLog(Self.Caption, DataSet3.CommandText);
+     EnviarLog(self.Caption,Objetos.Identidad.Strings[t] + ' - ' + Parametro);
+  end
+ end;
+end;
+
+procedure TConsulta_IntimaContrib.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TConsulta_IntimaContrib.BORRAClick(Sender: TObject);
+begin
+FechaAct:=FechaAct1;
+Limpiar(0);
+Limpiar(1);
+end;
+
+procedure TConsulta_IntimaContrib.Limpiar(nro:byte);
+var t,y:integer;
+begin
+ if nro <= 0 then begin
+  Limpiado:=true;
+  for t:=1 to grilla5.RowCount-1 do
+    for y:=0 to grilla5.ColCount-1 do grilla5.Cells[y,t]:='';
+  grilla5.RowCount:=2;
+  for t:=1 to grilla2.RowCount-1 do
+    for y:=0 to grilla2.ColCount-1 do grilla2.Cells[y,t]:='';
+  grilla2.RowCount:=2;
+
+ end;
+ if nro = 1 then begin
+  IDCOnt.Clear;
+  NOMBRE.Clear;
+  nrodni.Clear;
+  PC1.ActivePage:=PC1.Pages[0];
+  //pc1.Pages[1].TabVisible:=false;
+ end;
+
+end;
+
+end.

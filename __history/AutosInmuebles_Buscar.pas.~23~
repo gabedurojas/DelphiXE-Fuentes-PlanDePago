@@ -1,0 +1,733 @@
+unit AutosInmuebles_Buscar;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet, RzTabs, JvGIF;
+
+type LosEdit = class(TEdit);
+type THackStringGrid = class(TJvStringGrid);
+type
+  TautosCasas_Buscar = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    guarda: TJvBitBtn;
+    ToolButton3: TToolButton;
+    SALE: TJvBitBtn;
+    Barra1: TStatusBar;
+    FormularioEmb: TJvEmbeddedFormLink;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    TabSheet2: TRzTabSheet;
+    ImageList2: TImageList;
+    Limpia: TJvBitBtn;
+    ToolButton2: TToolButton;
+    PopupMenu1: TPopupMenu;
+    SeleccionarTodos1: TMenuItem;
+    EliminarSeleccin1: TMenuItem;
+    ExportaraExcel1: TMenuItem;
+    PageControl1: TPageControl;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    grilla2: TStringGrid;
+    JvgGroupBox1: TJvgGroupBox;
+    Label9: TLabel;
+    Edit1: TEdit;
+    filtrar: TJvBitBtn;
+    CB3: TCheckBox;
+    grilla1: TStringGrid;
+    RE: TRichEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ImprimeConfirmacion();
+    procedure guardaClick(Sender: TObject);
+    procedure Coloca1(nro:byte;valor:string);
+    procedure LimpiaClick(Sender: TObject);
+    procedure grilla1Click(Sender: TObject);
+    procedure Edit2KeyPress(Sender: TObject; var Key: Char);
+    procedure FocusAlComponente(Nro:byte);
+    procedure filtrarClick(Sender: TObject);
+    procedure SeleccionarTodos1Click(Sender: TObject);
+    function VerificaGrillaDeuda(grilla:string):boolean;
+    procedure EliminarSeleccin1Click(Sender: TObject);
+    procedure CargaCombos(nro:byte);
+    procedure ContarSeleccionados(nro:byte);
+    procedure ExportaraExcel1Click(Sender: TObject);
+  private
+    NroComponente,altas:integer;
+    CONTRIBUYENTE,LOSRUBROS,DataSet1,VALORES,VALORESSELEC,ELFILTRO:TADODataSet;
+    newdato,dato,FechaAct,elidcontrib,Nrolote:string;
+    Com1:TADOCommand;
+  public
+    Tiempo : TDateTime;
+    Objetos:TObjetos;
+    BusDat:array of string;
+    Filtro:widestring;
+    totalselec,totalselec1,fila,fila2:integer;
+    sumad,suma:double;
+    gh,expo:boolean;{ Public declarations }
+  end;
+
+var
+  autosCasas_Buscar: TautosCasas_Buscar;
+
+implementation
+
+uses Unidad ,modulo,SplashFormNro;
+
+{$R *.dfm}
+
+procedure TautosCasas_Buscar.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FreeAndNil(CONTRIBUYENTE);
+  FreeAndNil(LOSRUBROS);
+  FreeAndNil(DataSet1);
+  FreeAndNil(VALORES);
+  FreeAndNil(VALORESSELEC);
+  FreeAndNil(ELFILTRO);
+  FreeAndNil(Self);
+end;
+
+procedure TautosCasas_Buscar.FormCreate(Sender: TObject);
+begin
+  CONTRIBUYENTE:=TADODataSet.Create(nil);
+  DataSet1:=TADODataSet.Create(Self);
+  LOSRUBROS:=TADODataSet.Create(Self);
+  VALORES:=TADODataSet.Create(nil);
+  VALORESSELEC:=TADODataSet.Create(nil) ;
+  ELFILTRO:=TADODataSet.Create(nil);
+end;
+
+procedure TautosCasas_Buscar.FormActivate(Sender: TObject);
+begin
+ if not (gh) then begin
+  gh:=true;
+  expo:=false;
+  if not expo then begin
+   PopupMenu1.Items[4].Enabled:=false;
+   PopupMenu1.Items[5].Enabled:=false;
+  end
+  else begin
+   PopupMenu1.Items[4].Enabled:=true;
+   PopupMenu1.Items[5].Enabled:=true;
+  end;
+  PopupMenu1.Items[6].Enabled:=false;
+  grilla1.Cells[0,0]:='Selec.';            grilla1.Cells[1,0]:='Id';
+  grilla1.Cells[2,0]:='Contribuyente';     grilla1.Cells[3,0]:='TotalDeuda';
+  grilla1.Cells[4,0]:='NroDni';            grilla1.Cells[5,0]:='Barrio';
+  grilla1.Cells[6,0]:='Calle';             grilla1.Cells[7,0]:='Altura';
+  grilla1.Cells[8,0]:='Depto.';            grilla1.Cells[9,0]:='Mza';
+  grilla1.Cells[10,0]:='Casa';             grilla1.Cells[11,0]:='Torre';
+  grilla1.Cells[12,0]:='Domicilio';        grilla1.Cells[13,0]:='conanioaprescribir';
+
+  CargaCombos(1);
+  fila:=0;
+  fila2:=0;
+  grilla2.Cells[0,0]:='IdDeudaContrib';    grilla2.Cells[1,0]:='DetalleImpuesto';
+  grilla2.Cells[2,0]:='CodigoObjeto';      grilla2.Cells[3,0]:='Capital';
+  grilla2.Cells[4,0]:='Interes';           grilla2.Cells[5,0]:='ImporteDeuda';
+  grilla2.Cells[6,0]:='PeriodoDeuda';      grilla2.Cells[7,0]:='Identificador';     grilla2.Cells[8,0]:='IdSubRubro';
+
+  //selec.Enabled :=false;
+  FechaAct:=LeftStr(Fec_System(),10);
+  PC1.ActivePage:=PC1.Pages[0];
+  totalselec:=0;
+  totalselec1:=0;
+  Coloca1(1,'');
+  JvgGroupBox1.Visible:=true;
+  edit1.SetFocus;
+ end;
+end;
+
+procedure TautosCasas_Buscar.ContarSeleccionados(nro:byte);
+var j,a:integer;
+begin
+fila2:=0;
+ if nro= 1 then begin
+  for j:=1 to grilla1.RowCount-1 do begin
+   if trim(grilla1.Cells[1,j])<> '' then begin
+    fila:=fila+1;
+    break;
+   end;
+  end;
+ end;
+ if nro= 2 then begin
+  //
+ end;
+end;
+
+procedure TautosCasas_Buscar.CargaCombos(nro:byte);
+begin
+//  if nro=1 then Modulo2.CargaCombo(L4,'SELECT distinct Barrio from DeudaIntimacionContribuyente where Barrio is not null',modulo2.Sistema.ConectInti,false);
+end;
+
+function TautosCasas_Buscar.VerificaGrillaDeuda(grilla:string):boolean;
+var j,a:integer;
+begin
+ Result:=true;
+ for j:=1 to grilla1.RowCount-1 do begin
+  if trim(grilla1.Cells[0,j])='X' then begin
+    totalselec:=totalselec+1;
+    break;
+  end;
+ end;
+end;
+
+procedure TautosCasas_Buscar.Edit2KeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #13 then begin
+   Key := #0;
+   Edit3.SetFocus;
+  end
+  else begin
+   if ( StrScan('0123456789',Key) <> nil ) or ( Key = Char(VK_BACK) ) then
+    else Key := #0;
+  end;
+end;
+
+procedure TautosCasas_Buscar.EliminarSeleccin1Click(Sender: TObject);
+var b,t:integer;
+begin
+ for b:=0 to grilla1.ColCount-1 do
+   for t:=1 to grilla1.RowCount-1 do  grilla1.Cells[0,t]:='';
+   verificagrilladeuda('grilla1') ;
+   totalselec:=0;
+   totalselec1:=0;
+   PopupMenu1.Items[5].Enabled:=false;
+   Barra1.Panels[3].Text:='Total Deuda Selec: ';
+   Barra1.Panels[2].Text:='Cant. Registros Seleccionados: ' + inttostr(totalselec1);
+end;
+
+procedure TautosCasas_Buscar.ExportaraExcel1Click(Sender: TObject);
+var txt1:widestring;
+    t,y:integer;
+begin
+  RE.Clear;
+  RE.Lines.Add('');
+  RE.Lines.Add('Criteros de Filtros');
+  RE.Lines.Add('');
+  if trim(edit1.Text) <> '' then RE.Lines.Add('Contribuyente: ' + trim(edit1.Text));
+  RE.Lines.Add('');
+  txt1:='';
+  for y:=0 to Grilla1.ColCount-1 do
+   txt1:=txt1 + Grilla1.Cells[y,0] + chr(9);
+  RE.Lines.Append(txt1);
+  for t:=1 to Grilla1.RowCount-1 do begin
+   txt1:='';
+   for y:=0 to Grilla1.ColCount-1 do
+     txt1:=txt1 + Grilla1.Cells[y,t] + chr(9);
+   RE.Lines.Append(txt1);
+  end;
+  RE.SelectAll;
+  RE.CopyToClipboard;
+  messagedlg('Datos Copiados Correctamante!!' + chr(13)
+  + 'Abra Excel y pegue los datos en la hoja activa...',mtWarning,[mbok],0)
+end;
+
+procedure TautosCasas_Buscar.filtrarClick(Sender: TObject);
+var b,t:integer;
+begin
+  expo:=true;
+  if not expo then begin
+   PopupMenu1.Items[4].Enabled:=false;
+   PopupMenu1.Items[5].Enabled:=false;
+  end
+  else  begin
+   PopupMenu1.Items[4].Enabled:=true;
+   PopupMenu1.Items[5].Enabled:=true;
+  end;
+  totalselec1:=0;
+  Barra1.Panels[2].Text:='';
+  CONTRIBUYENTE.Close;
+  for b:=0 to grilla1.ColCount-1 do
+     for t:=1 to grilla1.RowCount-1 do  grilla1.Cells[b,t]:='';
+     grilla1.RowCount:=2;
+
+  if cb1.Checked  then  begin
+    if cb2.Checked  then  begin
+      If length(edit1.text) > 0 then begin   /// tiene nombre
+       If length(edit4.text) > 1 then begin   /// tiene valor hasta
+        if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit1.Text)
+         else Dato:='Contribuyente like ' + Filtro + QuotedStr(trim(edit1.Text) + chr(37))
+         //+ ' and TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text))
+         //+ ' and TotalDeuda <= ' + Filtro + QuotedStr(trim(edit4.Text))
+         //+ ' and barrio = ' + Filtro + QuotedStr(trim(l4.Text))
+         + ' order by 2';  //5,6,7
+         Coloca1(2,dato);
+       end
+       else begin  /// no tiene valor hasta
+        if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit1.Text)
+         else Dato:='Contribuyente like ' + Filtro + QuotedStr(trim(edit1.Text) + chr(37))
+         //+ ' and TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text))
+         //+ ' and barrio = ' + Filtro + QuotedStr(trim(l4.Text))
+         + ' order by 2';
+         Coloca1(2,dato);
+       end;
+      end
+      else begin  /// no tiene nombre
+        {If length(edit4.text) > 1 then begin    /// tiene valor hasta
+         if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit4.Text)
+          else Dato:= 'TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text))
+          + ' and TotalDeuda <= ' + Filtro + QuotedStr(trim(edit4.Text))
+          + ' and barrio = ' + Filtro + QuotedStr(trim(l4.Text))
+          + ' order by 2';
+          Coloca1(2,dato);
+        end
+        else begin   /// no tiene valor hasta
+         if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit3.Text)
+          else Dato:= 'TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text))
+          + ' and barrio = ' + Filtro + QuotedStr(trim(l4.Text)) + ' order by 2';
+         Coloca1(2,dato);
+        end;}
+      end;
+    end
+    else begin
+     If length(edit1.text) > 0 then begin
+       if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit1.Text)
+        else Dato:='Contribuyente like ' + Filtro + QuotedStr(trim(edit1.Text) + chr(37))
+        //+ ' and barrio = ' + Filtro + QuotedStr(trim(l4.Text))
+        + ' order by 2';
+        Coloca1(2,dato);
+     end
+     else begin
+      if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit1.Text)
+       //else Dato:=' barrio = ' + Filtro + QuotedStr(trim(l4.Text))
+       + ' order by 2';
+       Coloca1(2,dato);
+     end;
+    end;
+  end
+  else begin
+    if cb2.Checked  then  begin
+      If length(edit1.text) > 0 then begin   /// tiene nombre
+       If length(edit4.text) > 1 then begin   /// tiene valor hasta
+         if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit1.Text)
+          else Dato:='Contribuyente like ' + Filtro + QuotedStr(trim(edit1.Text) + chr(37))
+          //+ ' and TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text))
+          //+ ' and TotalDeuda <= ' + Filtro + QuotedStr(trim(edit4.Text))
+          + ' order by 2';
+          Coloca1(2,dato);
+       end
+       else begin  /// no tiene valor hasta
+         if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit1.Text)
+          else Dato:='Contribuyente like ' + Filtro + QuotedStr(trim(edit1.Text) + chr(37))
+          //+ ' and TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text))
+          + ' order by 2';
+          Coloca1(2,dato);
+       end;
+      end
+      else begin  /// no tiene nombre
+       {If length(edit4.text) > 1 then begin    /// tiene valor hasta
+        if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit4.Text)
+         else Dato:= 'TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text))
+         + ' and TotalDeuda <= ' + Filtro + QuotedStr(trim(edit4.Text)) + ' order by 2';
+         Coloca1(2,dato);
+       end
+       else begin   /// no tiene valor hasta
+        if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit3.Text)
+         else Dato:= 'TotalDeuda >= ' + Filtro + QuotedStr(trim(edit3.Text)) + ' order by 2';
+        Coloca1(2,dato);
+       end;  }
+      end;
+    end
+    else begin
+      If length(edit1.text) > 0 then begin
+       if RightStr(Filtro,1) = '=' then Dato:=Filtro + trim(edit1.Text)
+        else Dato:='Contribuyente like ' + Filtro + QuotedStr(trim(edit1.Text) + chr(37))
+        + ' order by 2';
+       Coloca1(2,dato);
+      end
+    end;
+  end;
+end;
+
+procedure TautosCasas_Buscar.FocusAlComponente(Nro:byte);
+begin
+//if (NroComponente = 3) and Edit4.Enabled then Edit3.SetFocus;
+//if (NroComponente <> 3) then LosEdit(FindComponent('Edit'+inttostr(NroComponente))).SetFocus;
+end;
+
+procedure TautosCasas_Buscar.grilla1Click(Sender: TObject);
+var b,t,j:integer;
+begin
+ if grilla1.Cells[1,grilla1.Row] <> '' then begin
+  if trim(grilla1.Cells[3,grilla1.Row]) = '' then begin
+    messagedlg('Contribuyente sin Deuda a la Fecha',mtError,[mbok,mbCancel],0);
+  end
+  else begin
+   if trim(grilla1.Cells[0,grilla1.Row])='' then begin
+    grilla1.Cells[0,grilla1.Row]:='X';
+    totalselec1:=totalselec1 + 1;
+   end
+   else begin
+    grilla1.Cells[0,grilla1.Row]:='';
+    totalselec1:=totalselec1 - 1;
+   end;
+   Dato:=grilla1.Cells[1,grilla1.Row];
+   Coloca1(3,Dato);
+   verificagrilladeuda('grilla1');
+   Barra1.Panels[2].Text:='Cant. Registros Seleccionados: ' + inttostr(totalselec1);
+  end;
+ end;
+
+ if totalselec1=0 then PopupMenu1.Items[5].Enabled:=false
+  else PopupMenu1.Items[5].Enabled:=true;
+ sumad:=0;
+ for t:=1 to grilla1.RowCount-1 do begin
+  if (grilla1.Cells[0,t] = 'X')  then begin
+    sumad := sumad + strtofloat(grilla1.Cells[3,t]);
+  end;
+ end;
+ Barra1.Panels[3].Text:='Total Deuda Seleccionada: $' + floattostr(sumad);
+end;
+
+procedure TautosCasas_Buscar.guardaClick(Sender: TObject);
+var t,y,a:integer;
+    Com1:TADOCommand;
+    comando:widestring;
+    tx,idcont:string;
+    Cnx2:TADOConnection;
+begin
+t:=messagedlg('Confirma guardar las Intimaciones seleccionada?',mtInformation,[mbok,mbCancel],0);
+if t = 1 then begin
+ if totalselec = 0 then begin
+  messagedlg('            I M P O S I B L E   G U A R D A R' + chr(13)
+  + 'Este Lote de Intimaciones, porque no existe ningun Contribuyente Seleccionado ',mtError,[mbok],0);
+  if JvgGroupBox1.Visible then edit1.SetFocus;
+ end
+ else begin
+  coloca1(4,'');
+  SplashConNro := TSplashConNro.Create(Application);
+  SplashConNro.Show;
+  SplashConNro.ProgressBar1.Max:=grilla1.RowCount- 1;
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  try
+   for t:=1 to grilla1.RowCount-1 do begin
+    if (grilla1.Cells[0,t] = 'X') then begin
+      DataSet1.Connection:=Cnx2;
+      DataSet1.CommandText:='SPA_IntimacionContribuyente ' + grilla1.Cells[1,t]
+      + ' , ' + chr(39) + grilla1.Cells[2,t] + chr(39)
+      + ' , ' + grilla1.Cells[4,t]
+      + ' , ' + chr(39) + grilla1.Cells[5,t] + chr(39)
+      + ' , ' + chr(39) + grilla1.Cells[6,t] + chr(39)
+      + ' , ' + grilla1.Cells[7,t]
+      + ' , ' + chr(39) + grilla1.Cells[8,t] + chr(39)
+      + ' , ' + chr(39) + grilla1.Cells[9,t] + chr(39)
+      + ' , ' + chr(39) + grilla1.Cells[10,t] + chr(39)
+      + ' , ' + chr(39) + grilla1.Cells[11,t] + chr(39)
+      + ' , ' + chr(39) + grilla1.Cells[12,t] + chr(39)
+      + ' , ' + chr(39) + grilla1.Cells[3,t] + chr(39)
+      + ' , ' + chr(39) + FechaAct + chr(39)
+      + ' , ' + modulo2.Usuario.UsuNro
+      + ' , ' + Nrolote
+      + ' , ' + chr(39) + FechaAct + chr(39)
+      + ' , ' + modulo2.Usuario.UsuNro;
+      DataSet1.Open;
+      tx:=DataSet1.Fields[0].AsString;
+      DataSet1.Close;
+      DataSet1.Connection:=nil;
+
+      LOSRUBROS.Close;
+      LOSRUBROS.Connection:=Cnx2;
+      LOSRUBROS.CommandText:='SELECT IdDeudaIntimacionContribuyente,DetalleImpu,CodigoObjeto,isnull(Capital,0) as Capital,'
+      + 'isnull(Interes,0) as Interes,isnull(ImporteDeuda,0) as ImporteDeuda,'
+      + 'PeriodoDeuda,Identificador,IdSubRubro FROM DeudaIntimacionObjetos WHERE (IdDeudaIntimacionContribuyente = '+ grilla1.Cells[1,t] +') order by 2';
+      LOSRUBROS.Open;
+      if LOSRUBROS.IsEmpty then begin
+        messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+      end
+      else begin
+       for a:=1 to LOSRUBROS.RecordCount do begin
+        LOSRUBROS.RecNo:=a;
+        grilla2.RowCount:=a + 1;
+        grilla2.Cells[0,a]:=LOSRUBROS.FieldByName('IdDeudaIntimacionContribuyente').AsString;
+        grilla2.Cells[1,a]:=LOSRUBROS.FieldByName('DetalleImpu').AsString;
+        grilla2.Cells[2,a]:=LOSRUBROS.FieldByName('CodigoObjeto').AsString;
+        grilla2.Cells[3,a]:=LOSRUBROS.FieldByName('Capital').AsString;
+        grilla2.Cells[4,a]:=LOSRUBROS.FieldByName('Interes').AsString;
+        grilla2.Cells[5,a]:=LOSRUBROS.FieldByName('ImporteDeuda').AsString;
+        grilla2.Cells[6,a]:=LOSRUBROS.FieldByName('PeriodoDeuda').AsString;
+        grilla2.Cells[7,a]:=LOSRUBROS.FieldByName('Identificador').AsString;
+        grilla2.Cells[8,a]:=LOSRUBROS.FieldByName('IdSubRubro').AsString;
+       end;
+       for y:=1 to grilla2.RowCount-1 do begin
+        Com1.CommandText:='SPA_IntimacionContribuyenteObjeto ' + tx
+        + ' , ' + chr(39) + trim(grilla2.Cells[1,y]) + chr(39)
+        + ' , ' + chr(39) + trim(grilla2.Cells[2,y]) + chr(39)
+        + ' , ' + trim(grilla2.Cells[3,y])
+        + ' , ' + trim(grilla2.Cells[4,y])
+        + ' , ' + trim(grilla2.Cells[5,y])
+        + ' , ' + chr(39) + trim(grilla2.Cells[6,y]) + chr(39)
+        + ' , ' + trim(grilla2.Cells[7,y])
+        + ' , ' + trim(grilla2.Cells[8,y]);
+        Com1.Execute;
+       end;
+       comando:='SPA_IntimacionContribuyenteEstado ' + tx + ' , 1 , 1 , '  + modulo2.Usuario.UsuNro + ' , null';
+       Com1.CommandText:=comando;
+       Com1.Execute;
+       SplashConNro.ProgressBar1.Position:=t;
+       SplashConNro.Label3.Caption:=inttostr(t);
+       SplashConNro.Update;
+      end;
+      LOSRUBROS.Connection:=nil;
+    end;
+   end;
+   messagedlg('Datos Guardado Correctamente!' + chr(13) + 'El Nro. de Lote generado es: ' + Nrolote,mtConfirmation,[mbok],0);
+   limpia.Click;
+  except
+    messagedlg('ERROR al Guardar los Datos',mtError,[mbok],0);
+  end;
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+  SplashConNro.Hide;
+  SplashConNro.Free;
+ end;
+end;
+end;
+
+procedure TautosCasas_Buscar.Coloca1(nro:byte;valor:string);
+var t,b,y,a:integer;
+    tx:string;
+    DataSet3:TADODataSet;
+    pso:boolean;
+    Cnx2:TADOConnection;
+begin
+Cnx2:=TADOConnection.Create(nil);
+Cnx2.LoginPrompt:=false;
+Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+try
+ if nro = 1 then begin
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.CommandTimeout:=60;
+  CONTRIBUYENTE.Connection:=Cnx2;
+  CONTRIBUYENTE.CommandText:='SELECT Id,Contribuyente,TotalDeuda, NroDni,Barrio,Calle,'  //top 250
+  + ' Altura,Depto,Manzana,Casa,Torre,Domicilio FROM Fn_DeudaIntimacionContribuyentes (0) order by 2';
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+    messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   for t:=1 to CONTRIBUYENTE.RecordCount do begin
+    CONTRIBUYENTE.RecNo:=t;
+    grilla1.RowCount:=t + 1;
+    grilla1.Cells[1,t]:=CONTRIBUYENTE.FieldByName('Id').AsString;
+    grilla1.Cells[2,t]:=CONTRIBUYENTE.FieldByName('Contribuyente').AsString;
+    grilla1.Cells[3,t]:=CONTRIBUYENTE.FieldByName('TotalDeuda').AsString;
+    grilla1.Cells[4,t]:=CONTRIBUYENTE.FieldByName('NroDni').AsString;
+    grilla1.Cells[5,t]:=CONTRIBUYENTE.FieldByName('Barrio').AsString;
+    grilla1.Cells[6,t]:=CONTRIBUYENTE.FieldByName('Calle').AsString;
+    grilla1.Cells[7,t]:=CONTRIBUYENTE.FieldByName('Altura').AsString;
+    grilla1.Cells[8,t]:=CONTRIBUYENTE.FieldByName('Depto').AsString;
+    grilla1.Cells[9,t]:=CONTRIBUYENTE.FieldByName('Manzana').AsString;
+    grilla1.Cells[10,t]:=CONTRIBUYENTE.FieldByName('Casa').AsString;
+    grilla1.Cells[11,t]:=CONTRIBUYENTE.FieldByName('Torre').AsString;
+    grilla1.Cells[12,t]:=CONTRIBUYENTE.FieldByName('Domicilio').AsString;
+   end;
+
+   {for a:=1 to CONTRIBUYENTE.RecordCount do begin
+    CONTRIBUYENTE.RecNo:=a;
+    grilla3.RowCount:=a + 1;
+    grilla3.Cells[1,a]:=CONTRIBUYENTE.FieldByName('Id').AsString;
+    grilla3.Cells[2,a]:=CONTRIBUYENTE.FieldByName('Contribuyente').AsString;
+    grilla3.Cells[3,a]:=CONTRIBUYENTE.FieldByName('TotalDeuda').AsString;
+    grilla3.Cells[4,a]:=CONTRIBUYENTE.FieldByName('NroDni').AsString;
+    grilla3.Cells[5,a]:=CONTRIBUYENTE.FieldByName('Barrio').AsString;
+    grilla3.Cells[6,a]:=CONTRIBUYENTE.FieldByName('Calle').AsString;
+    grilla3.Cells[7,a]:=CONTRIBUYENTE.FieldByName('Altura').AsString;
+    grilla3.Cells[8,a]:=CONTRIBUYENTE.FieldByName('Depto').AsString;
+    grilla3.Cells[9,a]:=CONTRIBUYENTE.FieldByName('Manzana').AsString;
+    grilla3.Cells[10,a]:=CONTRIBUYENTE.FieldByName('Casa').AsString;
+    grilla3.Cells[11,a]:=CONTRIBUYENTE.FieldByName('Torre').AsString;
+    grilla3.Cells[12,a]:=CONTRIBUYENTE.FieldByName('Domicilio').AsString;
+   end;  }
+   Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(CONTRIBUYENTE.RecordCount);
+  end;
+  CONTRIBUYENTE.Connection:=nil;
+ end;
+ if nro = 2 then begin
+  sumad:=0;
+  VALORES.Close;
+  VALORES.CommandTimeout:=0;
+  VALORES.Connection:=Cnx2;
+  VALORES.CommandText:='SELECT Id,Contribuyente,TotalDeuda,case when NroDni IS null then 0 else NroDni end as NroDni,'
+  + ' Barrio,Calle,case when Altura IS null then 0 else Altura end as Altura,Depto,Manzana,Casa,Torre,Domicilio,conanioaprescribir '
+  + ' FROM Fn_DeudaIntimacionContribuyentes (1) where ' + dato ;
+  VALORES.Open;
+  if VALORES.IsEmpty then begin
+   messagedlg('Conulta sin Resultados...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+   edit1.SetFocus;
+  end
+  else begin
+   for t:=1 to VALORES.RecordCount do begin
+    VALORES.RecNo:=t;
+    grilla1.RowCount:=t + 1;
+    grilla1.Cells[1,t]:=VALORES.FieldByName('Id').AsString;
+    grilla1.Cells[2,t]:=VALORES.FieldByName('Contribuyente').AsString;
+    grilla1.Cells[3,t]:=VALORES.FieldByName('TotalDeuda').AsString;
+    grilla1.Cells[4,t]:=VALORES.FieldByName('NroDni').AsString;
+    grilla1.Cells[5,t]:=VALORES.FieldByName('Barrio').AsString;
+    grilla1.Cells[6,t]:=VALORES.FieldByName('Calle').AsString;
+    grilla1.Cells[7,t]:=VALORES.FieldByName('Altura').AsString;
+    grilla1.Cells[8,t]:=VALORES.FieldByName('Depto').AsString;
+    grilla1.Cells[9,t]:=VALORES.FieldByName('Manzana').AsString;
+    grilla1.Cells[10,t]:=VALORES.FieldByName('Casa').AsString;
+    grilla1.Cells[11,t]:=VALORES.FieldByName('Torre').AsString;
+    grilla1.Cells[12,t]:=VALORES.FieldByName('Domicilio').AsString;
+    grilla1.Cells[13,t]:=VALORES.FieldByName('conanioaprescribir').AsString;
+   end;
+   Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(VALORES.RecordCount);
+  end;
+  VALORES.Connection:=nil;
+ end;
+ if nro = 3 then begin
+  LOSRUBROS.Close;
+  LOSRUBROS.Connection:=Cnx2;
+  LOSRUBROS.CommandText:='SELECT IdDeudaIntimacionContribuyente,DetalleImpu,CodigoObjeto,isnull(Capital,0) as Capital,'
+  + 'isnull(Interes,0) as Interes,isnull(ImporteDeuda,0) as ImporteDeuda,PeriodoDeuda,Identificador,Idsubrubro'
+  + ' FROM DeudaIntimacionObjetos WHERE (IdDeudaIntimacionContribuyente = '+ dato +') order by 2';
+  LOSRUBROS.Open;
+  if LOSRUBROS.IsEmpty then begin
+    messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   for y:=1 to LOSRUBROS.RecordCount do begin
+    LOSRUBROS.RecNo:=y;
+    grilla2.RowCount:=y + 1;
+    grilla2.Cells[0,y]:=LOSRUBROS.FieldByName('IdDeudaIntimacionContribuyente').AsString;
+    grilla2.Cells[1,y]:=LOSRUBROS.FieldByName('DetalleImpu').AsString;
+    grilla2.Cells[2,y]:=LOSRUBROS.FieldByName('CodigoObjeto').AsString;
+    grilla2.Cells[3,y]:=LOSRUBROS.FieldByName('Capital').AsString;
+    grilla2.Cells[4,y]:=LOSRUBROS.FieldByName('Interes').AsString;
+    grilla2.Cells[5,y]:=LOSRUBROS.FieldByName('ImporteDeuda').AsString;
+    grilla2.Cells[6,y]:=LOSRUBROS.FieldByName('PeriodoDeuda').AsString;
+    grilla2.Cells[7,y]:=LOSRUBROS.FieldByName('Identificador').AsString;
+    grilla2.Cells[8,y]:=LOSRUBROS.FieldByName('IdSubRubro').AsString;
+   end;
+  end;
+  LOSRUBROS.Connection:=nil;
+ end;
+ if nro=4 then  begin
+  try
+   DataSet3:=TADODataSet.Create(nil);
+   DataSet3.Connection:=Cnx2;
+   DataSet3.CommandText:='EXEC darmaximonro NroLoteIntimacion ';
+   DataSet3.Open;
+   NroLote:=trim(DataSet3.Fields[0].AsString);
+   DataSet3.Close;
+   DataSet3.Connection:=nil;
+  except
+   on E: Exception do EnviarLog(Self.Caption, E.Message);
+  end;
+ end;
+except
+  on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+  end
+end;
+Cnx2.Close;
+FreeAndNil(Cnx2);
+end;
+
+procedure  TautosCasas_Buscar.ImprimeConfirmacion();
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2: TfrxDBDataset;
+    DtsObjetos:TClientDataSet;
+    t,y:integer;
+    Com1:TADOCommand;
+    comando:widestring;
+begin
+{ t:=messagedlg('Confirma la Impresión de la Intimación seleccionada?',mtWarning,[mbok,mbCancel],0);
+ if t = 1 then begin
+  try
+   ReporteRst:=TfrxReport.Create(nil);
+   frxDB1:=TfrxDBDataset.Create(nil);
+   frxDB1.UserName:='frxDBDataset1';
+   ReporteRst.DataSets.Add(frxDB1);
+   ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Imp_Intimacion.fr3');
+   TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+   TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\FirmaSebastianRojas.bmp');
+   ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(trim(CONTRIBUYENTE.Fields[1].AsString));
+   ReporteRst.Variables['NroDni'] := QuotedStr(trim(CONTRIBUYENTE.Fields[2].AsString));
+   ReporteRst.Variables['Barrio'] := QuotedStr(trim(CONTRIBUYENTE.Fields[3].AsString));
+   ReporteRst.Variables['Calle'] := QuotedStr(trim(CONTRIBUYENTE.Fields[4].AsString));
+   ReporteRst.Variables['Altura'] := QuotedStr(trim(CONTRIBUYENTE.Fields[5].AsString));
+   ReporteRst.Variables['Dpto'] := QuotedStr(trim(CONTRIBUYENTE.Fields[6].AsString));
+   ReporteRst.Variables['Mza'] := QuotedStr(trim(CONTRIBUYENTE.Fields[7].AsString));
+   ReporteRst.Variables['Casa'] := QuotedStr(trim(CONTRIBUYENTE.Fields[8].AsString));
+   ReporteRst.Variables['Torre'] := QuotedStr(trim(CONTRIBUYENTE.Fields[9].AsString));
+   ReporteRst.Variables['DomTitular'] := QuotedStr(trim(CONTRIBUYENTE.Fields[10].AsString));
+   ReporteRst.Variables['Total'] := QuotedStr(floattostr(sumad));
+   //ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(FechaAct,'DDMMAAAA'));
+   ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+   ReporteRst.ShowReport;
+  except
+    on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+  end;
+  FreeAndNil(frxDB1);
+  FreeAndNil(ReporteRst);
+  FreeAndNil(DtsObjetos);
+ end;   }
+end;
+
+procedure TautosCasas_Buscar.LimpiaClick(Sender: TObject);
+var t,b:integer;
+begin
+  for b:=0 to grilla1.ColCount-1 do
+   for t:=1 to grilla1.RowCount-1 do  grilla1.Cells[b,t]:='';
+  grilla1.RowCount:=2;
+  PopupMenu1.Items[4].Enabled:=false;
+  PopupMenu1.Items[5].Enabled:=false;
+  Barra1.Panels[2].Text:='Cant. Registros Seleccionados: 0';
+  Barra1.Panels[3].Text:='Total Deuda Seleccionada: $ 0';
+  edit1.Clear;
+  edit3.Clear;
+  edit4.Clear;
+  cb2.Checked:=false;
+  cb1.Checked:=false;
+  cb3.Checked:=false;
+  JvgGroupBox1.Visible:=false;
+  Coloca1(1,'');
+  LOSRUBROS.Close;
+  VALORES.Close;
+end;
+
+procedure TautosCasas_Buscar.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TautosCasas_Buscar.SeleccionarTodos1Click(Sender: TObject);
+//var b,t:integer;
+begin
+{ for b:=0 to grilla1.ColCount-1 do
+   for t:=1 to grilla1.RowCount-1 do  grilla1.Cells[0,t]:='X';
+   verificagrilladeuda('grilla1');
+
+ for t:=1 to grilla1.RowCount-1 do begin
+  if trim(grilla1.Cells[0,grilla1.Row])='X' then begin
+   totalselec1:=totalselec1 + 1;
+  end;
+  end;
+  Barra1.Panels[2].Text:='Cant. Registros Seleccionados: ' + inttostr(totalselec1);
+  sumad:=0;
+
+  for t:=1 to grilla1.RowCount-1 do begin
+   if (grilla1.Cells[0,t] = 'X')  then begin
+    sumad := sumad + strtofloat(grilla1.Cells[3,t]);
+   end;
+  end;
+  Barra1.Panels[3].Text:='Total Deuda Seleccionada: $' + floattostr(sumad);   }
+end;
+
+end.

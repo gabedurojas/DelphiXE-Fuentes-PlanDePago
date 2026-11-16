@@ -1,0 +1,892 @@
+unit BoletoDeuda_Consultas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet, RzTabs, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnPopup,
+  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs,
+  VCLTee.Chart, JvExExtCtrls, JvExtComponent, JvCaptionPanel;
+
+type THackStringGrid = class(TJvStringGrid);
+type
+  TConsultas_BoletoDeuda = class(TForm)
+
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    exporta: TJvBitBtn;
+    ToolButton3: TToolButton;
+    Barra1: TStatusBar;
+    FormularioEmb: TJvEmbeddedFormLink;
+    frxReport2: TfrxReport;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    ImageList2: TImageList;
+    Label7: TLabel;
+    TabSheet3: TRzTabSheet;
+    JvDBGrid3: TJvDBGrid;
+    DataSource2: TDataSource;
+    grilla1: TStringGrid;
+    todos: TRichEdit;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    imprime: TJvBitBtn;
+    ToolButton2: TToolButton;
+    SALE: TJvBitBtn;
+    GroupBox2: TGroupBox;
+    JvDBGrid1: TJvDBGrid;
+    DataSource1: TDataSource;
+    v: TRzTabSheet;
+    JvDBGrid2: TJvDBGrid;
+    DataSource3: TDataSource;
+    PopupActionBar1: TPopupActionBar;
+    BORRAROBJETO1: TMenuItem;
+    Timer1: TTimer;
+    TabSheet2: TRzTabSheet;
+    GrillaAgrup: TStringGrid;
+    Grafico2: TChart;
+    Series1: TBarSeries;
+    GroupBox3: TGroupBox;
+    Label11: TLabel;
+    Label12: TLabel;
+    JvGroupBox2: TJvGroupBox;
+    Shape3: TShape;
+    Label29: TLabel;
+    PANEL11: TJvCaptionPanel;
+    Label10: TLabel;
+    Label6: TLabel;
+    Label8: TLabel;
+    Label5: TLabel;
+    Label9: TLabel;
+    Label2: TLabel;
+    Edit1: TEdit;
+    Label3: TLabel;
+    Edit2: TEdit;
+    Label4: TLabel;
+    Edit3: TEdit;
+    JvBitBtn1: TJvBitBtn;
+    ElimObjeto: TJvBitBtn;
+    GrupoObjeto: TGroupBox;
+    Label28: TLabel;
+    BuscaObj: TJvBitBtn;
+    Edit5: TEdit;
+    GroupBox4: TGroupBox;
+    GrupoPeriodos: TGroupBox;
+    Edit4: TEdit;
+    actuperi: TJvBitBtn;
+    Memo1: TMemo;
+    TabSheet4: TRzTabSheet;
+    grillaobjetos: TStringGrid;
+    GroupBox5: TGroupBox;
+    Label13: TLabel;
+    Edit6: TEdit;
+    BorraObjetos: TJvBitBtn;
+    GroupBox6: TGroupBox;
+    Label14: TLabel;
+    lotenro: TEdit;
+    JvBitBtn2: TJvBitBtn;
+    JvBitBtn3: TJvBitBtn;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure exportaClick(Sender: TObject);
+    procedure Coloca1(nro:byte;valor:string);
+    procedure grilla1SelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure JvDBGrid3CellClick(Column: TColumn);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    function VerificaGrillaDeuda(grilla:string):boolean;
+    procedure imprimeClick(Sender: TObject);
+    procedure grilla1Click(Sender: TObject);
+    procedure BORRAROBJETO1Click(Sender: TObject);
+    procedure JvDBGrid2CellClick(Column: TColumn);
+    procedure ElimObjetoClick(Sender: TObject);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure VerArea(nro:byte);
+    procedure Timer1Timer(Sender: TObject);
+    procedure grilla1DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
+      State: TGridDrawState);
+    procedure Edit5KeyPress(Sender: TObject; var Key: Char);
+    procedure BuscaObjClick(Sender: TObject);
+    procedure Edit5Change(Sender: TObject);
+    procedure actuperiClick(Sender: TObject);
+    procedure JvDBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure grillaobjetosClick(Sender: TObject);
+    procedure grillaobjetosDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure BorraObjetosClick(Sender: TObject);
+  private
+    CONTRIBUYENTE,LOSOBJETOS,DataSet3,DataSet2,DataSet1,DataBaja,DataAgrup,DataSetFiltro:TADODataSet;{ Private declarations }
+    fecha,respuesta,laidcuenta,dato,FechaAct,elcontrib,fechalote,ellote,dispo,ger,idintima,elestado,dato2,
+    eldni,tipocta,lacuenta,lasucur,elbank,elidcontrib,elcuit,Filtro,NroImp,elrub,elobjeto,elimporte,eldnicont,nrbd:string;
+    Com1:TADOCommand;
+  public
+    Objetos:TObjetos;
+    sumad,suma:double;
+    gh:boolean;{ Public declarations }
+  end;
+
+var
+  Consultas_BoletoDeuda: TConsultas_BoletoDeuda;
+
+implementation
+
+uses Unidad ,modulo;
+
+{$R *.dfm}
+
+procedure TConsultas_BoletoDeuda.FormActivate(Sender: TObject);
+begin
+if not (gh) then begin
+  gh:=true;
+  Panel11.Visible:=false;
+  FechaAct:=LeftStr(Fec_System(),10);
+  PC1.ActivePage:=PC1.Pages[0];
+  label1.Caption:='...';
+  label10.Visible:=false;
+  grupoperiodos.Visible:=false;
+  Coloca1(0,'');
+  grilla1.Cells[0,0]:='Ord';              grilla1.Cells[1,0]:='Nrolote';
+  grilla1.Cells[2,0]:='NºBolDeuda';       grilla1.Cells[3,0]:='EstadoBoletaDeuda';
+  grilla1.Cells[4,0]:='TotalDeuda';       grilla1.Cells[5,0]:='Contribuyente';
+  grilla1.Cells[6,0]:='NroDni';           grilla1.Cells[7,0]:='Barrio';
+  grilla1.Cells[8,0]:='Calle';            grilla1.Cells[9,0]:='Altura';
+  grilla1.Cells[10,0]:='Depto';           grilla1.Cells[11,0]:='Manzana';
+  grilla1.Cells[12,0]:='Casa';            grilla1.Cells[13,0]:='Torre';
+  grilla1.Cells[14,0]:='Domicilio';       grilla1.Cells[15,0]:='ID';
+  grilla1.Cells[16,0]:='Estado';          grilla1.Cells[17,0]:='FechaEstado';
+  grilla1.Cells[18,0]:='UsuEstado';       grilla1.Cells[19,0]:='NroTelefono';
+
+  GrillaAgrup.Cells[0,0]:='Rubro';       GrillaAgrup.Cells[1,0]:='Cantidad';
+  GrillaAgrup.Cells[2,0]:='Deuda';       GrillaAgrup.Cells[3,0]:='';
+
+  grillaobjetos.Cells[0,0]:='Selec';         grillaobjetos.Cells[1,0]:='Rubro';
+  grillaobjetos.Cells[2,0]:='CodigoObjeto';  grillaobjetos.Cells[3,0]:='Capital';
+  grillaobjetos.Cells[4,0]:='Interes';       grillaobjetos.Cells[5,0]:='ImporteDeuda';
+  //grillaobjetos.Cells[6,0]:='PeriodoDeuda';
+  grillaobjetos.Cells[6,0]:='ID';            grillaobjetos.Cells[7,0]:='IdIntimacion';
+
+  grafico2.Series[0].Clear;
+  VerArea(1);
+  if dato <> '0' then begin
+    PopupActionBar1.Items[0].Visible :=true;
+    pc1.Pages[4].TabVisible:=true;
+    GrupoObjeto.Visible :=true;
+  end
+  else begin
+    PopupActionBar1.Items[0].Visible :=false;
+    pc1.Pages[4].TabVisible:=false;
+    GrupoObjeto.Visible :=false;
+  end;
+
+  BorraObjetos.Enabled :=false;
+  lotenro.SetFocus;
+end;
+end;
+
+procedure TConsultas_BoletoDeuda.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(CONTRIBUYENTE);
+FreeAndNil(LOSOBJETOS);
+FreeAndNil(DataSet1);
+FreeAndNil(DataSet2);
+FreeAndNil(DataSet3);
+FreeAndNil(DataBaja);
+FreeAndnil(DataAgrup);
+FreeAndnil(DataSetFiltro);
+FreeAndNil(Self);
+end;
+
+procedure TConsultas_BoletoDeuda.VerArea(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+ if nro=1 then begin
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_EliminaObjetoBDUsuarios  (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato:=DataSet2.Fields[0].AsString
+   else dato:='0';
+  DataSet2.Connection:=nil;
+ end;
+ if nro=2 then begin
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_ModifPeriodosBD  (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato2:=DataSet2.Fields[0].AsString
+   else dato2:='0';
+  DataSet2.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TConsultas_BoletoDeuda.FormCreate(Sender: TObject);
+begin
+CONTRIBUYENTE:=TADODataSet.Create(nil);
+LOSOBJETOS:=TADODataSet.Create(nil);
+
+DataSet3:=TADODataSet.Create(nil);
+DataSource2.DataSet:=DataSet3;
+
+DataSet2:=TADODataSet.Create(nil);
+DataSource1.DataSet:=DataSet2;
+
+DataSet1:=TADODataSet.Create(nil);
+DataSource3.DataSet:=DataSet1;
+
+DataSetFiltro:=TADODataSet.Create(nil);
+DataAgrup:=TADODataSet.Create(nil);
+end;
+
+function TConsultas_BoletoDeuda.VerificaGrillaDeuda(grilla:string):boolean;
+var j,a:integer;
+begin
+ Result:=true;
+ for j:=1 to grilla1.RowCount-1 do begin
+  if trim(grilla1.Cells[1,j])='' then begin
+    Result:=false;
+    break;
+  end;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+   VK_F4 : begin
+     exporta.Click;
+   end;
+   VK_F2 : begin
+    // imprime.Click;
+   end;
+   VK_F5 : begin
+     panel11.Visible:=false;
+   end;
+  end;
+end;
+
+procedure TConsultas_BoletoDeuda.exportaClick(Sender: TObject);
+var t,p,a:integer;
+   texto:string;
+begin
+ a:=messagedlg('Desea Exportar a Excel las Intimaciones de este Lote seleccionado?',mtWarning,[mbok,mbCancel],0);
+ if a = 1 then begin
+  todos.Clear;
+  todos.Lines.Add('');
+  todos.Lines.Add('RESUMEN DE LOTES DE BOLETAS DE DEUDAS GENERADOS');
+  for t:=0 to grilla1.RowCount -1   DO BEGIN
+   texto:='';
+   for p:=0 to grilla1.ColCount - 1 do begin
+     texto:= texto + grilla1.Cells[p,t] + chr(9);
+   end;
+   todos.Lines.Add(texto);
+  end;
+  todos.SelectAll;
+  todos.CopyToClipboard;
+  messagedlgpos('Datos Procesados y Listos para pegarlos a Excel',mtwarning,[mbok],0,screen.Width div 3,screen.Height div 3);
+  PC1.ActivePage:=PC1.Pages[0];
+ end;
+end;
+
+///// aca solo habilito la columna 1
+procedure TConsultas_BoletoDeuda.grilla1Click(Sender: TObject);
+begin
+ {VerArea(1);
+ if dato <> '0' then begin
+  PopupActionBar1.Items[0].Visible :=true;
+  GrupoObjeto.Visible :=true;
+ end
+ else begin
+  PopupActionBar1.Items[0].Visible :=false;
+  GrupoObjeto.Visible :=false;
+ end; }
+ edit6.Clear;
+ edit5.Clear;
+ edit4.Clear;
+ actuperi.Enabled:=false;
+ Grupoperiodos.Visible :=false;
+ //pc1.Pages[4].TabVisible:=false;
+ if (trim(grilla1.Cells[0,grilla1.Row]) <> '')  then begin
+  if (trim(grilla1.Cells[3,grilla1.Row]) <> 'Baja') then begin
+   coloca1(3,trim(grilla1.Cells[15,grilla1.Row]));
+   idintima:=trim(grilla1.Cells[15,grilla1.Row]);
+   elestado:=trim(grilla1.Cells[3,grilla1.Row]);
+   eldnicont:=trim(grilla1.Cells[6,grilla1.Row]);
+   nrbd:=trim(grilla1.Cells[2,grilla1.Row]);
+   PC1.ActivePage:=PC1.Pages[2];
+   Barra1.Panels[2].Text:='NroBoletoDeuda: ' + trim(grilla1.Cells[2,grilla1.Row]);
+   memo1.Clear;
+   if dato <> '0' then pc1.Pages[4].TabVisible:=true
+    else pc1.Pages[4].TabVisible:=false;
+  //end;
+   //pc1.Pages[4].TabVisible:=true;
+  end
+  else  begin
+   messagedlg('ATENCION esta Boleta de Deuda esta dada de BAJA, imposible modificar los Objetos',mtWarning,[mbok],0);
+   PC1.ActivePage:=PC1.Pages[1];
+
+   PopupActionBar1.Items[0].Visible :=false;
+   GrupoObjeto.Visible :=false;
+   pc1.Pages[4].TabVisible:=false;
+  end;
+ end;
+
+end;
+
+procedure TConsultas_BoletoDeuda.grilla1DrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+ With Sender as TStringGrid do begin
+  if trim(grilla1.Cells[3,Arow]) = 'Baja' then begin
+   Canvas.Brush.Color := clFuchsia;
+   Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+  end;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.grilla1SelectCell(Sender: TObject; ACol, ARow: Integer;
+  var CanSelect: Boolean);
+begin
+  if (ACol=2) then  grilla1.Options := grilla1.Options + [goEditing]
+    else grilla1.Options := grilla1.Options - [goEditing];
+end;
+
+procedure TConsultas_BoletoDeuda.grillaobjetosClick(Sender: TObject);
+var j,cont:integer;
+    //IdIntimacion,IdObjeto:string;
+begin
+ cont:=0;
+ if grillaobjetos.Cells[0,grillaobjetos.Row] <> '' then grillaobjetos.Cells[0,grillaobjetos.Row]:=''
+  else grillaobjetos.Cells[0,grillaobjetos.Row]:='X';
+
+  for j:=1 to grillaobjetos.RowCount-1 do begin
+   if trim(grillaobjetos.Cells[0,j])='X' then begin
+    cont:= cont + 1;
+   end;
+  end;
+  edit6.Text := inttostr(cont);
+
+  if (trim(edit6.Text)='0') or (trim(edit6.Text)= '') then borraobjetos.Enabled:=false
+   else borraobjetos.Enabled:=true;
+
+end;
+
+procedure TConsultas_BoletoDeuda.grillaobjetosDrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   With Sender as TStringGrid do begin
+     if trim(grillaobjetos.Cells[0,Arow]) = 'X' then begin
+       Canvas.Brush.Color := clyellow;
+       Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+     end;
+   end;
+end;
+
+procedure TConsultas_BoletoDeuda.imprimeClick(Sender: TObject);
+var t,y,a:integer;
+   texto:string;
+   ReporteRst: TfrxReport;
+   frxDB1: TfrxDBDataset;
+   DtsObjetos:TClientDataSet;
+begin
+ a:=messagedlg('Desea Imprimir las Boletas de Deuda de este Lote seleccionado?',mtWarning,[mbok,mbCancel],0);
+ if a = 1 then begin
+ try
+  DtsObjetos:=TClientDataSet.Create(nil);
+  DtsObjetos.FieldDefs.Clear;
+  DtsObjetos.Active:=False;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+   Name:='Orden';
+   DataType:=ftInteger;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+   Name:='Nrolote';
+   DataType:=ftString;Size:=50;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+   Name:='NroBoletoDeuda';
+   DataType:=ftString;Size:=50;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+   Name:='TotalDeuda';
+   DataType:=ftString;Size:=50;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+   Name:='Contribuyente';
+   DataType:=ftString;Size:=250;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+   Name:='EstadoIntimacion';
+   DataType:=ftString;Size:=100;
+  end;
+  DtsObjetos.CreateDataSet;
+  DtsObjetos.Active:=True;
+  y:=1;
+  for t:=1 to grilla1.RowCount-1 do begin
+   DtsObjetos.Append;
+   DtsObjetos.FieldValues['Orden']:=y;
+   DtsObjetos.FieldValues['Nrolote']:=grilla1.Cells[1,t];
+   DtsObjetos.FieldValues['NroBoletoDeuda']:=grilla1.Cells[2,t] + ger;
+   DtsObjetos.FieldValues['TotalDeuda']:=grilla1.Cells[4,t];
+   DtsObjetos.FieldValues['Contribuyente']:=grilla1.Cells[5,t];
+   DtsObjetos.FieldValues['EstadoIntimacion']:=grilla1.Cells[3,t];
+   DtsObjetos.Post;
+   y:=y+1;
+  end;
+  except
+    on E: Exception do EnviarLog(Self.Caption, E.Message);
+  end;
+
+  //Imprimiendo
+  try
+   ReporteRst:=TfrxReport.Create(nil);
+   frxDB1:=TfrxDBDataset.Create(nil);
+   frxDB1.DataSet:=DtsObjetos;
+   frxDB1.UserName:='frxDBDataset1';
+   ReporteRst.DataSets.Add(frxDB1);
+   ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Con_BoletaDeuda.fr3');
+   TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+   TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\logoformosa.jpg');
+   ReporteRst.Variables['ElLote'] := QuotedStr(ellote);
+   ReporteRst.Variables['LaDispo'] := QuotedStr(dispo);
+   ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(FechaAct,'DDMMAAAA'));
+   ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro + ' /Reg.Imp ' + AuditaImpresos('Imp Consul BD : ' + trim(nrbd),trim(eldnicont)) );
+   ReporteRst.ShowReport;
+  except
+    on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+  end;
+  FreeAndNil(frxDB1);
+  FreeAndNil(ReporteRst);
+  FreeAndNil(DtsObjetos);
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.actuperiClick(Sender: TObject);
+var p:integer;
+    pso:boolean;
+    txt1:widestring;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Modificar el Detalle de los periodos de esta Boleta Seleccionada?',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  pso:=false;
+  try
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+   DataBaja:=TADODataSet.Create(nil);
+   DataBaja.Connection:=Cnx2;
+   DataBaja.CommandText:='EXEC SPM_PeriodosObjetosBoletaDeuda ' + trim(edit4.Text)
+   + ',' + chr(39) + trim(memo1.Text)  + chr(39);
+   DataBaja.Open;
+   if DataBaja.Fields[0].AsString = 'OK' then begin
+     messagedlg('PERIODOS MODIFICADO correctamente!',mtConfirmation,[mbok],0);
+     pso:=true;
+   end
+   else begin
+     messagedlg('Eror al MODIFICAR el Periodo de esta Boleta, consulte con un Administrador...!',mtConfirmation,[mbok],0);
+   end;
+   DataBaja.Close;
+  except
+   on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+    EnviarLog(Self.Caption, Com1.CommandText);
+    messagedlg('ERROR al Guardar los datos',mterror,[mbok],0);
+   end;
+  end;
+  FreeAndNil(DataBaja);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+  if pso then begin
+   coloca1(3,idintima);
+   grupoperiodos.Visible:=false;
+   //Coloca1(0,'');
+   //coloca1(3,idintima);
+   //PC1.ActivePage:=PC1.Pages[2];
+  end;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.BorraObjetosClick(Sender: TObject);
+var t,p,gf:integer;
+    pso:boolean;
+    IdIntimacion,IdObjeto:string;
+    txt1:widestring;
+    Com2:TADOCommand;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Realmente ELIMAR Los Objetos Seleccionados?',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  pso:=false;
+  try
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+   Com2:=TADOCommand.Create(nil);
+   Com2.ConnectionString:=Modulo2.Sistema.ConectInti;
+
+   for gf:=1 to grillaobjetos.RowCount-1 do begin
+    if (grillaobjetos.Cells[0,gf] = 'X') then begin
+      txt1:= trim(grillaobjetos.Cells[7,gf])  //idintimacion
+      + ' , ' + trim(grillaobjetos.Cells[6,gf])  //idobjeto
+      + ' , ' + modulo2.Usuario.UsuNro  // nrousuario
+      + ' , ' + ellote ; // lote
+      Com2.CommandText:='EXEC SPB_ObjetosBoletaDeuda '  + txt1;
+      Com2.Execute;
+    end;
+   end;
+   FreeAndNil(Com2);
+   messagedlg('OBJETOS ELIMINADOS correctamente!',mtConfirmation,[mbok],0);
+   pso:=true;
+  except
+   on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+    EnviarLog(Self.Caption, Com1.CommandText);
+    messagedlg('ERROR al Eliminar los Objetos',mterror,[mbok],0);
+   end;
+  end;
+  FreeAndNil(Com2);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+  if pso then begin
+   Coloca1(0,'');
+   coloca1(3,idintima);
+   PC1.ActivePage:=PC1.Pages[2];
+  end;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.BORRAROBJETO1Click(Sender: TObject);
+begin
+ Panel11.Visible:=true;
+ edit1.Text:=elrub;
+ edit2.Text:=elobjeto;
+ edit3.Text:=elimporte;
+end;
+
+procedure TConsultas_BoletoDeuda.BuscaObjClick(Sender: TObject);
+begin
+coloca1(3,idintima);  // idintima
+edit5.Clear;
+end;
+
+procedure TConsultas_BoletoDeuda.Coloca1(nro:byte;valor:string);
+var t,b,y,a:integer;
+    tx:string;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+ if nro = 0 then begin
+  DataSet3.Close;
+  DataSet3.Connection:=Cnx2;
+  DataSet3.CommandText:='select NroLote,FechaLote,NombreUsuario,Usuario,NroDisposicion,IdIntimacionlote,Confirmado '
+  + ' from Fn_LotesBoletoDeudaContribuyentes (1)';
+  DataSet3.Open;
+  DataSet3.Connection:=nil;
+ end;
+ if nro = 1 then begin
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT EstadoIntimacion,Cantidad FROM Fn_BoletaDeudaDatosAgrupados (' + valor+ ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then begin
+   JvDBGrid1.Columns[0].Width:=170;
+   JvDBGrid1.Columns[1].Width:=60;
+  end;
+  DataSet2.Connection:=nil;
+ end;
+ if nro = 2 then begin
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=Cnx2;
+  CONTRIBUYENTE.CommandText:='SELECT Nrolote,right(''000000'' + convert(nvarchar(6),NroControl) ,6) as NroBoletoDeuda'
+  + ',EstadoIntimacion,TotalDeuda,Contribuyente,NroDni,Barrio,Calle,'
+  + 'Altura,Depto,Manzana,Casa,Torre,Domicilio,ID,fechaestado,usuestado,nrotelefono FROM Fn_BoletaDeudaContribuyentesLotes (' + valor + ')';
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+   messagedlg('Detalle de Boletas de Deuda Inexistente para este Lote' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+   PC1.ActivePage:=PC1.Pages[0];
+  end
+  else begin
+   PC1.ActivePage:=PC1.Pages[1];
+   for t:=1 to CONTRIBUYENTE.RecordCount do begin
+    CONTRIBUYENTE.RecNo:=t;
+    grilla1.RowCount:=t + 1;
+    grilla1.Cells[0,t]:=StrFill(IntToStr(t),2,'0','');
+    grilla1.Cells[1,t]:=CONTRIBUYENTE.FieldByName('Nrolote').AsString;
+    grilla1.Cells[2,t]:=CONTRIBUYENTE.FieldByName('NroBoletoDeuda').AsString;
+    grilla1.Cells[3,t]:=CONTRIBUYENTE.FieldByName('EstadoIntimacion').AsString;
+    grilla1.Cells[4,t]:=CONTRIBUYENTE.FieldByName('TotalDeuda').AsString;
+    grilla1.Cells[5,t]:=CONTRIBUYENTE.FieldByName('Contribuyente').AsString;
+    grilla1.Cells[6,t]:=CONTRIBUYENTE.FieldByName('NroDni').AsString;
+    grilla1.Cells[7,t]:=CONTRIBUYENTE.FieldByName('Barrio').AsString;
+    grilla1.Cells[8,t]:=CONTRIBUYENTE.FieldByName('Calle').AsString;
+    grilla1.Cells[9,t]:=CONTRIBUYENTE.FieldByName('Altura').AsString;
+    grilla1.Cells[10,t]:=CONTRIBUYENTE.FieldByName('Depto').AsString;
+    grilla1.Cells[11,t]:=CONTRIBUYENTE.FieldByName('Manzana').AsString;
+    grilla1.Cells[12,t]:=CONTRIBUYENTE.FieldByName('Casa').AsString;
+    grilla1.Cells[13,t]:=CONTRIBUYENTE.FieldByName('Torre').AsString;
+    grilla1.Cells[14,t]:=CONTRIBUYENTE.FieldByName('Domicilio').AsString;
+    grilla1.Cells[15,t]:=CONTRIBUYENTE.FieldByName('ID').AsString;
+    grilla1.Cells[17,t]:=CONTRIBUYENTE.FieldByName('fechaestado').AsString;
+    grilla1.Cells[18,t]:=CONTRIBUYENTE.FieldByName('usuestado').AsString;
+    grilla1.Cells[19,t]:=CONTRIBUYENTE.FieldByName('nrotelefono').AsString;
+   end;
+   Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(CONTRIBUYENTE.RecordCount);
+  end;
+  CONTRIBUYENTE.Connection:=nil;
+ end;
+ if nro = 3 then begin
+  DataSet1.Close;
+  DataSet1.Connection:=Cnx2;
+  Dataset1.CommandText:='SELECT dbo.IntimacionContribuyenteObjeto.IdIntimacionContribuyente,'
+  + ' municipio.dbo.RubrosSub.descripcion,dbo.IntimacionContribuyenteObjeto.CodigoObjeto, dbo.IntimacionContribuyenteObjeto.Capital, '
+  +' dbo.IntimacionContribuyenteObjeto.Interes, dbo.IntimacionContribuyenteObjeto.ImporteDeuda, '
+  +' dbo.IntimacionContribuyenteObjeto.PeriodoDeuda ,dbo.IntimacionContribuyenteObjeto.Id, ''0'' as Selec FROM  municipio.dbo.RubrosSub '
+  +' INNER JOIN dbo.IntimacionContribuyenteObjeto ON municipio.dbo.RubrosSub.idSubRubro = dbo.IntimacionContribuyenteObjeto.IdSubRubro'
+  +' where dbo.IntimacionContribuyenteObjeto.IdIntimacionContribuyente = (' + valor + ')';
+  DataSet1.Open;
+  if not Dataset1.IsEmpty  then begin
+   JvDBGrid2.Columns[0].Width:=60;
+   JvDBGrid2.Columns[1].Width:=190;
+   JvDBGrid2.Columns[2].Width:=95;
+   JvDBGrid2.Columns[3].Width:=95;
+   JvDBGrid2.Columns[4].Width:=95;
+   JvDBGrid2.Columns[5].Width:=95;
+   JvDBGrid2.Columns[6].Width:=300;
+   JvDBGrid2.Columns[7].Width:=70;
+   JvDBGrid2.Columns[8].Width:=70;
+
+   for t:=1 to Dataset1.RecordCount do begin
+    Dataset1.RecNo:=t;                      //
+    grillaobjetos.RowCount:=t + 1;
+    grillaobjetos.Cells[0,t]:='';//Dataset1.FieldByName('Selec').AsString;
+    grillaobjetos.Cells[1,t]:=Dataset1.FieldByName('descripcion').AsString;
+    grillaobjetos.Cells[2,t]:=Dataset1.FieldByName('CodigoObjeto').AsString;
+    grillaobjetos.Cells[3,t]:=Dataset1.FieldByName('Capital').AsString;
+    grillaobjetos.Cells[4,t]:=Dataset1.FieldByName('Interes').AsString;
+    grillaobjetos.Cells[5,t]:=Dataset1.FieldByName('ImporteDeuda').AsString;
+    //grillaobjetos.Cells[6,t]:=Dataset1.FieldByName('PeriodoDeuda').AsString;
+    grillaobjetos.Cells[6,t]:=Dataset1.FieldByName('Id').AsString;
+    grillaobjetos.Cells[7,t]:=Dataset1.FieldByName('IdIntimacionContribuyente').AsString;
+   end;
+  end;
+  DataSet1.Connection:=nil;
+ end;
+ if nro=4 then begin
+  suma:=0;
+  grafico2.Series[0].Clear;
+  grafico2.BottomAxis.Maximum:=7;
+  grafico2.BottomAxis.Minimum:=0;
+  grafico2.Title.Text.Clear;
+  grafico2.BottomAxis.Title.Font.Size:=14;
+  grafico2.BottomAxis.Title.Caption:='Cantidades';
+  grafico2.LeftAxis.Title.Font.Size:=14;
+  grafico2.LeftAxis.Title.Caption:='Tipos Tramites';
+  grafico2.Title.Font.Size:=14;
+  grafico2.Title.Text.Add('Cantidad de Tramites');
+  DataAgrup.Close;
+  DataAgrup.Connection:=Cnx2;
+  DataAgrup.CommandText:='SELECT Rubros,CantidaObjetos,TotalDeuda FROM Fn_BoletaDeudaLotesDatosAgrupados (' + valor + ')';
+  DataAgrup.Open;
+  if not DataAgrup.IsEmpty  then begin
+   for t:=1 to DataAgrup.RecordCount do begin
+    DataAgrup.RecNo:=t;
+    GrillaAgrup.RowCount:=t+1;
+    GrillaAgrup.Cells[0,t]:=DataAgrup.FieldByName('Rubros').AsString;
+    GrillaAgrup.Cells[1,t]:=DataAgrup.FieldByName('CantidaObjetos').AsString;
+    GrillaAgrup.Cells[2,t]:=DataAgrup.FieldByName('TotalDeuda').AsString;
+    grafico2.Series[0].Add(DataAgrup.Fields[1].AsFloat,inttostr(a),536870912);
+    suma := suma + DataAgrup.Fields[2].AsFloat;
+   end;
+   label11.Caption:= '$ ' + floattostr(suma);
+  end;
+  DataAgrup.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TConsultas_BoletoDeuda.Edit5Change(Sender: TObject);
+var t,p,u:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+ if (length(trim(edit5.Text))>= 3) then begin
+  DataSet1.Close;
+  DataSet1.Connection:=Cnx2;
+  Dataset1.CommandText:='SELECT dbo.IntimacionContribuyenteObjeto.IdIntimacionContribuyente,'
+  + ' municipio.dbo.RubrosSub.descripcion,dbo.IntimacionContribuyenteObjeto.CodigoObjeto, dbo.IntimacionContribuyenteObjeto.Capital, '
+  +' dbo.IntimacionContribuyenteObjeto.Interes, dbo.IntimacionContribuyenteObjeto.ImporteDeuda, '
+  +' dbo.IntimacionContribuyenteObjeto.PeriodoDeuda ,dbo.IntimacionContribuyenteObjeto.Id FROM  municipio.dbo.RubrosSub '
+  +' INNER JOIN dbo.IntimacionContribuyenteObjeto ON municipio.dbo.RubrosSub.idSubRubro = dbo.IntimacionContribuyenteObjeto.IdSubRubro'
+  +' where dbo.IntimacionContribuyenteObjeto.IdIntimacionContribuyente = (' + idintima+ ')'
+  +' and dbo.IntimacionContribuyenteObjeto.CodigoObjeto like  ' + QuotedStr(trim(edit5.Text) + chr(37)) ;
+  DataSet1.Open;
+  if not Dataset1.IsEmpty  then begin
+   JvDBGrid2.Columns[0].Width:=60;
+   JvDBGrid2.Columns[1].Width:=150;
+   JvDBGrid2.Columns[2].Width:=70;
+   JvDBGrid2.Columns[3].Width:=70;
+   JvDBGrid2.Columns[4].Width:=70;
+   JvDBGrid2.Columns[5].Width:=70;
+   JvDBGrid2.Columns[6].Width:=250;
+   JvDBGrid2.Columns[7].Width:=50;
+  end;
+  DataSet1.Connection:=nil;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.Edit5KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  buscaobj.SetFocus;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.ElimObjetoClick(Sender: TObject);
+var t,p,gf:integer;
+    pso:boolean;
+    txt1:widestring;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Realmente ELIMAR este Objeto ya guardado?',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  pso:=false;
+  try
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+   DataBaja:=TADODataSet.Create(nil);
+   DataBaja.Connection:=Cnx2;
+
+   DataBaja.CommandText:='EXEC SPB_ObjetosBoletaDeuda ' + trim(label8.Caption)
+   + ',' + trim(label9.Caption)
+   + ',' + modulo2.Usuario.UsuNro
+   + ',' + ellote;
+   DataBaja.Open;
+   if DataBaja.Fields[0].AsString = 'OK' then begin
+     messagedlg('OBJETO ELIMINADO correctamente!',mtConfirmation,[mbok],0);
+     pso:=true;
+   end
+   else begin
+     messagedlg('Eror al ELIMINAR el Objeto, consulte con un Administrador...!',mtConfirmation,[mbok],0);
+   end;
+   DataBaja.Close;
+  except
+   on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+    EnviarLog(Self.Caption, Com1.CommandText);
+    messagedlg('ERROR al Guardar los datos',mterror,[mbok],0);
+   end;
+  end;
+  FreeAndNil(DataBaja);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+  if pso then begin
+   Panel11.Visible:=false;
+   Coloca1(0,'');
+   coloca1(3,idintima);
+   PC1.ActivePage:=PC1.Pages[2];
+  end;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.JvBitBtn1Click(Sender: TObject);
+begin
+ Panel11.Visible:=false;
+end;
+
+procedure TConsultas_BoletoDeuda.JvDBGrid2CellClick(Column: TColumn);
+var i: Integer;
+begin
+ Grupoperiodos.Visible :=false;
+ if elestado <> 'Bloqueo de Periodos' then begin
+  VerArea(1);
+  if dato <> '0' then begin
+    PopupActionBar1.Items[0].Visible :=true;
+  end
+  else begin
+    PopupActionBar1.Items[0].Visible :=false;
+  end;
+  edit4.Clear;
+  edit4.Text:= trim(DataSet1.Fields[7].AsString);
+  VerArea(2);
+  if dato2 <> '0' then Grupoperiodos.Visible :=true
+    else Grupoperiodos.Visible :=false;
+  elrub:=trim(DataSet1.Fields[1].AsString);
+  elobjeto:=trim(DataSet1.Fields[2].AsString);
+  elimporte:='$ ' + trim(DataSet1.Fields[5].AsString);
+  label8.Caption:=trim(DataSet1.Fields[0].AsString);
+  label9.Caption:= trim(DataSet1.Fields[7].AsString);
+  memo1.Text := trim(DataSet1.Fields[6].AsString);
+  Barra1.Panels[3].Text:='Id Objeto: ' + DataSet1.Fields[7].AsString;
+ end
+ else begin
+  PopupActionBar1.Items[0].Visible :=false;
+  actuperi.Enabled:=true;
+ end;
+end;
+
+procedure TConsultas_BoletoDeuda.JvDBGrid2DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var t:integer;
+begin
+// Si la fila está seleccionada
+  if gdSelected in State then
+  begin
+    //DataSet1.Fields[8].AsString:='1';
+    //JvDBGrid2.CellRect[8,t].:='1';
+    JvDBGrid2.Canvas.Brush.Color := clYellow;   // Color de fondo para la selección
+    JvDBGrid2.Canvas.Font.Color := clBlack;     // Color del texto
+    JvDBGrid2.Canvas.FillRect(Rect);
+    JvDBGrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end
+  else
+  begin
+     //DataSet1.Fields[8].AsString:='0';
+    // Dibujar normalmente las demás filas
+    JvDBGrid2.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
+end;
+
+procedure TConsultas_BoletoDeuda.JvDBGrid3CellClick(Column: TColumn);
+begin
+ coloca1(2,DataSet3.Fields[0].AsString);
+ coloca1(1,DataSet3.Fields[0].AsString);
+ coloca1(4,DataSet3.Fields[0].AsString);
+ ellote:=trim(DataSet3.Fields[0].AsString);
+ fechalote:=trim(DataSet3.Fields[1].AsString);
+ dispo:=trim(DataSet3.Fields[4].AsString);
+ ger:=rightstr(dispo,3);
+end;
+
+procedure TConsultas_BoletoDeuda.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TConsultas_BoletoDeuda.Timer1Timer(Sender: TObject);
+begin
+  Label10.visible := not (Label10.visible);
+  Label10.Repaint;
+end;
+
+end.

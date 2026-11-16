@@ -1,0 +1,2622 @@
+unit PlanPagoMoratoria2022;
+
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Menus, DB, Grids, DBGrids, JvExDBGrids, JvDBGrid,
+  JvExControls, JvxCheckListBox, StdCtrls, JvgGroupBox, ADODB, ExtCtrls,
+  StrUtils, JvComponentBase, JvEmbeddedForms, frxClass, frxDBSet, Vcl.Buttons,
+  JvExButtons, JvBitBtn, Vcl.ToolWin, JvDBGridExport, Objetos, Vcl.Mask,
+  JvExGrids, JvStringGrid, RzTreeVw, RzTabs, RzButton, RzRadChk, RzPanel, RzEdit,
+  DBClient, MidasLib, Vcl.ImgList, JvExStdCtrls, JvGroupBox, frxBarcode, JvGIF,
+  JvExComCtrls, JvAnimate, JvExExtCtrls, JvExtComponent, JvCaptionPanel;
+
+type THackStringGrid = class(TStringGrid);
+type
+
+  TAlta_PlanPagoMoratoria = class(TForm)
+    FormularioEmb: TJvEmbeddedFormLink;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    TabSheet2: TRzTabSheet;
+    ToolBar1: TToolBar;
+    Label2: TLabel;
+    ToolButton1: TToolButton;
+    BORRA: TJvBitBtn;
+    ToolButton2: TToolButton;
+    SALE: TJvBitBtn;
+    CONDPLAN: TJvGroupBox;
+    JvgGroupBox4: TJvGroupBox;
+    grilla2: TJvStringGrid;
+    CALCULAR: TJvBitBtn;
+    PG1: TProgressBar;
+    Label9: TLabel;
+    CUOTAS: TComboBox;
+    Label32: TLabel;
+    VALSELLADO: TEdit;
+    Label18: TLabel;
+    VENC1: TMaskEdit;
+    Label19: TLabel;
+    VENC2: TMaskEdit;
+    grilla5: TStringGrid;
+    BitBtn1: TJvBitBtn;
+    GrupoAdmin2: TJvGroupBox;
+    C2: TCheckBox;
+    Label1: TLabel;
+    CONTRPLAN: TJvGroupBox;
+    Label3: TLabel;
+    CUIM: TEdit;
+    Label4: TLabel;
+    CONTRIB: TEdit;
+    Label13: TLabel;
+    PROVINCIA: TComboBox;
+    CALLE: TComboBox;
+    Label38: TLabel;
+    Label35: TLabel;
+    BARRIO: TComboBox;
+    ALTURA1: TMaskEdit;
+    Label39: TLabel;
+    Label20: TLabel;
+    TELEFONO: TEdit;
+    Label16: TLabel;
+    DOMI1: TEdit;
+    Label42: TLabel;
+    PISO1: TEdit;
+    Label43: TLabel;
+    DPTO1: TEdit;
+    Label44: TLabel;
+    MANZANA1: TEdit;
+    Label45: TLabel;
+    CASA1: TEdit;
+    Label41: TLabel;
+    TORRE1: TEdit;
+    Label40: TLabel;
+    SECTOR1: TEdit;
+    Label47: TLabel;
+    PARCELA1: TEdit;
+    Label46: TLabel;
+    LOTERURAL1: TEdit;
+    grilla4: TStringGrid;
+    BUSCACUIM: TJvBitBtn;
+    Agrega2: TJvBitBtn;
+    Modifica2: TJvBitBtn;
+    Borra2: TJvBitBtn;
+    Quita2: TJvBitBtn;
+    FINPLAN: TJvGroupBox;
+    Sellado: TJvBitBtn;
+    Label8: TLabel;
+    OBSERV: TEdit;
+    Imprime: TJvBitBtn;
+    RzPanel2: TRzPanel;
+    JvGroupBox1: TJvGroupBox;
+    Label12: TLabel;
+    Label14: TLabel;
+    NOMBRE: TEdit;
+    BUSCUIM1: TJvBitBtn;
+    IDCONT: TEdit;
+    JvgGroupBox3: TJvgGroupBox;
+    ARBOL: TRzCheckTree;
+    JvGroupBox9: TJvGroupBox;
+    CAPITAL: TRzNumericEdit;
+    INTERESREM: TRzNumericEdit;
+    TOTAL: TRzNumericEdit;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    C1: TCheckBox;
+    CARACTER: TComboBox;
+    Label27: TLabel;
+    INTERESDEV: TRzNumericEdit;
+    Label15: TLabel;
+    GUARDA: TJvBitBtn;
+    PB2: TProgressBar;
+    Label17: TLabel;
+    JvGroupBox2: TJvGroupBox;
+    Label28: TLabel;
+    Shape2: TShape;
+    Shape3: TShape;
+    Label29: TLabel;
+    Label10: TLabel;
+    SUBTOTAL: TRzNumericEdit;
+    PopupMenu1: TPopupMenu;
+    Exportar1: TMenuItem;
+    ContribId: TEdit;
+    Label11: TLabel;
+    mail: TEdit;
+    Label21: TLabel;
+    ImageList1: TImageList;
+    Label23: TLabel;
+    TotalInteres: TRzNumericEdit;
+    ReciboBtn: TJvBitBtn;
+    N1: TMenuItem;
+    Imprimir1: TMenuItem;
+    RE: TRichEdit;
+    Panel1: TPanel;
+    Image1: TImage;
+    Label22: TLabel;
+    Label24: TLabel;
+    frxReport1: TfrxReport;
+    PopupMenu2: TPopupMenu;
+    ExportaraExcelDetalledeuota1: TMenuItem;
+    CB2: TCheckBox;
+    CB1: TCheckBox;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure ColocaCombo(nro:byte);
+    procedure Consultas(nro:byte);
+    procedure Coloca1(nro:byte);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BUSCUIM1Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure CALCULARClick(Sender: TObject);
+    procedure ARBOLClick(Sender: TObject);
+    function SeleccionCorrecta():boolean;
+    procedure CalcularDescuento;
+    procedure C2Click(Sender: TObject);
+    procedure PC1Change(Sender: TObject);
+    procedure CUOTASChange(Sender: TObject);
+    procedure CUOTASKeyPress(Sender: TObject; var Key: Char);
+    procedure CUOTASExit(Sender: TObject);
+    procedure VENC1KeyPress(Sender: TObject; var Key: Char);
+    procedure VENC1Exit(Sender: TObject);
+    procedure VENC2Exit(Sender: TObject);
+    procedure VENC2KeyPress(Sender: TObject; var Key: Char);
+    procedure BUSCACUIMKeyPress(Sender: TObject; var Key: Char);
+    procedure CONTRIBKeyPress(Sender: TObject; var Key: Char);
+    procedure PROVINCIAKeyPress(Sender: TObject; var Key: Char);
+    procedure BARRIOKeyPress(Sender: TObject; var Key: Char);
+    procedure CALLEKeyPress(Sender: TObject; var Key: Char);
+    procedure ALTURA1KeyPress(Sender: TObject; var Key: Char);
+    procedure DPTO1KeyPress(Sender: TObject; var Key: Char);
+    procedure PISO1KeyPress(Sender: TObject; var Key: Char);
+    procedure MANZANA1KeyPress(Sender: TObject; var Key: Char);
+    procedure CASA1KeyPress(Sender: TObject; var Key: Char);
+    procedure TORRE1KeyPress(Sender: TObject; var Key: Char);
+    procedure SECTOR1KeyPress(Sender: TObject; var Key: Char);
+    procedure PARCELA1KeyPress(Sender: TObject; var Key: Char);
+    procedure LOTERURAL1KeyPress(Sender: TObject; var Key: Char);
+    procedure TELEFONOKeyPress(Sender: TObject; var Key: Char);
+    procedure DOMI1KeyPress(Sender: TObject; var Key: Char);
+    procedure Quita2Click(Sender: TObject);
+    procedure Agrega2Click(Sender: TObject);
+    procedure Modifica2Click(Sender: TObject);
+    procedure Borra2Click(Sender: TObject);
+    procedure grilla4Click(Sender: TObject);
+    procedure GUARDAClick(Sender: TObject);
+    Function Verificacion(Nro:byte):boolean;
+    procedure ImprimeClick(Sender: TObject);
+    procedure SelladoClick(Sender: TObject);
+    procedure GuardarRecibo(nro:byte);
+    procedure CreaTablaTemporal();
+    procedure ImprimeDDJJ();
+    procedure ImprimeRecibo();
+    procedure BORRAClick(Sender: TObject);
+    procedure Limpiar(nro:byte);
+    procedure ARBOLStateChange(Sender: TObject; Node: TTreeNode;
+      NewState: TRzCheckState);
+    procedure ARBOLUpdateChildren(Sender: TObject);
+    procedure CARACTERKeyPress(Sender: TObject; var Key: Char);
+    procedure BUSCACUIMClick(Sender: TObject);
+    function VerificaDeuda(grilla:string):boolean;
+    procedure grilla2DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect; State: TGridDrawState);
+    function VerificaGrillaDeuda(grilla:string):boolean;
+    procedure CB1Click(Sender: TObject);
+    procedure OrdenaGrilla(Grid: TStringGrid; Col: integer);
+    procedure Exportar1Click(Sender: TObject);
+    procedure mailKeyPress(Sender: TObject; var Key: Char);
+    procedure ReciboBtnClick(Sender: TObject);
+    procedure Imprimir1Click(Sender: TObject);
+    procedure VerArea(nro:byte);
+    procedure PROVINCIAExit(Sender: TObject);
+    procedure BARRIOExit(Sender: TObject);
+    procedure CALLEExit(Sender: TObject);
+    procedure CARACTERExit(Sender: TObject);
+    procedure CB2Click(Sender: TObject);
+    procedure C1Click(Sender: TObject);
+    procedure ExportaraExcelDetalledeuota1Click(Sender: TObject);
+  private
+    DataSet1,DataSet2,DataSet3,DateSetTHBloq:TADODataSet;
+    gh:boolean;
+    Recibo:TRecibo;
+    DtsGrilla2:TClientDataSet;
+     {Private declarations }
+  public
+    Parametro,ParamConCat,FechaAct,FechaAct1,CuimTit,DniTit,NroPlan,RubrosInc,
+    FechaHora,lafecactual,dato,fechacorte,idcintrib,titcontrib,diacorte:string;
+    Tiempo : TDateTime;
+    Objetos:TObjetos;
+    nrorubro,cantiplan:integer;
+    CuotaMinNorm, CuotaMinCom, totdto:real;
+    Limpiado,ctanormal:boolean;
+    { Public declarations }
+  end;
+
+var
+  Alta_PlanPagoMoratoria: TAlta_PlanPagoMoratoria;
+
+implementation
+
+uses Modulo, Unidad, Busc_Cont, Fecha_Fa;
+
+{$R *.dfm}
+
+procedure TAlta_PlanPagoMoratoria.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Modulo2.LiberarCombo(PROVINCIA);
+Modulo2.LiberarCombo(BARRIO);
+Modulo2.LiberarCombo(CALLE);
+Modulo2.LiberarCombo(CUOTAS);
+Modulo2.LiberarCombo(CARACTER);
+FreeAndNil(DataSet1);
+FreeAndNil(DataSet2);
+FreeAndNil(DataSet3);
+FreeAndNil(DateSetTHBloq);
+FreeAndNil(Self);
+end;
+
+procedure TAlta_PlanPagoMoratoria.FormCreate(Sender: TObject);
+begin
+gh:=false;
+DataSet1:=TADODataSet.Create(nil);
+DataSet2:=TADODataSet.Create(nil);
+DataSet3:=TADODataSet.Create(nil);
+DateSetTHBloq:=TADODataSet.Create(nil);
+Objetos:=TObjetos.Create;
+end;
+
+procedure TAlta_PlanPagoMoratoria.FormActivate(Sender: TObject);
+var today : TDateTime;
+begin
+ if not(gh) then begin
+  gh:=true;
+  RubrosInc:='';
+  lafecactual:=LeftStr(Fec_System(),10);
+  FechaAct:=LeftStr(Fec_System(),10);
+  FechaAct1:=FechaAct;
+  today:= Now;
+  FechaHora:=MidStr(FechaAct,4,2) + LeftStr(FechaAct,2) +  LeftStr(TimeToStr(today),2) + MidStr(TimeToStr(today),4,2);
+  VENC1.Text:=FechaAct;
+  CuotaMinNorm:=0;
+  GrupoAdmin2.Enabled:=true;
+  grilla2.Cells[0,0]:='SubRubro';          grilla2.Cells[1,0]:='Objeto';
+  grilla2.Cells[2,0]:='Periodo';           grilla2.Cells[3,0]:='Fecha Venc.';
+  grilla2.Cells[4,0]:='Capital';           grilla2.Cells[5,0]:='Interés';
+  grilla2.Cells[6,0]:='Sub-Total';         grilla2.Cells[7,0]:='Capital Ref.';
+  grilla2.Cells[8,0]:='Interés Ref.';      grilla2.Cells[9,0]:='Sub-Total Ref.';
+  grilla2.Cells[10,0]:='% Descuento';      grilla2.Cells[11,0]:='Total Desc.';
+  grilla2.Cells[12,0]:='Total Final';      grilla2.Cells[13,0]:='Identificador';
+  grilla2.Cells[14,0]:='EsMulta';          grilla2.Cells[15,0]:='Nº Plan';
+
+  grilla4.Cells[0,0]:='Nº CUIM';           grilla4.Cells[1,0]:='Nombre Contribuyente';
+  grilla4.Cells[2,0]:='Provincia';         grilla4.Cells[3,0]:='Barrio';
+  grilla4.Cells[4,0]:='Calle';             grilla4.Cells[5,0]:='Altura';
+  grilla4.Cells[6,0]:='Pso:';              grilla4.Cells[7,0]:='Dto:';
+  grilla4.Cells[8,0]:='Mz:';               grilla4.Cells[9,0]:='Csa:';
+  grilla4.Cells[10,0]:='Tr:';              grilla4.Cells[11,0]:='Sct:';
+  grilla4.Cells[12,0]:='Prc:';             grilla4.Cells[13,0]:='LtR:';
+  grilla4.Cells[14,0]:='Teléfono';         grilla4.Cells[15,0]:='Domicilio';
+  grilla4.Cells[16,0]:='Caracter';         grilla4.Cells[17,0]:='DNI';
+  grilla4.Cells[18,0]:='IdProvincia';      grilla4.Cells[19,0]:='IdBarrio';
+  grilla4.Cells[20,0]:='IdCalle';          grilla4.Cells[21,0]:='IdCaracter';
+  grilla4.Cells[22,0]:='IdDomContrib';     grilla4.Cells[23,0]:='Mail';
+
+  grilla5.Cells[0,0]:='N° Cta.';
+  grilla5.Cells[1,0]:='Vencimiento';
+  grilla5.Cells[2,0]:='Capital';      //    Imp. Cuota
+  grilla5.Cells[3,0]:='Interes';      //    Capital
+  grilla5.Cells[4,0]:='Imp. Cuota';   //    Interes
+
+  ColocaCombo(1);
+  ColocaCombo(2);
+  ColocaCombo(3);
+  ColocaCombo(4);
+  ColocaCombo(5);
+  Consultas(1);
+  PC1.ActivePage:=PC1.Pages[0];
+  CUOTAS.ItemIndex:=0;
+  buscuim1.SetFocus;
+  pc1.Pages[1].TabVisible:=false;
+  if Modulo2.ObtenerNivelAcceso('152') <> 1  then  PopupMenu1.Items[0].Enabled:=false
+   else  PopupMenu1.Items[0].Enabled:=true;
+  label24.Caption:='...';
+  panel1.Visible:=false;
+  VerArea(1);
+  if dato <> '0' then   begin
+   PopupMenu2.Items[0].Visible :=true;
+   GrupoAdmin2.Enabled:=true;
+  end
+  else begin
+   PopupMenu2.Items[0].Visible :=false;
+   GrupoAdmin2.Enabled:=false;
+  end;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.VerArea(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;   // plan de pago
+ if nro=1 then begin
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_PlanPagoUsuariosAdmin (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato:=DataSet2.Fields[0].AsString
+   else dato:='0';
+  DataSet2.Connection:=nil;
+ end;
+ if nro=2 then begin
+  idcintrib:='';
+  DateSetTHBloq.Close;
+  DateSetTHBloq.Connection:=Cnx2;
+  DateSetTHBloq.CommandText:='SELECT IdContribuyente,TittularTH FROM THExcluirDeMoratoria where '
+  +'(IdContribuyente =' + trim(idcont.Text) + ') and (activo=1)';
+  DateSetTHBloq.Open;
+  if not DateSetTHBloq.IsEmpty  then begin
+   idcintrib:=DateSetTHBloq.Fields[0].AsString;
+   titcontrib:=DateSetTHBloq.Fields[1].AsString;
+   arbol.Enabled :=false;
+  end
+  else arbol.Enabled :=true;
+  DateSetTHBloq.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TAlta_PlanPagoMoratoria.OrdenaGrilla(Grid: TStringGrid; Col: integer);
+var i, j: integer;
+prev: string;
+begin
+//in worst-case scenario we'll need RowCount-1 iterations to fully sort the grid
+ for j:= 0 to Grid.RowCount- 1 do
+ for i:= 2 to Grid.RowCount- 1 do  begin
+  if strtoint(Grid.Cells[Col, i])> strtoint(Grid.Cells[Col, i-1]) then begin // < if you want to reverse the sort order
+   prev:= Grid.Rows[i- 1].CommaText;
+   Grid.Rows[i- 1].CommaText:= Grid.Rows[i].CommaText;
+   Grid.Rows[i].CommaText:= prev;
+  end;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.BUSCACUIMClick(Sender: TObject);
+var Bus_Titulares:TBus_Titulares;
+    j:integer;
+    result:boolean;
+begin
+ try
+ result:=true;
+  for j:=1 to grilla4.RowCount-1 do begin
+   if trim(grilla4.Cells[4,j])='' then begin
+    Result:=false;
+    break;
+   end;
+  end;
+  CONTRIB.Clear;
+  ALTURA1.Text:='0';
+  PISO1.Clear;
+  DPTO1.Clear;
+  MANZANA1.Clear;
+  CASA1.Clear;
+  TORRE1.Clear;
+  SECTOR1.Clear;
+  PARCELA1.Clear;
+  LOTERURAL1.Clear;
+  TELEFONO.Clear;
+  DOMI1.Clear;
+  Bus_Titulares:=TBus_Titulares.Create(self);
+  Bus_Titulares.NroOpcion:=1;
+  Bus_Titulares.ONOMB.Text:='';
+  Bus_Titulares.ShowModal;
+  if Bus_Titulares.ConSelec then begin
+   CONTRIB.Text:=Bus_Titulares.TITULARES.FieldByName('Contribuyente').AsString;
+   ContribId.Text:=Bus_Titulares.TITULARES.FieldByName('IdDomi').AsString;
+   CUIM.Text:=Bus_Titulares.TITULARES.FieldByName('CUIM').AsString;
+   PROVINCIA.ItemIndex:=PROVINCIA.Items.IndexOf('FORMOSA');
+   BARRIO.ItemIndex:=BARRIO.Items.IndexOf(Bus_Titulares.TITULARES.FieldByName('Barrio').AsString);
+   CALLE.ItemIndex:=CALLE.Items.IndexOf(Bus_Titulares.TITULARES.FieldByName('Calle').AsString);
+   ALTURA1.Text:=Bus_Titulares.TITULARES.FieldByName('Altura').AsString;
+   TELEFONO.Text:=Bus_Titulares.TITULARES.FieldByName('Telefono').AsString;
+   MAIL.Text := Bus_Titulares.TITULARES.FieldByName('Mail').AsString;
+   CARACTER.ItemIndex:=CARACTER.Items.IndexOf('TITULAR');
+   DniTit:=Bus_Titulares.TITULARES.FieldByName('NroDni').AsString;;
+  end;
+ finally
+  FreeAndNIl(Bus_Titulares);
+ end;
+ if not result then ColocaCombo(5);
+ caracter.ItemIndex :=0;
+ limpiar(4);
+ provincia.SetFocus;
+ if not Modifica2.Enabled then Agrega2.Enabled:=true;
+end;
+
+procedure TAlta_PlanPagoMoratoria.BUSCACUIMKeyPress(Sender: TObject; var Key: Char);
+begin
+BUSCUIM1.SetFocus;
+end;
+
+procedure TAlta_PlanPagoMoratoria.PC1Change(Sender: TObject);
+begin
+  if PC1.ActivePageIndex = 1 then begin
+   if CONDPLAN.Enabled then CUOTAS.SetFocus;
+  end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.ColocaCombo(nro:byte);
+begin
+ if nro=1 then Modulo2.CargaCombo(PROVINCIA,'SELECT Descrip,provincia FROM Provinc WHERE (Provincia > 10) ORDER BY DESCRIP',Modulo2.Sistema.ConectUsu, false);
+ if nro=2 then Modulo2.CargaCombo(BARRIO,'SELECT Detalle, Id FROM Barrios ORDER BY Detalle',Modulo2.Sistema.ConectSeg, false);
+ if nro=3 then Modulo2.CargaCombo(CALLE,'SELECT Descrip,calle FROM CALLES WHERE (Dpto_Polit=1) AND (LOCALIDAD=1) ORDER BY DESCRIP',Modulo2.Sistema.ConectUsu, false);
+ if nro=4 then Modulo2.CargaCombo(CUOTAS,'select NroCuota,Id from Fn_PlanPagoCuotasMoratoria2022 (' + chr(39) + RubrosInc + chr(39) + ')',Modulo2.Sistema.ConectDb, false);
+ if nro=5 then Modulo2.CargaCombo(CARACTER,'SELECT Detalle ,Id FROM TipoContribuyente',Modulo2.Sistema.ConectDb, false);
+end;
+
+procedure TAlta_PlanPagoMoratoria.Consultas(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;   // planespago
+ if nro=1 then begin
+  DataSet1.Close;
+  DataSet1.Connection:=Cnx2;
+  DataSet1.CommandText:='SELECT ImporteSellado, AplicarDescAnio, AplicarPlanSocial,MinimoCuota,  '
+  +' ltrim(rtrim(isnull(convert(char(10),FechaCorte,103),0))) as FechaCorte FROM PlanPagoConfig WHERE (FechaBaja IS NULL)';
+  DataSet1.Open;
+  valsellado.Text:=trim(DataSet1.Fields[0].AsString);
+  C1.Checked:=DataSet1.FieldByName('AplicarDescAnio').AsBoolean;
+  CuotaMinNorm:=DataSet1.FieldByName('MinimoCuota').AsFloat;
+  DataSet1.Close;
+  DataSet1.Connection:=nil;
+ end;
+ if nro=2 then begin
+  ctanormal:=true;
+  for b:=0 to grilla5.ColCount-1 do
+   for t:=1 to grilla5.RowCount-1 do  grilla5.Cells[b,t]:='';
+  grilla5.RowCount:=2;
+  DataSet1.Close;
+  DataSet1.Connection:=Cnx2;
+  if CB2.Checked then
+   //// detalle de cuotas segun moratoria --------
+   DataSet1.CommandText:='SPP_SitemaAleman ' + Modulo2.Usuario.UsuNro
+   + ' , ' + AnsiReplaceStr(TOTAL.Text,',','.')
+   + ' , ' + CUOTAS.Text
+   + ' , ' + chr(39) + trim(VENC1.Text) + chr(39)
+  else
+   // detalle de cuotas a planes normarles de 3% de interes por financiacion por c/cuota
+   DataSet1.CommandText:='SPP_SitemaDirectoNew ' + Modulo2.Usuario.UsuNro
+   + ' , ' + AnsiReplaceStr(TOTAL.Text,',','.')
+   + ' , ' + CUOTAS.Text
+   + ' , ' + chr(39) + trim(VENC1.Text) + chr(39);
+  DataSet1.Open;
+  if not DataSet1.IsEmpty then begin
+   for t:=1 to DataSet1.RecordCount do begin
+    DataSet1.RecNo:=t;
+    grilla5.RowCount:=t + 1;
+    grilla5.Cells[0,t]:=DataSet1.FieldByName('NroCuota').AsString;
+    grilla5.Cells[1,t]:=DataSet1.FieldByName('Vencimiento').AsString;
+    grilla5.Cells[2,t]:=DataSet1.FieldByName('Capital').AsString;  //  DataSet1.FieldByName('Total').AsString
+    grilla5.Cells[3,t]:=DataSet1.FieldByName('Interes').AsString;  //  DataSet1.FieldByName('Capital').AsString
+    grilla5.Cells[4,t]:=DataSet1.FieldByName('Total').AsString;    //  DataSet1.FieldByName('Interes').AsString
+   end;
+  end
+  else begin
+   messagedlg('Error!! El Valor de la Cuota no Puede ser menor a $ ' + floattostr(CuotaMinNorm) + chr(13)
+   + 'Por Favor intente nuevamente con otro valor de Cuota.',mterror,[mbok],0);
+   ctanormal:=false;
+   CUOTAS.SetFocus;
+  end;
+  DataSet1.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TAlta_PlanPagoMoratoria.BitBtn1Click(Sender: TObject);
+var FECHA_FAC: TFECHA_FAC;
+begin
+ FECHA_FAC:= TFECHA_FAC.create(self);
+ FECHA_FAC.OFECRESU.Text:=FechaAct;
+ if c1.Checked  then FECHA_FAC.admin.Checked :=true
+  else FECHA_FAC.admin.Checked :=false;
+ try
+  FECHA_FAC.ShowModal;
+  FechaAct:=trim(FECHA_FAC.OFECRESU.Text);
+  calcular.Enabled:=true;
+  calcular.SetFocus;
+ finally
+  FECHA_FAC.Free;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.BUSCUIM1Click(Sender: TObject);
+var Bus_Titulares:TBus_Titulares;
+    pso:boolean;
+    b,t:integer;
+    Cnx2:TADOConnection;
+begin
+ BORRA.Click;
+ try
+  Bus_Titulares:=TBus_Titulares.Create(self);
+  Bus_Titulares.NroOpcion:=1;
+  Bus_Titulares.ONOMB.Text:=NOMBRE.Text;
+  Bus_Titulares.ShowModal;
+  if Bus_Titulares.ConSelec then begin
+   IDCONT.Text:=Bus_Titulares.TITULARES.FieldByName('Id').AsString;
+   Contribid.Text:=Bus_Titulares.TITULARES.FieldByName('IdDomi').AsString;
+   NOMBRE.Text:=Bus_Titulares.TITULARES.FieldByName('Contribuyente').AsString;
+   CONTRIB.Text:=Bus_Titulares.TITULARES.FieldByName('Contribuyente').AsString;
+   CUIM.Text:=Bus_Titulares.TITULARES.FieldByName('CUIM').AsString;
+   CuimTit:=Bus_Titulares.TITULARES.FieldByName('CUIM').AsString;
+   DniTit:=Bus_Titulares.TITULARES.FieldByName('NroDni').AsString;;
+   PROVINCIA.ItemIndex:=PROVINCIA.Items.IndexOf('FORMOSA');
+   BARRIO.ItemIndex:=BARRIO.Items.IndexOf(Bus_Titulares.TITULARES.FieldByName('Barrio').AsString);
+   CALLE.ItemIndex:=CALLE.Items.IndexOf(Bus_Titulares.TITULARES.FieldByName('Calle').AsString);
+   ALTURA1.Text:=Bus_Titulares.TITULARES.FieldByName('Altura').AsString;
+   MAIL.Text := Bus_Titulares.TITULARES.FieldByName('Mail').AsString;
+   TELEFONO.Text:=Bus_Titulares.TITULARES.FieldByName('Telefono').AsString;
+   CARACTER.ItemIndex:=CARACTER.Items.IndexOf('TITULAR');
+   VerArea(2);
+   if idcintrib='' then pso:=true
+   else
+   begin
+    messagedlg('ATENCION!!! Contribuyente ' + titcontrib  + ' con requerimientos pendientes. Deberá responder la solicitud de información previo a poder acceder al Plan de Faciliadades de Pagos' ,mtWarning,[mbok],0);
+    IDCONT.Clear;
+    NOMBRE.Clear;
+    pso:=false;
+   end;
+  end;
+ finally
+  FreeAndNIl(Bus_Titulares);
+ end;
+ Coloca1(1);
+end;
+
+procedure TAlta_PlanPagoMoratoria.Coloca1(nro:byte);
+var t,y:integer;
+    TotInt:real;
+    Hijo,Nieto,Bisnieto:TTreeNode;
+    DataSet3:TADODataSet;
+    Cnx2:TADOConnection;
+    tx:string;
+    ps:boolean;
+begin
+ try
+  if nro = 1 then begin
+    Arbol.Items.Clear;
+    Objetos.CantObjetos:=0;
+    Objetos.Identidad.Clear;
+    Objetos.EsContenedor.Clear;
+    Objetos.Rubro.Clear;
+    Objetos.ConDeuda.Clear;
+    Objetos.CodObjeto.Clear;
+    Objetos.Descripcion.Clear;
+    Objetos.EsPlan.Clear;
+    Objetos.ImportePagado.Clear;
+    Objetos.DetalleImpu.Clear;
+    Objetos.BajaProvisoria.Clear;
+
+    Arbol.Items.Add(nil,'OBJETOS DEL CONTRIBUYENTE');
+    Objetos.Identidad.Append('');
+    Objetos.EsContenedor.Append('1');
+    Objetos.Rubro.Append('');
+    Objetos.ConDeuda.Add('');
+    Objetos.CodObjeto.Append('');
+    Objetos.Descripcion.Add('');
+    Objetos.EsPlan.Add('');
+    Objetos.ImportePagado.Add('');
+    Objetos.DetalleImpu.Add('');
+    Cnx2:=TADOConnection.Create(nil);
+    Cnx2.LoginPrompt:=false;
+    Cnx2.ConnectionString:=Modulo2.Sistema.ConectSeg; ///seguridadweb
+
+    DataSet3:=TADODataSet.Create(nil);
+    DataSet3.Connection:=Cnx2;
+    ps:=false;
+    Application.ProcessMessages;
+    DataSet3.CommandTimeout:=120;
+    DataSet3.CommandText:='SELECT Id, Texto, Identidad, EsContenedor, Rubro, Condeuda, CodObjeto, Descripcion,'
+    + ' ImportePagado, Esplan, DetalleImpu, BajaProvisoria FROM Fn_ObjetosTreeMoratoria2022 (' + IDCONT.Text + ' , 0)';
+    DataSet3.Open;
+    if not DataSet3.IsEmpty then begin
+     for t:=1 to DataSet3.RecordCount do begin
+      DataSet3.RecNo:=t;
+      if DataSet3.FieldByName('EsContenedor').AsBoolean then begin
+       Hijo:=Arbol.Items.AddChild(Arbol.Items[0],DataSet3.FieldByName('Texto').AsString);
+       Objetos.EsContenedor.Append('1');
+      end
+      else begin
+       if DataSet3.FieldByName('BajaProvisoria').AsBoolean then begin
+        Arbol.Items.AddChild(Hijo,'C/ DENUNCIA DE VENTA -> ' + DataSet3.FieldByName('Texto').AsString);
+        ps:=true;
+       end
+       else
+        Arbol.Items.AddChild(Hijo,DataSet3.FieldByName('Texto').AsString);
+        Objetos.EsContenedor.Append('0');
+      end;
+      Objetos.Identidad.Append(DataSet3.FieldByName('Identidad').AsString);
+      Objetos.Rubro.Append(DataSet3.FieldByName('Rubro').AsString);  //El estado del plan
+      Objetos.DetalleImpu.Add(DataSet3.FieldByName('DetalleImpu').AsString);
+      if DataSet3.FieldByName('Esplan').AsBoolean then Objetos.EsPlan.Add('1')
+       else Objetos.EsPlan.Add('0');
+      Objetos.ConDeuda.Add(DataSet3.FieldByName('Condeuda').AsString);
+      Objetos.ImportePagado.Add(DataSet3.FieldByName('ImportePagado').AsString);
+      Objetos.CodObjeto.Append(DataSet3.FieldByName('CodObjeto').AsString);
+      Objetos.Descripcion.Add(DataSet3.FieldByName('Descripcion').AsString);
+     end;
+    end;
+    DataSet3.Close;
+    DataSet3.Connection:=nil;
+    FreeAndNil(DataSet3);
+    Cnx2.Close;
+    FreeAndNil(Cnx2);
+    panel1.Visible:=false;
+    if ps then messagedlg('ATENCION!!!... Tenga en cuenta que existe algùn AUTOMOTOR con DENUNCIA DE VENTA!!!',mtInformation,[mbok],0);
+  end;
+  if nro=2 then begin
+   TotInt:=0;
+   if trim(grilla5.Cells[0,1]) <> '' then begin
+    for t:=1 to grilla5.RowCount-1 do begin
+     TotInt:=TotInt + StrToFloat(grilla5.Cells[3,t]);     //TotInt + StrToFloat(grilla5.Cells[4,t]);
+     totalinteres.Text:= floattostr(TotInt);
+    end;
+   end;
+  end;
+ except
+  on E: Exception do begin
+   EnviarLog(Self.Caption, E.Message);
+   EnviarLog(Self.Caption, DataSet3.CommandText);
+   EnviarLog(self.Caption,Objetos.Identidad.Strings[t] + ' - ' + Parametro);
+  end
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.ARBOLClick(Sender: TObject);
+var  t:integer;
+CnPlan:boolean;
+begin
+ Limpiado:=false;
+ {CnPlan:=false;
+  for t:=1 to ARBOL.Items.Count-1 do begin
+   if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0')
+   and (Objetos.EsPlan.Strings[t]= '1') then begin
+    CnPlan:=true;
+    break;
+   end;
+  end;  }
+ //cb2.Checked :=true;
+ GUARDA.Enabled:=false;
+end;
+
+procedure TAlta_PlanPagoMoratoria.ARBOLStateChange(Sender: TObject; Node: TTreeNode;
+  NewState: TRzCheckState);
+var t,y:integer;
+    ps:boolean;
+begin
+ if not Limpiado then begin
+  ps:=false;
+  ARBOL.FullExpand;
+  for t:=0 to ARBOL.Items.Count-1 do begin
+   if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0') then begin
+    ps:=true;
+    break;
+   end;
+  end;
+  CALCULAR.Enabled:=ps;
+  if ps then Limpiar(0);
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.ARBOLUpdateChildren(Sender: TObject);
+begin
+ GUARDA.Enabled:=false;
+end;
+
+procedure TAlta_PlanPagoMoratoria.C1Click(Sender: TObject);
+begin
+ if C1.Checked  then BEGIN
+  CALCULAR.Enabled :=TRUE;
+  if Trim(grilla2.Cells[0,1]) <> '' then CalcularDescuento;
+ END
+ else cb2.Enabled :=false;
+end;
+
+procedure TAlta_PlanPagoMoratoria.C2Click(Sender: TObject);
+var t,y:integer;
+begin
+ CALCULAR.Enabled:=true;
+ for t:=1 to grilla2.RowCount-1 do begin
+  for y:=0 to grilla2.ColCount-1 do begin
+    grilla2.Cells[y,t]:='';
+  end;
+ end;
+ grilla2.RowCount:=2;
+end;
+
+function TAlta_PlanPagoMoratoria.VerificaGrillaDeuda(grilla:string):boolean;
+var j,a:integer;
+begin
+ Result:=true;
+ for j:=1 to grilla2.RowCount-1 do begin
+  if trim(grilla2.Cells[4,j])='' then begin
+   Result:=false;
+   break;
+  end;
+ end;
+end;
+
+function TAlta_PlanPagoMoratoria.VerificaDeuda(grilla:string):boolean;
+var j:integer;
+begin
+ Result:=true;
+ for j:=1 to grilla2.RowCount-1 do begin
+  if trim(grilla2.Cells[4,j])='0'  then begin
+   Result:=false;
+   break;
+  end;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CALCULARClick(Sender: TObject);
+var DataSet3:TADODataSet;
+    Com1:TADOCommand;
+    t,y,r,fila,gf:integer;
+    Comando:widestring;
+    valor1,valor2:real;
+    CnPago,CnPlan:boolean;
+    ultrub:string;
+    Cnx2:TADOConnection;
+begin
+  if trim(nombre.Text)='' then begin
+   messagedlg('            I M P O S I B L E   C A L C U L A R ' + chr(13)
+   + 'Este Plan de Pagos, porque no se registra' + chr(13)
+   + 'ningún Contribuyente Seleccionado...Por favor Seleccione uno.',mtError,[mbok],0);
+   buscuim1.SetFocus;
+  end
+  else begin
+   if CB2.Checked or cb1.Checked then bitbtn1.Click;
+   gf:=messagedlg('Desea CALCULAR este Plan de Pago a Fecha: ' + FechaAct  + chr(13)
+     + 'Caso Contrario CANCELE, y realice el cambio de Fecha..',mtInformation,[mbok,mbCancel],0);
+   if gf = 1 then begin
+    try
+      CALCULAR.Enabled:=false;
+      for t:=1 to grilla2.RowCount-1 do begin
+       for y:=0 to grilla2.ColCount-1 do begin
+        grilla2.Cells[y,t]:='';
+       end;
+      end;
+      grilla2.RowCount:=2;
+      PG1.Min:=0;
+      PG1.Max:=ARBOL.Items.Count-1;
+      fila:=1;
+      RubrosInc:='';
+      ultrub:='';
+      Cnx2:=TADOConnection.Create(nil);
+      Cnx2.LoginPrompt:=false;
+      Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+      Com1:=TADOCommand.Create(nil);
+      Com1.Connection:=Cnx2;
+      Com1.CommandText:='DELETE TmpPlanPagoObj WHERE (NroUsuario = ' + Modulo2.Usuario.UsuNro + ') AND '
+      + '(IP = ' + chr(39) + Modulo2.Sistema.MyIP + chr(39) + ')';
+      Com1.Execute;
+      FreeAndNil(Com1);
+      Cnx2.Close;
+      Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;  //municipio
+      Cnx2.LoginPrompt:=false;
+      DataSet3:=TADODataSet.Create(nil);
+      DataSet3.Connection:=Cnx2;
+      for t:=1 to ARBOL.Items.Count-1 do begin
+       if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0') then begin
+        if CB2.Checked then // con corte de deuda
+         Comando:='SPP_PlanPagoDeuda ' + Modulo2.Usuario.UsuNro
+         + ' , ' + chr(39) + Modulo2.Sistema.MyIP + chr(39)
+         + ' , ' + Objetos.Rubro.Strings[t]
+         + ' , ' + Objetos.Identidad.Strings[t]
+         + ' , ' + Objetos.EsPlan.Strings[t]
+         + ' , ' + chr(39) + lafecactual  + chr(39)    //fechacorte
+         + ' , ' + chr(39) + '31/07/2019' + chr(39) ///  31/10/2022  es la fecha de corte de la deuda
+        else /// normal sin corte de deuda
+         Comando:='SPP_PlanPagoDeuda ' + Modulo2.Usuario.UsuNro
+         //Comando:='SPP_PlanPagoDeudaSinCorte ' + Modulo2.Usuario.UsuNro
+         + ' , ' + chr(39) + Modulo2.Sistema.MyIP + chr(39)
+         + ' , ' + Objetos.Rubro.Strings[t]
+         + ' , ' + Objetos.Identidad.Strings[t]
+         + ' , ' + Objetos.EsPlan.Strings[t]
+         + ' , ' + chr(39) + lafecactual  + chr(39)    //fechacorte
+         + ' , ' + chr(39) + lafecactual + chr(39) ;
+        if Comando <> '' then begin
+         CnPago:=false;
+         DataSet3.CommandText:=Comando;
+         DataSet3.Open;
+         if DataSet3.RecordCount > 0 then begin
+          Objetos.ConDeuda.Strings[t]:='SI';
+          if ultrub <> Objetos.Rubro.Strings[t] then begin
+           ultrub:=Objetos.Rubro.Strings[t];
+           RubrosInc:=RubrosInc + Objetos.Rubro.Strings[t] + '|';
+          end;
+         end;
+         for y:=1 to DataSet3.RecordCount do begin
+          DataSet3.RecNo:=y;
+          grilla2.RowCount:=fila+1;
+          if (Objetos.EsPlan.Strings[t] = '1') then begin
+           //Agrego el nro de plan a refinanciar
+           grilla2.Cells[15,fila]:=Objetos.Identidad.Strings[t];
+           if not CnPago then begin
+            //Agrego el importe pagado de plan refinanciado
+            Objetos.ImportePagado.Strings[t]:=DataSet3.FieldByName('TotalPagado').AsString;
+            CnPago:=true;
+           end;
+          end;
+          grilla2.Cells[0,fila]:=DataSet3.FieldByName('SubRubro').AsString;
+          grilla2.Cells[1,fila]:=DataSet3.FieldByName('CodObjeto').AsString;
+          grilla2.Cells[2,fila]:=DataSet3.FieldByName('Periodo').AsString;
+          grilla2.Cells[3,fila]:=DataSet3.FieldByName('FechaVencimiento').AsString;
+          grilla2.Cells[4,fila]:=DataSet3.FieldByName('ImporteCuota').AsString;
+          grilla2.Cells[5,fila]:=DataSet3.FieldByName('InteresAcumulado').AsString;
+          grilla2.Cells[6,fila]:=DataSet3.FieldByName('Total').AsString;
+          grilla2.Cells[7,fila]:=DataSet3.FieldByName('CapitalRef').AsString;
+          grilla2.Cells[8,fila]:=DataSet3.FieldByName('InteresRef').AsString;
+          grilla2.Cells[9,fila]:=DataSet3.FieldByName('SubTotalRef').AsString;
+          grilla2.Cells[10,fila]:='0';
+          grilla2.Cells[11,fila]:='0';
+          grilla2.Cells[12,fila]:=DataSet3.FieldByName('TotalPeriodo').AsString;
+          grilla2.Cells[13,fila]:=DataSet3.FieldByName('Identificador').AsString;
+          grilla2.Cells[14,fila]:=DataSet3.FieldByName('EsMulta').AsString;
+          fila:=fila + 1;
+         end;
+        end;
+       end;
+       PG1.Position:=t;
+       Application.ProcessMessages;
+       DataSet3.Close;
+      end;
+      DataSet3.Connection:=nil;
+      FreeAndNil(DataSet3);
+      Cnx2.Close;
+      FreeAndNil(Cnx2);
+      if not verificagrilladeuda('grilla2') then begin
+       messagedlg('            I M P O S I B L E   C A L C U L A R ' + chr(13)
+       + 'Este Plan de Pagos, porque algunos de los Objetos Seleccionados ' + chr(13)
+       + 'NO poseen periodos con Deuda y/o no se pueden calcular...',mtError,[mbok],0);
+       PC1.ActivePage:=PC1.Pages[0];
+       CALCULAR.Enabled:=true;
+       CALCULAR.SetFocus;
+       pc1.Pages[1].TabVisible:=false;
+      end
+      else begin
+       if verificadeuda('grilla2') then begin
+        CUOTAS.ItemIndex:=0;
+        CalcularDescuento;
+        pc1.Pages[1].TabVisible:=true;
+        PC1.ActivePage:=PC1.Pages[1];
+        try
+         Valor2:=StrToFloat(TOTAL.Text);
+         t:=trunc(Valor2/CuotaMinNorm);
+         if t > 24 then t:=24;
+         if strtofloat(total.Text) < CuotaMinNorm  then begin
+          messagedlg('            I M P O S I B L E   C A L C U L A R ' + chr(13)
+          + 'El Valor a Financiar es Menor al Valor Mínimo de Cuota' + chr(13)
+          + 'Establecido $' + floattostr(CuotaMinNorm),mtError,[mbok],0);
+          PC1.ActivePage:=PC1.Pages[0];
+          CALCULAR.Enabled:=true;
+          CALCULAR.SetFocus;
+         end
+         else begin
+          CUOTAS.ItemIndex:=CUOTAS.Items.IndexOf(IntToStr(t));
+          if CUOTAS.ItemIndex > 0 then CUOTAS.ItemIndex:=0;
+         end;
+        except
+        end;
+       end
+       else begin
+        messagedlg('            I M P O S I B L E   C A L C U L A R ' + chr(13)
+        + 'Este Plan de Pagos por poseer periodos sin Valores' + chr(13)
+        + 'Consulte con un Administrador...',mtError,[mbok],0);
+        PC1.ActivePage:=PC1.Pages[0];
+        CALCULAR.Enabled:=true;
+        CALCULAR.SetFocus;
+        CalcularDescuento;
+        pc1.Pages[1].TabVisible:=false;
+       end;
+      end;
+    except
+     on E: Exception do begin
+      EnviarLog(Self.Caption, E.Message);
+      EnviarLog(Self.Caption, Comando);
+     end
+    end;
+   end
+   else begin
+     bitbtn1.Click;
+   end;
+  end;
+ CALCULAR.Enabled:=true;
+end;
+
+function TAlta_PlanPagoMoratoria.SeleccionCorrecta():boolean;
+var t:integer;
+    conRub:boolean;
+begin
+ Result:=true;conRub:=false;
+ for t:=1 to ARBOL.Items.Count-1 do begin
+  if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0') then begin
+   if (Objetos.Rubro.Strings[t] = '1120209') or (Objetos.Rubro.Strings[t] = '1120201') then conRub:=true;
+  end;
+ end;
+ if conRub then begin
+  conRub:=false;
+  for t:=1 to ARBOL.Items.Count-1 do begin
+   if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0') then begin
+    if (Objetos.Rubro.Strings[t] <> '1120209') and (Objetos.Rubro.Strings[t] <> '1120201') then conRub:=true;
+   end;
+  end;
+  if conRub then Result:=false;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CalcularDescuento;
+var b,t,y:integer;
+    valor1,valor2,valor3,valor4,valor5,Desc,Cap,IntDev,IntRem:real;
+    DataSet2:TADODataSet;
+    Comando:widestring;
+    tx:string;
+    Cnx2:TADOConnection;
+begin
+ Cap:=0;
+ IntDev:=0;
+ IntRem:=0;
+ CAPITAL.Text:='0.00';         INTERESDEV.Text:='0.00';
+ INTERESREM.Text:='0.00';      SUBTOTAL.Text:='0.00';
+ TOTAL.Text:='0.00';           TOTALINTERES.Text:='0.00';
+ CONDPLAN.Enabled:=true;
+ CONTRPLAN.Enabled:=true;
+ FINPLAN.Enabled:=true;
+ imprime.Enabled:=true;
+ ReciboBtn.Enabled:=true;
+ sellado.Enabled:=true;
+
+ for b:=0 to grilla5.ColCount-1 do
+   for t:=1 to grilla5.RowCount-1 do  grilla5.Cells[b,t]:='';
+  grilla5.RowCount:=2;
+
+ if trim(grilla2.Cells[0,1]) <> '' then begin
+  if C1.Checked then tx:='1'
+  else tx:='0';
+  try
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;   //plandepagos
+   DataSet2:=TADODataSet.Create(nil);
+   DataSet2.Connection:=Cnx2;
+   Comando:='SPP_CalculaDescuentosMoratoria2022 ' + Modulo2.Usuario.UsuNro  //SPP_CalculaDescuentos   //SPP_CalculaDescuentosNew
+   + ' , ' + chr(39) + Modulo2.Sistema.MyIP + chr(39)
+   + ' , ' + CUOTAS.Text
+   + ' , ' + tx;
+   DataSet2.CommandText:=Comando;
+   DataSet2.Open;
+   CAPITAL.Text:=DataSet2.FieldByName('Capital').AsString;
+   INTERESDEV.Text:=DataSet2.FieldByName('InteresDev').AsString;
+   SUBTOTAL.Text:=DataSet2.FieldByName('SubTotal').AsString;
+   INTERESREM.Text:=DataSet2.FieldByName('InteresRem').AsString;
+   TOTAL.Text:=DataSet2.FieldByName('Total').AsString;
+   DataSet2.Close;
+   Comando:='SELECT dbo.TmpPlanPagoObj.IdSubRubro, dbo.TmpPlanPagoObj.CodigoObjeto, dbo.TmpPlanPagoObj.Identificador, '
+   + 'dbo.TmpPlanPagoPeriodo.Periodo, convert(char(10),dbo.TmpPlanPagoPeriodo.FechaVencimiento,103) as FechaVencimiento, dbo.TmpPlanPagoPeriodo.Capital, '
+   + 'dbo.TmpPlanPagoPeriodo.Interes, dbo.TmpPlanPagoPeriodo.SubTotal, dbo.TmpPlanPagoPeriodo.CapitalRef, '
+   + 'dbo.TmpPlanPagoPeriodo.InteresRef, dbo.TmpPlanPagoPeriodo.SubTotalRef, dbo.TmpPlanPagoPeriodo.PorcientoDescuento, '
+   + 'dbo.TmpPlanPagoPeriodo.TotalDescuento, dbo.TmpPlanPagoPeriodo.TotalPeriodo, dbo.TmpPlanPagoPeriodo.EsMulta '
+   + 'FROM dbo.TmpPlanPagoObj INNER JOIN dbo.TmpPlanPagoPeriodo ON dbo.TmpPlanPagoObj.Id = dbo.TmpPlanPagoPeriodo.IdObjeto '
+   + 'WHERE (dbo.TmpPlanPagoObj.NroUsuario = ' + Modulo2.Usuario.UsuNro + ') AND (dbo.TmpPlanPagoObj.Ip = '
+   + chr(39) + Modulo2.Sistema.MyIP + chr(39) + ')';
+   DataSet2.CommandText:=Comando;
+   DataSet2.Open;
+   for y:=1 to DataSet2.RecordCount do begin
+    DataSet2.RecNo:=y;
+    grilla2.RowCount:=y+1;
+    grilla2.Cells[0,y]:=DataSet2.FieldByName('IdSubRubro').AsString;
+    grilla2.Cells[1,y]:=DataSet2.FieldByName('CodigoObjeto').AsString;
+    grilla2.Cells[2,y]:=DataSet2.FieldByName('Periodo').AsString;
+    grilla2.Cells[3,y]:=DataSet2.FieldByName('FechaVencimiento').AsString;
+    grilla2.Cells[4,y]:=DataSet2.FieldByName('Capital').AsString;
+    grilla2.Cells[5,y]:=DataSet2.FieldByName('Interes').AsString;
+    grilla2.Cells[6,y]:=DataSet2.FieldByName('SubTotal').AsString;
+    grilla2.Cells[7,y]:=DataSet2.FieldByName('CapitalRef').AsString;
+    grilla2.Cells[8,y]:=DataSet2.FieldByName('InteresRef').AsString;
+    grilla2.Cells[9,y]:=DataSet2.FieldByName('SubTotalRef').AsString;
+    grilla2.Cells[10,y]:=DataSet2.FieldByName('PorcientoDescuento').AsString;
+    grilla2.Cells[11,y]:=DataSet2.FieldByName('TotalDescuento').AsString;
+    grilla2.Cells[12,y]:=DataSet2.FieldByName('TotalPeriodo').AsString;
+    grilla2.Cells[13,y]:=DataSet2.FieldByName('Identificador').AsString;
+    grilla2.Cells[14,y]:=DataSet2.FieldByName('EsMulta').AsString;
+   end;
+   DataSet2.Close;
+   DataSet2.Connection:=nil;
+  except
+    messagedlg('Error al calcular los descuentos',mterror,[mbok],0);
+  end;
+  FreeAndNil(DataSet2);
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+ end
+ else begin
+  CONDPLAN.Enabled:=false;
+  CONTRPLAN.Enabled:=false;
+  FINPLAN.Enabled:=false;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CUOTASChange(Sender: TObject);
+var t,y:integer;
+begin
+  for t:=0 to grilla5.ColCount-1 do
+    for y:=1 to grilla5.RowCount-1 do grilla5.Cells[t,y]:='';
+  grilla5.RowCount:=2;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CUOTASExit(Sender: TObject);
+var txt:string;
+    t:integer;
+    ps:boolean;
+begin
+ if CUOTAS.ItemIndex < 0 then begin
+  messagedlg('Debe seleccionar una CUOTA válida',mtError,[mbok],0);
+  CUOTAS.SetFocus;
+ end
+ else begin
+  CalcularDescuento;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CUOTASKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  VENC1.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789',Key) <> nil) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.VENC1Exit(Sender: TObject);
+var kl:Tdatetime;
+var gt:integer;
+begin
+ try
+  kl:=strtodate(trim(VENC1.Text));
+  gt:=strtoint(trim(CUOTAS.Text))-1;
+  Consultas(2);
+  VENC2.Text:=Grilla5.Cells[1,Grilla5.RowCount-1];
+  if not ctanormal then cuotas.SetFocus
+   else VENC2.SetFocus;
+  except begin
+  messagedlg('La Fecha Ingresada No es Válida',mterror,[mbok],0);
+  VENC1.SetFocus;
+  end;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.VENC1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  VENC2.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.VENC2Exit(Sender: TObject);
+var kl:Tdatetime;
+begin
+ if VENC1.Focused or CUOTAS.Focused or SALE.Focused then
+ else begin
+  try
+   kl:=strtodate(trim(VENC2.Text));
+   provincia.SetFocus;
+   Agrega2.Enabled:=true;
+   coloca1(2);
+  except begin
+   messagedlg('La Fecha Ingresada No es Válida',mterror,[mbok],0);
+   VENC2.SetFocus;
+  end;
+ end;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.VENC2KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  BUSCACUIM.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CONTRIBKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  PROVINCIA.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ-/ °',Key) <> nil) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.PROVINCIAExit(Sender: TObject);
+begin
+ if PROVINCIA.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione una PROVINCIA válida',mterror,[mbok],0);
+  PROVINCIA.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.PROVINCIAKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  BARRIO.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.BARRIOExit(Sender: TObject);
+begin
+ if BARRIO.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione un BARRIO válido',mterror,[mbok],0);
+  BARRIO.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.BARRIOKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  CALLE.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CALLEExit(Sender: TObject);
+begin
+ if CALLE.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione una CALLE válida',mterror,[mbok],0);
+  CALLE.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CALLEKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  ALTURA1.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CARACTERExit(Sender: TObject);
+begin
+ if CARACTER.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione un tipo de CARACTER válido',mterror,[mbok],0);
+  CARACTER.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CARACTERKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  If Agrega2.Enabled then Agrega2.SetFocus;
+  If Modifica2.Enabled then Modifica2.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.ALTURA1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  PISO1.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789',Key) <> nil) or (Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.PISO1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  DPTO1.SetFocus;
+ end
+ else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.DPTO1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  MANZANA1.SetFocus;
+ end
+ else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.MANZANA1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  CASA1.SetFocus;
+ end
+ else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CASA1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  TORRE1.SetFocus;
+ end
+ else begin
+  if (strScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CB1Click(Sender: TObject);
+begin
+ calcular.Enabled:=true;
+end;
+
+procedure TAlta_PlanPagoMoratoria.CB2Click(Sender: TObject);
+begin
+ if CB2.Checked  then BEGIN
+  c1.Checked :=false;
+  c1.Enabled :=false;
+  CALCULAR.Enabled :=TRUE;
+  if Trim(grilla2.Cells[0,1]) <> '' then CalcularDescuento;
+ END
+ else c1.Enabled :=true;
+end;
+
+procedure TAlta_PlanPagoMoratoria.TORRE1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  SECTOR1.SetFocus;
+ end
+ else begin
+  if (strScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.SECTOR1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  PARCELA1.SetFocus;
+ end
+ else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.PARCELA1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  LOTERURAL1.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or ( Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.LOTERURAL1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  TELEFONO.SetFocus;
+ end
+ else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.mailKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  if caracter.Enabled  then  CARACTER.SetFocus
+    else if modifica2.Enabled then modifica2.SetFocus;
+ end
+ else begin
+  if (StrScan('abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789@.-_',Key) <> nil) oR (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.TELEFONOKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  DOMI1.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789- ',Key) <> nil) or (Key = Char(VK_BACK)) then
+   else Key := #0;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.DOMI1KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  if (trim(BARRIO.Text)='DESCONOCIDO') and (trim(CALLE.Text)='CALLE S/N') then  begin
+   if (trim(DOMI1.Text)='') then begin
+    messagedlg('Error!! Domicilio Incorrecto, por favor Ingrese otro Valor',mterror,[mbok],0);
+    DOMI1.SetFocus;
+   end;
+  end;
+  mail.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.Agrega2Click(Sender: TObject);
+var t:integer;
+
+  function busca():boolean;
+    var p:integer;
+  begin
+  Result:=true;
+  if grilla4.Cells[0,1] <> '' then begin
+    for p:=1 to grilla4.RowCount-1 do
+      if (grilla4.Cells[0,p]=trim(CUIM.Text))
+      and (grilla4.Cells[1,p]=trim(CONTRIB.Text))
+      and (grilla4.Cells[16,p]=trim(CARACTER.Text)) then Result:=false;
+    end;
+  end;
+
+begin
+ if busca then begin
+  if Verificacion(2) then begin
+   if (grilla4.RowCount > 1) and (trim(grilla4.Cells[0,1])<>'') then begin
+    t:=grilla4.RowCount;
+     grilla4.RowCount:=grilla4.RowCount+1;
+   end
+   else t:=1;
+   if t=3 then begin
+    messagedlg('ATENCION... Grilla Completa!' + Chr(13)+'Imposible seguir agregando Contribuyentes',mterror,[mbok],0);
+    grilla4.RowCount:=grilla4.RowCount-1;
+    agrega2.SetFocus;
+   end
+   else begin
+    if (t = 1) and (CuimTit <> trim(CUIM.Text)) then
+     messagedlg('ERROR!!.. Los datos del titular de los objetos no coincide con el que se intenta cargar',mtError,[mbOk],0)
+    else begin
+     grilla4.Cells[0,t]:=trim(CUIM.Text);
+     grilla4.Cells[1,t]:=AnsiReplaceStr(trim(CONTRIB.Text),chr(39),chr(33));
+     grilla4.Cells[2,t]:=trim(PROVINCIA.Text);
+     grilla4.Cells[3,t]:=trim(BARRIO.Text);
+     grilla4.Cells[4,t]:=trim(CALLE.Text);
+     if trim(ALTURA1.Text)='' then grilla4.Cells[5,t]:='0'
+      else grilla4.Cells[5,t]:=trim(ALTURA1.Text);
+     grilla4.Cells[6,t]:=trim(PISO1.Text);
+     grilla4.Cells[7,t]:=trim(DPTO1.Text);
+     grilla4.Cells[8,t]:=trim(MANZANA1.Text);
+     grilla4.Cells[9,t]:=trim(CASA1.Text);
+     grilla4.Cells[10,t]:=trim(TORRE1.Text);
+     grilla4.Cells[11,t]:=trim(SECTOR1.Text);
+     grilla4.Cells[12,t]:=trim(PARCELA1.Text);
+     grilla4.Cells[13,t]:=trim(LOTERURAL1.Text);
+     grilla4.Cells[14,t]:=trim(TELEFONO.Text);
+     grilla4.Cells[15,t]:=AnsiReplaceStr(trim(DOMI1.Text),chr(39),chr(33));
+     if t = 1 then begin
+      grilla4.Cells[16,t]:='TITULAR';
+      grilla4.Cells[21,t]:='1';
+     end
+     else begin
+      grilla4.Cells[16,t]:=trim(CARACTER.Text);
+      grilla4.Cells[21,t]:=TComboClase(CARACTER.Items.Objects[CARACTER.ItemIndex]).Param1;
+     end;
+     grilla4.Cells[17,t]:=DniTit;
+     grilla4.Cells[18,t]:=TComboClase(PROVINCIA.Items.Objects[PROVINCIA.ItemIndex]).Param1;
+     grilla4.Cells[19,t]:=TComboClase(BARRIO.Items.Objects[BARRIO.ItemIndex]).Param1;
+     grilla4.Cells[20,t]:=TComboClase(CALLE.Items.Objects[CALLE.ItemIndex]).Param1;
+     if trim(Contribid.Text)='' then  grilla4.Cells[22,t]:='null'
+      else grilla4.Cells[22,t]:=trim(Contribid.Text);
+     grilla4.Cells[23,t]:=trim(mail.Text);
+    end;
+   end;
+   GUARDA.Enabled:=true;
+   LIMPIAR(2);
+   caracter.ItemIndex :=0;
+   DniTit:='';
+   BUSCACUIM.SetFocus;
+  end;
+ end
+ else begin
+  messagedlg('ERROR!!.. No se PERMITE mismo Contribuyente Titular y Resp. Pago',mtError,[mbOk],0);
+  buscacuim.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.Modifica2Click(Sender: TObject);
+var  gf:integer;
+
+  function busca(ht:integer):boolean;
+    var p:integer;
+  begin
+  Result:=true;
+   if grilla4.Cells[0,1] <> '' then begin
+    for p:=1 to grilla4.RowCount-1 do
+     if (trim(grilla4.Cells[0,p])=trim(CUIM.Text))
+      and (trim(grilla4.Cells[1,p])=trim(CONTRIB.Text))
+      and (trim(grilla4.Cells[16,p])=trim(CARACTER.Text))
+      and (ht<>p) then Result:=false;
+    end;
+  end;
+
+begin
+ gf:=messagedlg('Desea Modificar este Contribuyente Seleccionado?',mtinformation,[mbok,mbCancel],0);
+ if gf = 1 then begin
+  if (trim(CONTRIB.Text) = '') or (Length(trim(CONTRIB.Text)) < 5) then begin
+   messagedlg('ERROR!!.. No existe ningún Contribuyente Seleccionado, para ingresar como Titular y/o Responsable de Pago',mtError,[mbOk],0) ;
+   buscacuim.SetFocus;
+  end
+  else begin
+   if busca(grilla4.Row) then begin
+    if Verificacion(3) then begin
+     if grilla4.Cells[5,grilla4.Row] <> '?' then grilla4.Cells[6,grilla4.Row]:='X';
+     grilla4.Cells[0,grilla4.Row]:=trim(CUIM.Text);
+     grilla4.Cells[1,grilla4.Row]:=AnsiReplaceStr(trim(CONTRIB.Text),chr(39),chr(33));
+     grilla4.Cells[2,grilla4.Row]:=trim(PROVINCIA.Text);
+     grilla4.Cells[3,grilla4.Row]:=trim(BARRIO.Text);
+     grilla4.Cells[4,grilla4.Row]:=trim(CALLE.Text);
+     grilla4.Cells[5,grilla4.Row]:=trim(ALTURA1.Text);
+     grilla4.Cells[6,grilla4.Row]:=trim(PISO1.Text);
+     grilla4.Cells[7,grilla4.Row]:=trim(DPTO1.Text);
+     grilla4.Cells[8,grilla4.Row]:=trim(MANZANA1.Text);
+     grilla4.Cells[9,grilla4.Row]:=trim(CASA1.Text);
+     grilla4.Cells[10,grilla4.Row]:=trim(TORRE1.Text);
+     grilla4.Cells[11,grilla4.Row]:=trim(SECTOR1.Text);
+     grilla4.Cells[12,grilla4.Row]:=trim(PARCELA1.Text);
+     grilla4.Cells[13,grilla4.Row]:=trim(LOTERURAL1.Text);
+     grilla4.Cells[14,grilla4.Row]:=trim(TELEFONO.Text);
+     grilla4.Cells[15,grilla4.Row]:=AnsiReplaceStr(trim(DOMI1.Text),chr(39),chr(33));
+     grilla4.Cells[16,grilla4.Row]:=trim(CARACTER.Text);
+     grilla4.Cells[17,grilla4.Row]:=DniTit;
+     grilla4.Cells[18,grilla4.Row]:=TComboClase(PROVINCIA.Items.Objects[PROVINCIA.ItemIndex]).Param1;
+     grilla4.Cells[19,grilla4.Row]:=TComboClase(BARRIO.Items.Objects[BARRIO.ItemIndex]).Param1;
+     grilla4.Cells[20,grilla4.Row]:=TComboClase(CALLE.Items.Objects[CALLE.ItemIndex]).Param1;
+     grilla4.Cells[21,grilla4.Row]:=TComboClase(CARACTER.Items.Objects[CARACTER.ItemIndex]).Param1;
+     if trim(Contribid.Text) = '' then  grilla4.Cells[22,grilla4.Row]:='null'
+      else grilla4.Cells[22,grilla4.Row]:=trim(Contribid.Text);
+     grilla4.Cells[23,grilla4.Row]:=trim(mail.Text);
+     Borra2.Enabled:=false;
+     Modifica2.Enabled:=false;
+     GUARDA.Enabled:=true;
+     Limpiar(2);
+     if trim(grilla4.Cells[16,grilla4.Row])='TITULAR' then BARRIO.SetFocus
+      else BUSCACUIM.SetFocus;
+    end;
+   end
+   else  begin
+    messagedlg('ERROR!! No Puede Existir dos Contribuyentes con mismo Dni y carácter!!',mterror,[mbok],0);
+    buscacuim.Enabled:=true;
+    buscacuim.SetFocus;
+    limpiar(3);
+   end;
+  end;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.Borra2Click(Sender: TObject);
+var t,j,gf,fila:integer;
+var bt:boolean;
+begin
+ fila:=0;
+ for j:=1 to grilla4.RowCount-1 do begin
+  if trim(grilla4.Cells[0,j])<>'' then begin
+   fila:=fila+1;
+  end;
+ end;
+ if fila=1 then begin
+  messagedlg('Atencion imposible Eliminar este Titular por ser el unico en la Grilla',mtWarning,[mbok,mbCancel],0);
+  quita2.Click;
+  buscacuim.Enabled:=true;
+ end
+ else begin
+  gf:=messagedlg('Desea Eliminar este Contribuyente de la Grilla de Titulares?',mtInformation,[mbok,mbCancel],0);
+  if gf = 1 then begin
+   if trim(grilla4.Cells[0,1])<>'' then begin
+    t:=grilla4.Row;
+    if (t >= 1) and (grilla4.RowCount > 2) then begin
+     THackStringGrid(grilla4).DeleteRow(t);
+    end
+    else begin
+     for t:=0 to grilla4.ColCount-1 do grilla4.Cells[t,1]:='';
+    end;
+    Borra2.Enabled:=false;
+    Modifica2.Enabled:=false;
+    GUARDA.Enabled:=true;
+    BUSCACUIM.SetFocus;
+   end;
+  end;
+ end;
+ LIMPIAR(2);
+end;
+
+procedure TAlta_PlanPagoMoratoria.Quita2Click(Sender: TObject);
+begin
+Modifica2.Enabled:=false;
+Borra2.Enabled:=false;
+Agrega2.Enabled:=true;
+Quita2.Enabled:=false;
+end;
+
+procedure TAlta_PlanPagoMoratoria.grilla2DrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+begin
+ With Sender as TStringGrid do begin
+  if trim(grilla2.Cells[4,Arow]) = '0' then begin
+   Canvas.Brush.Color := clLime;
+   Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+  end;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.grilla4Click(Sender: TObject);
+begin
+ limpiar(4);
+ if grilla4.Cells[0,grilla4.Row] <> '' then begin
+  Agrega2.Enabled:=false;
+  Borra2.Enabled:=false;
+  Modifica2.Enabled:=true;
+  if grilla4.Row = 2 then Borra2.Enabled:=true;
+  CUIM.Text:=grilla4.Cells[0,grilla4.Row];
+  CONTRIB.Text:=grilla4.Cells[1,grilla4.Row];
+  PROVINCIA.ItemIndex:=PROVINCIA.Items.IndexOf(grilla4.Cells[2,grilla4.Row]);
+  BARRIO.ItemIndex:=BARRIO.Items.IndexOf(grilla4.Cells[3,grilla4.Row]);
+  CALLE.ItemIndex:=CALLE.Items.IndexOf(grilla4.Cells[4,grilla4.Row]);
+  ALTURA1.Text:=grilla4.Cells[5,grilla4.Row];
+  PISO1.Text:=grilla4.Cells[6,grilla4.Row];
+  DPTO1.Text:=grilla4.Cells[7,grilla4.Row];
+  MANZANA1.Text:=grilla4.Cells[8,grilla4.Row];
+  CASA1.Text:=grilla4.Cells[9,grilla4.Row];
+  TORRE1.Text:=grilla4.Cells[10,grilla4.Row];
+  SECTOR1.Text:=grilla4.Cells[11,grilla4.Row];
+  PARCELA1.Text:=grilla4.Cells[12,grilla4.Row];
+  LOTERURAL1.Text:=grilla4.Cells[13,grilla4.Row];
+  TELEFONO.Text:=grilla4.Cells[14,grilla4.Row];
+  DOMI1.Text:=grilla4.Cells[15,grilla4.Row];
+  DniTit:=grilla4.Cells[17,grilla4.Row];
+  Contribid.Text:=grilla4.Cells[22,grilla4.Row];
+  mail.Text:=grilla4.Cells[23,grilla4.Row];
+  CARACTER.ItemIndex:=CARACTER.Items.IndexOf(grilla4.Cells[16,grilla4.Row]);
+  BARRIO.SetFocus;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.GUARDAClick(Sender: TObject);
+var t,y,CantObjetos:integer;
+    txt1,txt2,IdObj:string;
+    comando:widestring;
+    Com1:TADOCommand;
+    DataSet2:TADODataSet;
+    Cnx2:TADOConnection;
+begin
+ t:=messagedlg('Desea GUARDAR los Datos de este Plan de Pago?',mtInformation,[mbok,mbCancel],0);
+ if t = 1 then begin
+  if Verificacion(1) then begin
+   try
+    PB2.Max:=8;
+    PB2.Min:=0;
+    Cnx2:=TADOConnection.Create(nil);
+    Cnx2.LoginPrompt:=false;
+    Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+    Com1:=TADOCommand.Create(nil);
+    Com1.Connection:=Cnx2;
+    DataSet2:=TADODataSet.Create(nil);
+    DataSet2.Connection:=Cnx2;
+    CantObjetos:=0;
+    txt1:='';
+    txt2:='';
+    for t:=1 to grilla2.RowCount-1 do begin
+     if (grilla2.Cells[0,t] <> txt1) or (grilla2.Cells[13,t] <> txt2) then begin
+      txt1:=grilla2.Cells[0,t];
+      txt2:=grilla2.Cells[13,t];
+      CantObjetos:=CantObjetos+1;
+     end;
+    end;
+    label24.Caption:='PlanPago';
+    comando:='SPA_PlanPago ' + IntToStr(CantObjetos)
+    + ' , ' + CUOTAS.Text
+    + ' , ' + grilla5.Cells[4,1]
+    + ' , ' + chr(39) + trim(VENC1.Text) + chr(39)
+    + ' , NULL , NULL ,NULL , '  + chr(39) + trim(OBSERV.Text) + chr(39)
+    + ' , NULL , 0, ' + CAPITAL.Text
+    + ' , ' + INTERESDEV.Text
+    + ' , ' + SUBTOTAL.Text
+    + ' , ' + INTERESREM.Text
+    + ' , ' + TOTALINTERES.Text
+    + ' , ' + TOTAL.Text
+    + ' , ' + modulo2.Usuario.UsuNro
+    + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+    + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+    DataSet2.CommandText:=comando;
+    DataSet2.Open;
+    NroPlan:=DataSet2.Fields[0].AsString;
+    DataSet2.Close;
+    DataSet2.Connection:=nil;
+    PB2.Position:=1;
+    ///Falta agregar a la tabla de PlanPagoRefinanciado
+    for t:=0 to ARBOL.Items.Count-1 do begin
+     if (Arbol.ItemState[t] = csChecked) and (Objetos.EsPlan.Strings[t] = '1') then begin
+      comando:='SPA_PlanPagoRefinanciado ' + NroPlan
+      + ' , ' + Objetos.Identidad.Strings[t]
+      + ' , ' + Objetos.Rubro.Strings[t]
+      + ' , ' + Objetos.ImportePagado.Strings[t]
+      + ' , ' + modulo2.Usuario.UsuNro
+      + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+      + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+      Com1.CommandText:=comando;
+      Com1.Execute;
+     end;
+    end;
+    PB2.Position:=2;
+    label24.Caption:='PlanPagoOK';
+    Application.ProcessMessages;
+
+    label24.Caption:='PlanPagoContrib';
+    for t:=1 to grilla4.RowCount-1 do begin
+     comando:='SPA_PlanPagoContribuyente ' + NroPlan
+     + ' , ' + grilla4.Cells[21,t]
+     + ' , ' + chr(39) + grilla4.Cells[0,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[1,t] + chr(39)
+     + ' , ' + grilla4.Cells[18,t]
+     + ' , ' + grilla4.Cells[19,t]
+     + ' , ' + grilla4.Cells[20,t]
+     + ' , ' + grilla4.Cells[5,t]
+     + ' , ' + chr(39) + grilla4.Cells[6,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[7,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[8,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[9,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[10,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[11,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[12,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[13,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[14,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[15,t] + chr(39)
+     + ' , ' + chr(39) + grilla4.Cells[23,t] + chr(39)
+     + ' , ' + grilla4.Cells[22,t]
+     + ' , ' + modulo2.Usuario.UsuNro
+     + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+     + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+     Com1.CommandText:=comando;
+     Com1.Execute;
+    end;
+    PB2.Position:=3;
+    label24.Caption:='SPlanPagoContribOK';
+    Application.ProcessMessages;
+
+    label24.Caption:='PlanPagoEstado';
+    comando:='SPA_PlanPagoEstado ' + NroPlan + ' , 0 , NULL '
+    + ' , ' + modulo2.Usuario.UsuNro
+    + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+    + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+    Com1.CommandText:=comando;
+    Com1.Execute;
+    PB2.Position:=4;
+    label24.Caption:='PlanPagoEstadoOK';
+    Application.ProcessMessages;
+
+    label24.Caption:='PlanPagoCuota';
+    comando:='SPA_PlanPagoCuota ' + NroPlan
+    + ' , ' + modulo2.Usuario.UsuNro
+    + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+    + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+    Com1.CommandText:=comando;
+    Com1.Execute;
+    PB2.Position:=5;
+    label24.Caption:='PlanPagoCuotaOK';
+    Application.ProcessMessages;
+
+    label24.Caption:='PlanPagoObjeto';
+    comando:='SPP_PlanPagoObjeto ' + NroPlan
+    + ' , ' + modulo2.Usuario.UsuNro
+    + ' , ' + chr(39) + modulo2.Sistema.MyHost + chr(39)
+    + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+    Com1.CommandText:=comando;
+    Com1.Execute;
+    PB2.Position:=6;
+    label24.Caption:='PlanPagoObjetoOK';
+    Application.ProcessMessages;
+
+    //PB2.Position:=7;
+    label24.Caption:='CalculaPorcentaje';
+    comando:='CalculaPorcentajePorObj ' +  NroPlan;
+    Com1.CommandText:=comando;
+    Com1.Execute;
+    PB2.Position:=7;
+    label24.Caption:='CalculaPorcentajeOK';
+
+    PB2.Position:=8;
+    label24.Caption:='TODOOK';
+
+    IMPRIME.Enabled:=true;
+    Application.ProcessMessages;
+
+    messagedlg('Plan de Pago.. Guardado Correctamente!' + chr(13) + 'El Nro. Generado es: ' + NroPlan,mtConfirmation,[mbok],0);
+    guarda.Enabled:=false;
+    imprime.Enabled:=true;
+    recibobtn.Enabled:=true;
+    sellado.Enabled:=true;
+   except
+    EnviarLog(self.Caption,comando);
+    messagedlg('ERROR al Guardar los datos del Plan de Pago',mterror,[mbok],0);
+   end;
+   FreeAndNil(DataSet2);
+   FreeAndNil(Com1);
+   Cnx2.Close;
+   FreeAndNil(Cnx2);
+  end;
+ end;
+end;
+
+Function TAlta_PlanPagoMoratoria.Verificacion(nro:byte):boolean;
+var Form1:TForm;
+    E1:TRichEdit;
+    txt:string;
+    r:extended;
+    d:integer;
+begin
+  //  ordenagrilla(grilla4,16);  // ordenamos la grilla asi el titular siempre esta primero
+  if Assigned(Form1) then FreeAndNil(Form1);
+  Application.CreateForm(TForm, Form1);
+  Form1.Width:=530;
+  Form1.Height:=320;
+  Form1.Caption:='Errores Encontrados en Ventana';
+  Form1.Position:=poDeskTopCenter;
+  E1:=TRichEdit.Create(self);
+  E1.Parent:=Form1;
+  E1.Color:=clNavy;
+  E1.Font.Color:=clYellow;
+  E1.Font.Size:=10;
+  E1.Top:=0;
+  E1.Left:=0;
+  E1.Align:=alClient;
+  E1.Clear;
+  E1.ReadOnly:=true;
+  if nro = 1 then begin
+   if trim(IDCONT.Text) = '' then E1.Lines.Add('Identidad del Contribuyente vacío');
+   if trim(NOMBRE.Text) = '' then E1.Lines.Add('Nombre del Contribuyente vacío');
+   if trim(GRILLA2.Cells[0,1]) =  '' then E1.Lines.Add('Grilla de Objetos vacía');
+   if trim(VALSELLADO.Text) = '' then E1.Lines.Add('Sellado vacío');
+   if trim(VENC1.Text) = '/  /' then E1.Lines.Add('Fecha de Inicio vacío');
+   if trim(VENC2.Text) = '/  /' then E1.Lines.Add('Fecha de Fín vacío');
+   if trim(GRILLA5.Cells[0,1]) =  '' then E1.Lines.Add('Grilla de Cuotas vacía. ');
+   if trim(GRILLA4.Cells[0,1]) =  '' then E1.Lines.Add('Grilla de Contribuyentes vacía');
+  end;
+  if (nro = 2) or (nro = 3) then begin
+   if (trim(CONTRIB.Text) = '') or (Length(trim(CONTRIB.Text)) < 5) then E1.Lines.Add('Debe Seleccionar un Contribuyente');
+   if (trim(TELEFONO.Text) = '') or (trim(TELEFONO.Text) = '0') then E1.Lines.Add('Debe completar el N° Teléfono');
+   if (nro = 2) then begin
+    if (trim(Grilla4.Cells[1,1]) = '') then begin
+     if (trim(CARACTER.Text) <> 'TITULAR') then E1.Lines.Add('El primer contribuyente debe ser TITULAR');
+     if (trim(CUIM.Text) <> CuimTit) then E1.Lines.Add('El 1er Contribuyente debe ser el Titular de la Deuda');
+    end
+    else begin
+     if (trim(CARACTER.Text) = 'TITULAR') and (trim(Grilla4.Cells[16,1]) = 'TITULAR') then E1.Lines.Add('Ya existe el caracter TITULAR');
+     if (grilla4.Cells[0,1] <> CuimTit) then E1.Lines.Add('El 1er Contribuyente debe ser el Titular de la Deuda');
+    end;
+   end;
+   if (nro = 3) then begin
+    if grilla4.Row = 1 then begin
+     if (trim(CUIM.Text) <> CuimTit) then E1.Lines.Add('El 1er Contribuyente debe ser el Titular de la Deuda');
+     if (trim(CARACTER.Text) <> 'TITULAR') then E1.Lines.Add('El primer contribuyente debe ser TITULAR');
+    end;
+   end;
+   if trim(ALTURA1.Text) = '' then E1.Lines.Add('Debe completar la Altura. Si no la tiene complete con CERO');
+   if PROVINCIA.ItemIndex < 0 then E1.Lines.Add('Provincia inválida');
+   if BARRIO.ItemIndex < 0 then E1.Lines.Add('Barrio inválido');
+   if CALLE.ItemIndex < 0 then E1.Lines.Add('Calle inválida');
+   if CARACTER.ItemIndex < 0 then E1.Lines.Add('Caracter inválido');
+   if trim(MAIL.Text) <> '' then
+     if not UNidad.emailValido(trim(MAIL.Text))then E1.Lines.Add('El Mail del contribuyente es erroneo');
+  end;
+  if E1.Lines.Count > 0 then begin
+   Form1.Show;
+   Result:=false;
+  end
+  else begin
+   FreeAndNil(Form1);
+   Result:=true;
+  end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.ImprimeClick(Sender: TObject);
+begin
+ImprimeDDJJ;
+imprime.Enabled:=true;
+ReciboBtn.Enabled:=true;
+Sellado.Enabled:=true;
+end;
+
+procedure TAlta_PlanPagoMoratoria.ReciboBtnClick(Sender: TObject);
+begin
+Recibo:=TRecibo.Create;
+GuardarRecibo(1);
+ImprimeRecibo;
+FreeAndNil(Recibo);
+ReciboBtn.Enabled:=true;
+end;
+
+procedure TAlta_PlanPagoMoratoria.SelladoClick(Sender: TObject);
+begin
+Recibo:=TRecibo.Create;
+GuardarRecibo(2);
+ImprimeRecibo;
+FreeAndNil(Recibo);
+Sellado.Enabled:=true;
+end;
+
+procedure  TAlta_PlanPagoMoratoria.GuardarRecibo(nro:byte);
+var dmi,tmp,imp:string;
+    t,y:integer;
+    DataSet3,DataSetCodbar:TADODataSet;
+    Com1:TADOCommand;
+    Cnx2:TADOConnection;
+begin
+ for t:=1 to grilla4.RowCount-1 do begin
+  if t = 1 then begin
+   dmi:=grilla4.Cells[3,1] + ' - ';
+   if grilla4.Cells[4,1] <> '' then dmi:=dmi + grilla4.Cells[4,1] + '  ';
+   if grilla4.Cells[5,1] <> '' then dmi:=dmi + grilla4.Cells[5,1] + ' - ';
+   for y:=6 to 13 do begin
+    if trim(grilla4.Cells[y,1]) <> '' then dmi:=dmi + grilla4.Cells[y,1] + ' ' + grilla4.Cells[y,1] + ' - ';
+   end;
+   Recibo.NombreTit:=AnsiReplaceStr(grilla4.Cells[1,t],chr(39),chr(33));
+   Recibo.DomicilioTit:=dmi;
+   Recibo.CuimTit:=grilla4.Cells[0,t];
+  end
+  else begin
+   dmi:=grilla4.Cells[3,2] + ' - ';
+   if grilla4.Cells[4,2] <> '' then dmi:=dmi + grilla4.Cells[4,2] + '  ';
+   if grilla4.Cells[5,2] <> '' then dmi:=dmi + grilla4.Cells[5,2] + ' - ';
+   for y:=6 to 13 do begin
+    if trim(grilla4.Cells[y,2]) <> '' then dmi:=dmi + grilla4.Cells[y,2] + ' ' + grilla4.Cells[y,2] + ' - ';
+   end;
+   Recibo.NombreRespo:=AnsiReplaceStr(grilla4.Cells[1,t],chr(39),chr(33));
+   Recibo.DomicilioRespo:=dmi;
+   Recibo.CuimRespo:=grilla4.Cells[0,t];
+  end;
+ end;
+
+ //Caso del Recibo de Cuota
+ if nro = 1 then begin
+  Recibo.TituloDesc:='PLAN DE FACILIDADES DE PAGO';
+  Recibo.CuotaDe:='1 DE ' + CUOTAS.Text;
+  Recibo.DetalleRecibo:='MULTIPLES PERIODOS - VERIFICAR DOCUMENTACION DEL PLAN';
+ end
+ else begin
+  Recibo.TituloDesc:='ACTIVIDAD ADMINISTRATIVA Y SELLOS';
+  Recibo.CuotaDe:='UNICA';
+  Recibo.DetalleRecibo:='SELLADO ADMINISTRATIVO POR PLAN DE PAGO';
+ end;
+ Recibo.Anio:=RightStr(VENC1.Text,4);
+ Recibo.NroPlan:=NroPlan;
+ Recibo.NroCuota:=CUOTAS.Text;
+ Recibo.FechaIni:=VENC1.Text;
+ y:=1;
+ dmi:='';
+ tmp:='';
+ for t:=1 to ARBOL.Items.Count-1 do begin
+  if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0') then begin
+   tmp:=Objetos.Rubro.Strings[t];
+   break;
+  end;
+ end;
+ for t:=1 to ARBOL.Items.Count-1 do begin
+  if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0') then begin
+   if (Objetos.Rubro.Strings[t] <> tmp) then dmi:=LeftStr(dmi,Length(dmi)-1) + '/' + tmp + ' - ';
+    dmi:=dmi + trim(Objetos.CodObjeto.Strings[t]) + ',';
+    tmp:=Objetos.Rubro.Strings[t];
+    y:=y + 1;
+  end;
+ end;
+ dmi:=LeftStr(dmi,Length(dmi)-1) + '/' + tmp;
+ Recibo.CantObj:=IntToStr(y-1);
+ Recibo.Objetos:=dmi;
+ Recibo.PrimerV:=trim(VENC1.Text);
+ Recibo.SegundoV:=trim(VENC1.Text);
+ Recibo.NroUsuario:=Modulo2.Usuario.UsuNro;
+ try
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+  DataSet3:=TADODataSet.Create(nil);
+  DataSet3.Connection:=Cnx2;
+  DataSet3.CommandText:='EXEC darmaximonro ' + chr(39) + 'TASAANUALLIQUIDACION' + chr(39) + ' , ' + modulo2.Sistema.PuntoV ;
+  DataSet3.Open;
+  Recibo.NroLiquidacion:=StrFill(DataSet3.Fields[0].AsString,7,'0','');
+  DataSet3.Close;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+
+ if nro = 1 then begin  //valor de la primer cuota
+  { preguntamos si el valor de la cuota es mayor a 1000000 de pesos}
+  if strtofloat(grilla5.Cells[4,1]) < 1000000.00 then begin
+   imp:='30';
+   Recibo.SubRubro:='1111104';
+   Recibo.Importe1:=FormatFloat('000000.00',StrToFloat(AnsiReplaceStr(trim(grilla5.Cells[4,1]),',','.')));
+   Recibo.Importe2:=FormatFloat('000000.00',StrToFloat(AnsiReplaceStr(trim(grilla5.Cells[4,1]),',','.')));
+   Recibo.NroCobro:=modulo2.Sistema.PuntoV + RightStr(VENC1.Text,2) + ' - ' + imp + '90';
+   dmi:='927' + StrFill(AnsiReplaceStr(Recibo.Importe1,'.',''),8,'0','');
+   tmp:=FechaAct;
+   if strtodate(trim(VENC1.Text)) >  strtodate(FechaAct) then tmp:=trim(VENC1.Text);
+   dmi:=dmi + RightStr(tmp,2);
+   dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),FechaAct),3,'0','');
+   dmi:=dmi + StrFill(modulo2.Sistema.PuntoV,2,'0','') + RightStr(tmp,2);
+   dmi:=dmi + imp + '01';
+   dmi:=dmi + Recibo.NroLiquidacion + '0';
+   dmi:=dmi + StrFill(AnsiReplaceStr(Recibo.Importe1,'.',''),8,'0','');
+   dmi:=dmi + RightStr(tmp,2);
+   dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),FechaAct),3,'0','');
+   dmi:=dmi + digitos(dmi, 1);
+   Recibo.NroCodBar:=dmi;
+  end
+  else begin
+   Recibo.SubRubro:='1111104';
+   Recibo.Importe1:=FormatFloat('0000000.00',StrToFloat(AnsiReplaceStr(trim(grilla5.Cells[4,1]),',','.')));
+   Recibo.Importe2:=FormatFloat('0000000.00',StrToFloat(AnsiReplaceStr(trim(grilla5.Cells[4,1]),',','.')));
+   Recibo.NroCobro:=modulo2.Sistema.PuntoV + RightStr(VENC1.Text,2) + ' - ' + imp + '90';
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+   DataSet3:=TADODataSet.Create(nil);
+   DataSet3.Connection:=Cnx2;
+   DataSet3.CommandText:='select codbar from [ComercioTasa].[dbo].[TodosCodbar] ('
+   + chr(39) + trim(grilla5.Cells[4,1]) + chr(39)
+   + ' , ' + chr(39) + trim(VENC1.Text) + chr(39)
+   + ' , ' + chr(39) + trim(grilla5.Cells[4,1]) + chr(39)
+   + ' , ' + chr(39) + trim(VENC1.Text) + chr(39)
+   + ' , ' + chr(39) + Recibo.SubRubro + chr(39)
+   + ' , ' + chr(39) + trim(grilla5.Cells[0,1]) + chr(39)
+   + ' , ' + chr(39) + Recibo.NroLiquidacion + chr(39)
+   + ' , ' + chr(39) + modulo2.Sistema.PuntoV + chr(39) + ')';
+   DataSet3.Open;
+   dmi:=DataSet3.Fields[0].AsString;
+   Recibo.NroCodBar:=dmi;
+   DataSet3.Close;
+  end;
+ end
+ else begin  ////valor del sellado
+  imp:='07';
+  Recibo.SubRubro:='1110408';
+  Recibo.Importe1:=FormatFloat('000000.00',StrToFloat(AnsiReplaceStr(trim(VALSELLADO.Text),',','.')));
+  Recibo.Importe2:=FormatFloat('000000.00',StrToFloat(AnsiReplaceStr(trim(VALSELLADO.Text),',','.')));
+  Recibo.NroCobro:=modulo2.Sistema.PuntoV + RightStr(VENC1.Text,2) + ' - ' + imp + '90';
+  dmi:='927' + StrFill(AnsiReplaceStr(trim(VALSELLADO.Text),'.',''),8,'0','');
+  tmp:=FechaAct;
+  if strtodate(trim(VENC1.Text)) >  strtodate(FechaAct) then tmp:=trim(VENC1.Text);
+  dmi:=dmi + RightStr(tmp,2);
+  dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),FechaAct),3,'0','');
+  dmi:=dmi + StrFill(modulo2.Sistema.PuntoV,2,'0','') + RightStr(tmp,2);
+  dmi:=dmi + imp + '00';
+  dmi:=dmi + Recibo.NroLiquidacion + '0';
+  dmi:=dmi + StrFill(AnsiReplaceStr(trim(VALSELLADO.Text),'.',''),8,'0','');
+  dmi:=dmi + RightStr(tmp,2);
+  dmi:=dmi + StrFill(fecha_dif('01/01/' +  RightStr(tmp,4),FechaAct),3,'0','');
+  dmi:=dmi + digitos(dmi, 1);
+  Recibo.NroCodBar:=dmi;
+ end;
+
+{Guardamos los Datos en Tasaanual y en TasaanualCuotas}
+ try
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  DataSet3.CommandText:='EXEC SPA_tasaanualLiquidacion '  + chr(39) + Recibo.CuimTit + chr(39)
+  + ' , ' + Recibo.NroPlan + ', NULL, NULL, ' + MidStr(Recibo.CuimTit,4,8)
+  + ' , ' + chr(39) + LeftStr(Recibo.NombreTit,50) + chr(39)
+  + ' , NULL, ' + Recibo.Importe1
+  + ' , ' + chr(39) + FechaAct + chr(39)
+  + ' , ' + Recibo.Importe1
+  + ' , ' + chr(39) + FechaAct + chr(39)
+  + ' , ' + RightStr(tmp,4)
+  + ' , ' + imp + '90 ,' + Recibo.NroLiquidacion
+  + ' , ' + chr(39) + Recibo.NroCodBar + chr(39)
+  + ' , ' + Modulo2.Sistema.PuntoV
+  + ' , ' + Modulo2.Usuario.UsuNro
+  + ' , ' + LeftStr(Recibo.SubRubro,5) + ' ,NULL, NULL, 1, 1, 0, 0, '  + Recibo.SubRubro;
+  DataSet3.Open;
+  Recibo.IdRegistro:=DataSet3.Fields[0].AsString;
+  DataSet3.Close;
+  DataSet3.Connection:=nil;
+
+  Com1.CommandText:='EXEC SPA_TasaAnualLiquidacionCuotas ' + Recibo.IdRegistro
+  + ' , ' + RightStr(tmp,4) + ', 1, ' + '01' + StrFill(trim(CUOTAS.Text),2,'0','')
+  + ' , ' + Recibo.NroLiquidacion
+  + ' , ' + modulo2.Sistema.PuntoV
+  + ' , NULL , ' + Recibo.Importe1
+  + ' , 0, ' + Recibo.Importe1 + ' , 0, 0, 0, ' + Recibo.SubRubro;
+  Com1.Execute;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+ Cnx2.Close;
+ FreeAndNil(DataSet3);
+ FreeAndNil(Com1);
+ FreeAndNil(Cnx2);
+end;
+
+procedure TAlta_PlanPagoMoratoria.CreaTablaTemporal();
+var dmi,Fdsd,Fhta:string;
+    tot:array of real;
+    y,t,r:integer;
+    ps, ps1:boolean;
+begin
+ try
+  //Cargamos la tabla de Objetos desde la grilla5
+  DtsGrilla2:=TClientDataSet.Create(nil);
+  DtsGrilla2.FieldDefs.Clear;
+  DtsGrilla2.Active:=False;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Rubro';
+    DataType:=ftString;Size:=50;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Descripcion';
+    DataType:=ftString;Size:=150;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Objeto';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Periodo';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Importe';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='IntDev';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='ElSubtotal';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='CapitalRef';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='IntRem';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+     Name:='FechaDesde';
+     DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+     Name:='FechaHasta';
+     DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='Saldo';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='CantPeriodos';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='TotalDesc';DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='TotalFinal';
+    DataType:=ftString;Size:=18;
+  end;
+  with DtsGrilla2.FieldDefs.AddFieldDef do begin
+    Name:='SubRubro';
+    DataType:=ftString;Size:=18;
+  end;
+  DtsGrilla2.CreateDataSet;
+  DtsGrilla2.Active:=True;
+  y:=1;
+  dmi:='';
+  SetLength(tot,9);
+  for y:=1 to ARBOL.Items.Count-1 do begin
+   if (Arbol.ItemState[y] = csChecked) and (Objetos.EsContenedor.Strings[y] = '0') then begin
+    for t:=0 to 8 do tot[t]:=0;
+    Fdsd:='';
+    ps:=true;ps1:=false;
+    for t:=1 to Grilla2.RowCount-1 do begin
+     if ((trim(grilla2.Cells[0,t]) = Objetos.Rubro.Strings[y]) or (trim(grilla2.Cells[0,t]) = '1120204')
+     or (trim(grilla2.Cells[0,t]) = '1120205') or (trim(grilla2.Cells[0,t]) = '1120209'))
+     and (trim(grilla2.Cells[1,t]) = trim(Objetos.CodObjeto.Strings[y])) then begin
+      for r:=1 to grilla2.RowCount-1 do begin
+       if Objetos.Identidad.Strings[y] = grilla2.Cells[13,r] then  begin
+        ps1:=true;
+        break;
+       end;
+      end;
+      if ps1 then begin
+       if ps then begin
+        Fdsd:=grilla2.Cells[3,t];
+        ps:=false;
+       end;
+       tot[0]:=tot[0] + StrToFloat(grilla2.Cells[4,t]);
+       tot[1]:=tot[1] + StrToFloat(grilla2.Cells[5,t]);
+       tot[2]:=tot[2] + StrToFloat(grilla2.Cells[6,t]);
+       tot[3]:=tot[3] + StrToFloat(grilla2.Cells[7,t]);
+       tot[4]:=tot[4] + StrToFloat(grilla2.Cells[8,t]);
+       tot[5]:=tot[5] + StrToFloat(grilla2.Cells[9,t]);
+       tot[6]:=tot[6] + 1;
+       tot[7]:=tot[7] + StrToFloat(grilla2.Cells[11,t]);
+       tot[8]:=tot[8] + StrToFloat(grilla2.Cells[12,t]);
+      end;
+     end;
+    end;
+    if ps1 then begin
+     Fhta:='';
+     ps:=true;
+     for t:=Grilla2.RowCount-1 downto 1 do begin
+      if ((trim(grilla2.Cells[0,t]) = Objetos.Rubro.Strings[y])
+      or (trim(grilla2.Cells[0,t]) = '1120204') or (trim(grilla2.Cells[0,t]) = '1120205')
+      or (trim(grilla2.Cells[0,t]) = '1120209'))
+      and (trim(grilla2.Cells[1,t]) = trim(Objetos.CodObjeto.Strings[y])) then begin
+       if ps then begin
+        Fhta:=grilla2.Cells[3,t];
+        ps:=false;
+       end;
+      end;
+     end;
+     DtsGrilla2.Append;
+     DtsGrilla2.FieldValues['Rubro']:=Objetos.DetalleImpu.Strings[y];  //grilla2.Cells[0,0]:='SubRubro';
+     DtsGrilla2.FieldValues['Descripcion']:=Objetos.Descripcion.Strings[y];  //grilla2.Cells[0,0]:='SubRubro';
+     DtsGrilla2.FieldValues['Objeto']:=Objetos.CodObjeto.Strings[y];    //grilla2.Cells[1,0]:='Objeto';
+     DtsGrilla2.FieldValues['Periodo']:='MULTIPLES';   //grilla2.Cells[2,0]:='Periodo';
+     DtsGrilla2.FieldValues['Importe']:=tot[0];   //grilla2.Cells[4,0]:='Capital';
+     DtsGrilla2.FieldValues['IntDev']:=tot[1];    //grilla2.Cells[5,0]:='Interés';
+     DtsGrilla2.FieldValues['ElSubtotal']:=tot[2];   //grilla2.Cells[6,0]:='Sub-Total';
+     DtsGrilla2.FieldValues['CapitalRef']:=tot[3];   //grilla2.Cells[7,0]:='Sub-Total';
+     DtsGrilla2.FieldValues['IntRem']:=tot[4];    //grilla2.Cells[8,0]:='Interés Ref.';
+     DtsGrilla2.FieldValues['Saldo']:=tot[5];     //grilla2.Cells[9,0]:='Sub-Total Ref.';
+     DtsGrilla2.FieldValues['CantPeriodos']:=tot[6];   //grilla2.Cells[10,0]:='% Descuento';
+     DtsGrilla2.FieldValues['TotalDesc']:=tot[7];   //grilla2.Cells[11,0]:='Total Desc.';
+     DtsGrilla2.FieldValues['TotalFinal']:=tot[8];   //grilla2.Cells[12,0]:='Total Final';
+     DtsGrilla2.FieldValues['SubRubro']:=Objetos.Rubro.Strings[y];   //grilla2.Cells[12,0]:='Total Final';
+     DtsGrilla2.FieldValues['FechaDesde']:=Fdsd;
+     DtsGrilla2.FieldValues['FechaHasta']:=Fhta;
+     DtsGrilla2.Post;
+    end;
+   end;
+  end;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+end;
+
+procedure  TAlta_PlanPagoMoratoria.ImprimeDDJJ();
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2,frxDB3: TfrxDBDataset;
+    DtsObjetos, DtsCuotas:TClientDataSet;
+    DataSet3:TADODataSet;
+    Cnx2:TADOConnection;
+    t,y,r:integer;
+    dmi:string;
+    ps:boolean;
+begin
+ try
+  DtsObjetos:=TClientDataSet.Create(nil);
+  DtsObjetos.FieldDefs.Clear;
+  DtsObjetos.Active:=False;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Orden';
+    DataType:=ftInteger;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Impuesto';
+    DataType:=ftString;Size:=80;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Objeto';
+    DataType:=ftString;Size:=30;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Detalle';
+    DataType:=ftString;Size:=150;
+  end;
+  with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='IdSubRubro';
+    DataType:=ftString;Size:=30;
+  end;
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+  DataSet3:=TADODataSet.Create(nil);
+  DataSet3.Connection:=Cnx2;
+  DataSet3.CommandText:='SELECT idSubRubro,descripcion FROM dbo.RubrosSub';
+  DataSet3.Open;
+  DtsObjetos.CreateDataSet;
+  DtsObjetos.Active:=True;
+  y:=1;
+  for t:=1 to ARBOL.Items.Count-1 do begin
+   if (Arbol.ItemState[t] = csChecked) and (Objetos.EsContenedor.Strings[t] = '0') then begin
+    ps:=false;
+    for r:=1 to grilla2.RowCount-1 do begin
+     if (Objetos.Identidad.Strings[t] = grilla2.Cells[13,r])
+     or (Objetos.Identidad.Strings[t] = grilla2.Cells[15,r]) then begin
+      ps:=true;
+      break;
+     end;
+    end;
+    if ps then begin
+     DtsObjetos.Append;
+     DtsObjetos.FieldValues['Orden']:=y;
+     if Objetos.EsPlan.Strings[t] = '0' then begin
+      DataSet3.Filtered:=false;
+      DataSet3.Filter:=' idSubRubro = ' + Objetos.Rubro.Strings[t];
+      DataSet3.Filtered:=true;
+      DtsObjetos.FieldValues['Impuesto']:=DataSet3.FieldByName('descripcion').AsString;
+     end
+     else DtsObjetos.FieldValues['Impuesto']:='MULTIPLES - P.P.';
+      DtsObjetos.FieldValues['Objeto']:=Objetos.CodObjeto.Strings[t];
+      DtsObjetos.FieldValues['Detalle']:=Objetos.Descripcion.Strings[t];
+      DtsObjetos.FieldValues['IdSubRubro']:=Objetos.Rubro.Strings[t];
+      DtsObjetos.Post;
+      y:=y+1;
+    end;
+   end;
+  end;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+ DataSet3.Close;
+ DataSet3.Connection:=nil;
+ FreeAndNil(DataSet3);
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+ CreaTablaTemporal();
+ try
+  DtsCuotas:=TClientDataSet.Create(nil);
+  DtsCuotas.FieldDefs.Clear;
+  DtsCuotas.Active:=False;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='NroCuota';
+    DataType:=ftInteger;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='FecVen';
+    DataType:=ftString;Size:=50;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='Capital';
+    DataType:=ftString;Size:=20;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='Interes';
+    DataType:=ftString;Size:=50;
+  end;
+  with DtsCuotas.FieldDefs.AddFieldDef do begin
+    Name:='Total';
+    DataType:=ftString;Size:=20;
+  end;
+  DtsCuotas.CreateDataSet;
+  DtsCuotas.Active:=True;
+  for t:=1 to Grilla5.RowCount-1 do begin
+   DtsCuotas.Append;
+   DtsCuotas.FieldValues['NroCuota']:=grilla5.Cells[0,t];
+   DtsCuotas.FieldValues['FecVen']:=grilla5.Cells[1,t];
+   DtsCuotas.FieldValues['Capital']:=grilla5.Cells[2,t];  //grilla5.Cells[3,t];
+   DtsCuotas.FieldValues['Interes']:=grilla5.Cells[3,t];  //grilla5.Cells[4,t]
+   DtsCuotas.FieldValues['Total']:=grilla5.Cells[4,t];    //grilla5.Cells[2,t]
+   DtsCuotas.Post;
+  end;
+ except
+  on E: Exception do EnviarLog(Self.Caption, E.Message);
+ end;
+
+//Imprimiendo
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB2:=TfrxDBDataset.Create(nil);
+  frxDB3:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsObjetos;
+  frxDB2.DataSet:=DtsGrilla2;
+  frxDB3.DataSet:=DtsCuotas;
+  frxDB1.UserName:='frxDBDataset1';
+  frxDB2.UserName:='frxDBDataset2';
+  frxDB3.UserName:='frxDBDataset3';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.DataSets.Add(frxDB2);
+  ReporteRst.DataSets.Add(frxDB3);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\NewDecJuradaPP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  ReporteRst.Variables['NroPlan'] := QuotedStr(NroPlan);
+  dmi:=trim(grilla4.Cells[3,1]) + ' - ' + trim(grilla4.Cells[4,1]) + trim(grilla4.Cells[5,1]);
+  for y:=6 to 13 do begin
+    if trim(grilla4.Cells[y,1]) <> '' then dmi:=dmi + grilla4.Cells[y,1] + ' ' + grilla4.Cells[y,1] + ' - ';
+  end;
+  ReporteRst.Variables['NomTitular'] := QuotedStr(grilla4.Cells[1,1]);
+  ReporteRst.Variables['DomTitular'] := QuotedStr(dmi);
+  ReporteRst.Variables['CuimTitular'] := QuotedStr(grilla4.Cells[0,1]);
+  ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(grilla4.Cells[1,1]);
+  ReporteRst.Variables['ElDomSuscribe'] := QuotedStr(dmi);
+  dmi:=trim(grilla4.Cells[3,2]) + ' - ' + trim(grilla4.Cells[4,2]) + trim(grilla4.Cells[5,2]);
+  for y:=6 to 13 do begin
+    if trim(grilla4.Cells[y,2]) <> '' then dmi:=dmi + grilla4.Cells[y,2] + ' ' + grilla4.Cells[y,2] + ' - ';
+  end;
+  ReporteRst.Variables['NomRespo'] := QuotedStr(grilla4.Cells[1,2]);
+  ReporteRst.Variables['DomRespo'] := QuotedStr(dmi);
+  ReporteRst.Variables['CuimRespo'] := QuotedStr(grilla4.Cells[0,2]);
+  ReporteRst.Variables['TotalDeuda'] := QuotedStr(SUBTOTAL.Text);
+  ReporteRst.Variables['TotalDeven'] := QuotedStr(INTERESDEV.Text);
+  ReporteRst.Variables['TotalRemit'] := QuotedStr(INTERESREM.Text);
+  ReporteRst.Variables['TotInteres'] := QuotedStr(totalinteres.Text);
+  ReporteRst.Variables['TotalSaldo'] := QuotedStr(TOTAL.Text);
+  ReporteRst.Variables['CantCuotas'] := QuotedStr(CUOTAS.Text);
+  ReporteRst.Variables['ImporteCuota'] := QuotedStr(grilla5.Cells[4,1]);   // QuotedStr(grilla5.Cells[2,1]);
+  ReporteRst.Variables['Vencimiento1'] := QuotedStr(VENC1.Text);
+  ReporteRst.Variables['Vencimiento2'] := QuotedStr(VENC2.Text);
+  if grilla4.RowCount > 2 then begin
+   ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(grilla4.Cells[1,2]);
+   ReporteRst.Variables['TpoCaracter'] := QuotedStr(grilla4.Cells[16,2]);
+   ReporteRst.Variables['NroDni'] := QuotedStr(grilla4.Cells[17,2]);
+   ReporteRst.Variables['ElDomElectronico'] := QuotedStr(grilla4.Cells[23,2]); //grilla4.Cells[23,0]:='Mail';  //  QuotedStr(mail.Text)
+  end
+  else begin
+   ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(grilla4.Cells[1,1]);
+   ReporteRst.Variables['TpoCaracter'] := QuotedStr('TITULAR');
+   ReporteRst.Variables['NroDni'] := QuotedStr(grilla4.Cells[17,1]);
+   ReporteRst.Variables['ElDomElectronico'] := QuotedStr(grilla4.Cells[23,1]); //grilla4.Cells[23,0]:='Mail';  //  QuotedStr(mail.Text)
+  end;
+  ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(VENC1.Text,'DDMMAAAA'));
+  ReporteRst.Variables['FecActual'] := QuotedStr(FechaAct);
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(frxDB1);
+ FreeAndNil(frxDB2);
+ FreeAndNil(frxDB3);
+ FreeAndNil(ReporteRst);
+ FreeAndNil(DtsGrilla2);
+ FreeAndNil(DtsCuotas);
+ FreeAndNil(DtsObjetos);
+end;
+
+procedure TAlta_PlanPagoMoratoria.Imprimir1Click(Sender: TObject);
+var ReporteRst: TfrxReport;
+    frxDB1: TfrxDBDataset;
+    dmi:string;
+begin
+ CreaTablaTemporal();
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsGrilla2;
+  frxDB1.UserName:='frxDBDataset1';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\ListaObjetosDeu.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  ReporteRst.Variables['NroPlan'] := QuotedStr(NroPlan);
+  ReporteRst.Variables['NomTitular'] := QuotedStr(NOMBRE.Text);
+  ReporteRst.Variables['DomTitular'] := QuotedStr(dmi);
+  ReporteRst.Variables['CuimTitular'] := QuotedStr(CuimTit);
+  ReporteRst.Variables['FecActual'] := QuotedStr(FechaAct);
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.Variables['Total'] := QuotedStr(SUBTOTAL.Text);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(frxDB1);
+ FreeAndNil(ReporteRst);
+ FreeAndNil(DtsGrilla2);
+end;
+
+procedure  TAlta_PlanPagoMoratoria.ImprimeRecibo();
+var ReporteRst: TfrxReport;
+    t,y:integer;
+    dmi:widestring;
+    tmp:string;
+begin
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\LiquidacionPP.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo3')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo4')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  ReporteRst.Variables['NombreTit'] := QuotedStr(Recibo.NombreTit);
+  ReporteRst.Variables['CuimTit'] := QuotedStr(Recibo.CuimTit);
+  ReporteRst.Variables['DomicilioTit'] := QuotedStr(Recibo.DomicilioTit);
+  ReporteRst.Variables['NombreRespo'] := QuotedStr(Recibo.NombreRespo);
+  ReporteRst.Variables['CuimRespo'] := QuotedStr(Recibo.CuimRespo);
+  ReporteRst.Variables['DomicilioRespo'] := QuotedStr(Recibo.DomicilioRespo);
+  ReporteRst.Variables['CuotaDe'] := QuotedStr(Recibo.CuotaDe);
+  ReporteRst.Variables['Anio'] := QuotedStr(Recibo.Anio);
+  ReporteRst.Variables['NroPlan'] := QuotedStr(Recibo.NroPlan);
+  ReporteRst.Variables['NroCuota'] := QuotedStr(Recibo.NroCuota);
+  ReporteRst.Variables['FechaIni'] := QuotedStr(Recibo.FechaIni);
+  ReporteRst.Variables['CantObj'] := QuotedStr(Recibo.CantObj);
+  ReporteRst.Variables['Objetos'] := QuotedStr(Recibo.Objetos);
+  ReporteRst.Variables['DetalleRecibo'] := QuotedStr(Recibo.DetalleRecibo);
+  ReporteRst.Variables['NroCobro'] := QuotedStr(Recibo.NroCobro);
+  ReporteRst.Variables['NroLiquidacion'] := QuotedStr(Recibo.NroLiquidacion);
+  ReporteRst.Variables['PrimerV'] := QuotedStr(Recibo.PrimerV);
+  ReporteRst.Variables['Importe1'] := QuotedStr(Recibo.Importe1);
+  ReporteRst.Variables['SegundoV'] := QuotedStr(Recibo.SegundoV);
+  ReporteRst.Variables['Importe2'] := QuotedStr(Recibo.Importe2);
+  Recibo.CodBar:=codigo_bar(Recibo.NroCodBar);
+  ReporteRst.Variables['CodBar'] := QuotedStr(Recibo.CodBar);
+  ReporteRst.Variables['NroCodBar'] := QuotedStr(Recibo.NroCodBar);
+  ReporteRst.Variables['TituloDesc'] := QuotedStr(Recibo.TituloDesc);
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(ReporteRst);
+end;
+
+procedure TAlta_PlanPagoMoratoria.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TAlta_PlanPagoMoratoria.BORRAClick(Sender: TObject);
+begin
+FechaAct:=FechaAct1;
+Limpiar(0);
+Limpiar(1);
+end;
+
+procedure TAlta_PlanPagoMoratoria.Limpiar(nro:byte);
+var t,y:integer;
+begin
+ if nro <= 0 then begin
+  Limpiado:=true;
+  for t:=1 to grilla2.RowCount-1 do
+    for y:=0 to grilla2.ColCount-1 do grilla2.Cells[y,t]:='';
+  grilla2.RowCount:=2;
+  for t:=1 to grilla5.RowCount-1 do
+    for y:=0 to grilla5.ColCount-1 do grilla5.Cells[y,t]:='';
+  grilla5.RowCount:=2;
+  for t:=1 to grilla4.RowCount-1 do
+    for y:=0 to grilla4.ColCount-1 do grilla4.Cells[y,t]:='';
+  grilla4.RowCount:=2;
+  ColocaCombo(5);
+  cb1.Checked:=true;
+  C2.Checked:=false;
+  CAPITAL.Text:='0.00';
+  INTERESDEV.Text:='0.00';
+  INTERESREM.Text:='0.00';
+  SUBTOTAL.Text:='0.00';
+  TOTAL.Text:='0.00';
+  CUOTAS.ItemIndex:=0;
+  VENC1.Text:=FechaAct;
+  VENC2.Clear;
+  Sellado.Enabled:=false;
+  CONDPLAN.Enabled:=false;
+  CONTRPLAN.Enabled:=false;
+  FINPLAN.Enabled:=false;
+ end;
+ if nro = 1 then begin
+  CUIM.Clear;                     contribid.Clear;
+  CONTRIB.Clear;                  ALTURA1.Text:='0';
+  PISO1.Clear;                    DPTO1.Clear;
+  MANZANA1.Clear;                 CASA1.Clear;
+  TORRE1.Clear;                   SECTOR1.Clear;
+  PARCELA1.Clear;                 LOTERURAL1.Clear;
+  TELEFONO.Clear;                 DOMI1.Clear;
+  CARACTER.ItemIndex:=0;          OBSERV.Clear;
+  mail.Clear;                     ARBOL.Items.Clear;
+  IDCOnt.Clear;NOMBRE.Clear;
+  PC1.ActivePage:=PC1.Pages[0];
+  PB2.Position:=0;
+  PG1.Position:=0;
+  pc1.Pages[1].TabVisible:=false;
+ end;
+ if nro=2 then begin
+  ColocaCombo(1);                  ColocaCombo(2);
+  ColocaCombo(3);                 //   ColocaCombo(8);
+  CUIM.Clear;                      contribid.Clear;
+  CONTRIB.Clear;                   ALTURA1.Text:='0';
+  PISO1.Clear;                     DPTO1.Clear;
+  MANZANA1.Clear;                  CASA1.Clear;
+  TORRE1.Clear;                    SECTOR1.Clear;
+  PARCELA1.Clear;                  LOTERURAL1.Clear;
+  TELEFONO.Clear;                  DOMI1.Clear;
+  mail.Clear;
+ end;
+ if nro=3 then begin
+  CUIM.Clear;
+  contribid.Clear;
+  CONTRIB.Clear;
+  provincia.Enabled:=false;            barrio.Enabled:=false;
+  calle.Enabled:=false;                ALTURA1.Enabled:=false;
+  PISO1.Enabled:=false;                DPTO1.Enabled:=false;
+  MANZANA1.Enabled:=false;             CASA1.Enabled:=false;
+  TORRE1.Enabled:=false;               SECTOR1.Enabled:=false;
+  PARCELA1.Enabled:=false;             LOTERURAL1.Enabled:=false;
+  TELEFONO.Enabled:=false;             DOMI1.Enabled:=false;
+  mail.Enabled:=false;                 caracter.Enabled:=false;
+ end;
+ if nro=4 then begin
+  provincia.Enabled:=true;            barrio.Enabled:=true;
+  calle.Enabled:=true;                ALTURA1.Enabled:=true;
+  PISO1.Enabled:=true;                DPTO1.Enabled:=true;
+  MANZANA1.Enabled:=true;             CASA1.Enabled:=true;
+  TORRE1.Enabled:=true;               SECTOR1.Enabled:=true;
+  PARCELA1.Enabled:=true;             LOTERURAL1.Enabled:=true;
+  TELEFONO.Enabled:=true;             DOMI1.Enabled:=true;
+  mail.Enabled:=true;                 caracter.Enabled:=true;
+ end;
+end;
+
+procedure TAlta_PlanPagoMoratoria.Exportar1Click(Sender: TObject);
+var txt1:widestring;
+    t,y:integer;
+begin
+ RE.Clear;
+ txt1:='';
+ for y:=0 to Grilla2.ColCount-1 do
+   txt1:=txt1 + Grilla2.Cells[y,0] + chr(9);
+ RE.Lines.Append(txt1);
+ for t:=1 to Grilla2.RowCount-1 do begin
+  txt1:='';
+  for y:=0 to Grilla2.ColCount-1 do
+    txt1:=txt1 + Grilla2.Cells[y,t] + chr(9);
+  RE.Lines.Append(txt1);
+ end;
+ RE.SelectAll;
+ RE.CopyToClipboard;
+ messagedlg('Datos Copiados Correctamante!!' + chr(13) + 'Abra Excel y pegue los datos en la hoja activa...',mtConfirmation,[mbok],0)
+end;
+
+procedure TAlta_PlanPagoMoratoria.ExportaraExcelDetalledeuota1Click(Sender: TObject);
+var txt1:widestring;
+    t,y:integer;
+begin
+ RE.Clear;
+ txt1:='';
+ for y:=0 to Grilla5.ColCount-1 do
+   txt1:=txt1 + Grilla5.Cells[y,0] + chr(9);
+ RE.Lines.Append(txt1);
+ for t:=1 to Grilla5.RowCount-1 do begin
+  txt1:='';
+  for y:=0 to Grilla5.ColCount-1 do
+    txt1:=txt1 + Grilla5.Cells[y,t] + chr(9);
+  RE.Lines.Append(txt1);
+ end;
+ RE.SelectAll;
+ RE.CopyToClipboard;
+ messagedlg('Detalle de Cuotas de Financiacion Copiados Correctamante!!' + chr(13) + 'Abra Excel y pegue los datos en la hoja activa...',mtConfirmation,[mbok],0)
+end;
+
+end.

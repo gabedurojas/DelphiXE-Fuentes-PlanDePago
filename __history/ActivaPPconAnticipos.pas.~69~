@@ -1,0 +1,361 @@
+unit ActivaPPconAnticipos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet;
+
+type THackStringGrid = class(TJvStringGrid);
+type
+  TActiva_PPconAnticipo = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    BORRA: TJvBitBtn;
+    ToolButton3: TToolButton;
+    SALE: TJvBitBtn;
+    Barra1: TStatusBar;
+    JvgGroupBox1: TJvgGroupBox;
+    DataSource1: TDataSource;
+    PC1: TPageControl;
+    TabSheet3: TTabSheet;
+    JvgGroupBox5: TJvgGroupBox;
+    FormularioEmb: TJvEmbeddedFormLink;
+    grillactabancos: TStringGrid;
+    ImageList1: TImageList;
+    frxReport1: TfrxReport;
+    ToolButton2: TToolButton;
+    Label2: TLabel;
+    CheckBox1: TCheckBox;
+    GroupBox1: TGroupBox;
+    Buscar: TJvBitBtn;
+    Ld: TDateTimePicker;
+    JvBitBtn1: TJvBitBtn;
+    elid: TEdit;
+    Label11: TLabel;
+    Label1: TLabel;
+    plannro: TEdit;
+    JvDBGrid1: TJvDBGrid;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Coloca1(nro:byte);
+    procedure SALEClick(Sender: TObject);
+    procedure BORRAClick(Sender: TObject);
+    procedure BuscarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure VerArea(nro:byte);
+    procedure CheckBox1Click(Sender: TObject);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure grillactabancosClick(Sender: TObject);
+    procedure JvDBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure JvDBGrid1CellClick(Column: TColumn);
+    procedure grillactabancosDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure ButtonClickHandler(Sender: TObject);
+  private
+    CONTRIBUYENTE,Identidad,CONTRIBCTASBANCOS,DataSet:TADODataSet;{ Private declarations }
+    fecha,respuesta,laidcuenta,dato,FechaAct,elcontrib,
+    eldni,tipocta,lacuenta,lasucur,elbank,elidcontrib,elcuit:string;
+    Com1:TADOCommand;
+  public
+    Objetos:TObjetos;
+    gh:boolean;{ Public declarations }
+  end;
+
+var
+  Activa_PPconAnticipo: TActiva_PPconAnticipo;
+
+implementation
+
+uses Unidad ,modulo;
+
+{$R *.dfm}
+
+procedure TActiva_PPconAnticipo.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(CONTRIBUYENTE);
+FreeAndNil(CONTRIBCTASBANCOS);
+FreeAndNil(DataSet);
+FreeAndNil(Self);
+end;
+
+procedure TActiva_PPconAnticipo.FormCreate(Sender: TObject);
+var
+  Btn: TButton;
+  R: TRect;
+begin
+CONTRIBUYENTE:=TADODataSet.Create(nil);
+DataSource1.DataSet:=CONTRIBUYENTE;
+CONTRIBCTASBANCOS:=TADODataSet.Create(Self);
+DataSet:=TADODataSet.Create(nil);
+
+  R := grillactabancos.CellRect(4,1); // celda [Col=1, Row=1]
+  Btn := TButton.Create(Self);
+  Btn.Parent := grillactabancos; // el grid será el contenedor
+  Btn.Caption := 'Accion';
+  Btn.Left := R.Left;
+  Btn.Top := R.Top;
+  Btn.Width := R.Right - R.Left;
+  Btn.Height := R.Bottom - R.Top;
+  Btn.OnClick := ButtonClickHandler;
+
+
+
+{  Btn := TButton.Create(Self);
+  Btn.Parent := grillactabancos;
+  Btn.Caption := 'Accion';
+  Btn.OnClick := ButtonClickHandler;
+  grillactabancos.Objects[4,1] := Btn;    }
+
+end;
+
+procedure TActiva_PPconAnticipo.ButtonClickHandler(Sender: TObject);
+begin
+  ShowMessage('Botón dentro del grid presionado  sfsadf');
+end;
+
+
+procedure TActiva_PPconAnticipo.grillactabancosClick(Sender: TObject);
+begin
+ if grillactabancos.Cells[0,grillactabancos.Row] <> '' then begin
+  elid.Text:=grillactabancos.Cells[0,grillactabancos.Row];
+  plannro.Text:=grillactabancos.Cells[1,grillactabancos.Row];
+  buscar.Enabled :=true;
+  buscar.SetFocus ;
+ end;
+end;
+
+procedure TActiva_PPconAnticipo.grillactabancosDrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+  var
+  Btn: TButton;
+
+begin
+  Btn := TButton(grillactabancos.Objects[ACol, ARow]);
+  if Assigned(Btn) then
+  begin
+    Btn.SetBounds(Rect.Left, Rect.Top, Rect.Right - Rect.Left, Rect.Bottom - Rect.Top);
+    Btn.Visible := True;
+    //ShowMessage('Botón dentro del grid presionado');
+  end;
+
+end;
+
+procedure TActiva_PPconAnticipo.JvBitBtn1Click(Sender: TObject);
+begin
+Coloca1(2);
+end;
+
+procedure TActiva_PPconAnticipo.JvDBGrid1CellClick(Column: TColumn);
+var gf:integer;
+var txt:string;
+    comando:widestring;
+    Cnx2:TADOConnection;
+begin
+  if Column.FieldName = 'Activar' then
+    gf:=messagedlg('Confirma el Cambio de Estado del Plan de Pago Seleccionado?'
+    ,mtWarning,[mbok,mbCancel],0);
+    if gf = 1 then begin
+    try
+     Cnx2:=TADOConnection.Create(nil);
+     Cnx2.LoginPrompt:=false;
+     Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+     Com1:=TADOCommand.Create(nil);
+     Com1.Connection:=Cnx2;
+     Com1.CommandText:='UPDATE PlanPagoEstado SET IdTipoEstado = 0 WHERE (id= '+ trim(CONTRIBCTASBANCOS.Fields[0].AsString) +' ) and (NroPlan=' + trim(CONTRIBCTASBANCOS.Fields[1].AsString) + ') and (activo=1)';
+     Com1.Execute;
+      messagedlg('Estado del Plan Nro: ' + CONTRIBCTASBANCOS.Fields[1].AsString + ' fue Modificado correctamente!',mtConfirmation,[mbok],0);
+     //ShowMessage('Botón virtual presionado en fila ' + CONTRIBCTASBANCOS.Fields[0].AsString + 'NroPlan' + CONTRIBCTASBANCOS.Fields[1].AsString );
+     Coloca1(2);
+    except
+     messagedlg('Error a la Modificar el estado de este Plan de Pago...!',mtError,[mbok],0);
+    end;
+    FreeAndNil(Com1);
+    FreeAndNil(Cnx2);
+   end;
+end;
+
+procedure TActiva_PPconAnticipo.JvDBGrid1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  if Column.FieldName = 'Activar' then
+  begin
+    JvDBGrid1.Canvas.FillRect(Rect);
+    DrawFrameControl(JvDBGrid1.Canvas.Handle, Rect, DFC_BUTTON, DFCS_BUTTONPUSH);
+    JvDBGrid1.Canvas.TextOut(Rect.Left + 5, Rect.Top + 2, 'Activar');
+  end;
+
+end;
+
+procedure TActiva_PPconAnticipo.FormActivate(Sender: TObject);
+begin
+ if not (gh) then begin
+  grillactabancos.Cells[0,0]:='Id';
+  grillactabancos.Cells[1,0]:='NroPlan';
+  grillactabancos.Cells[2,0]:='FechaEstado';
+  grillactabancos.Cells[3,0]:='TipoEstado';
+  grillactabancos.Cells[4,0]:='Activar';
+  //   grillactabancos.Cells[4,0]:='Suc-NroCuenta';
+  // grillactabancos.Cells[5,0]:='NroCBU';
+  ld.Date:= now;
+  ld.Visible:=false;
+  FechaAct:=LeftStr(Fec_System(),10);
+  //VerArea(1);
+  gh:=true;
+  PC1.ActivePage:=PC1.Pages[0];
+  Coloca1(2);
+  CheckBox1.SetFocus;
+  JvBitBtn1.Enabled:=false;
+  buscar.Enabled :=false;
+ end;
+end;
+
+procedure TActiva_PPconAnticipo.VerArea(nro:byte);
+begin
+{ DataSet.ConnectionString:=modulo2.Sistema.ConectUsu;
+ if nro=1 then begin
+  DataSet.CommandText:='SELECT nivel FROM usumodulos WHERE (modulo = 151) AND (codusu = ' + modulo2.Usuario.UsuNro + ');';
+  DataSet.Open;
+  dato:=DataSet.Fields[0].AsString;
+  DataSet.Close;
+ end;  }
+end;
+
+procedure TActiva_PPconAnticipo.CheckBox1Click(Sender: TObject);
+begin
+ if CheckBox1.Checked then BEGIN
+   elid.Clear;
+   plannro.Clear;
+   buscar.Enabled :=false;
+   ld.Visible:=true;
+   ld.SetFocus;
+   JvBitBtn1.Enabled:=true;
+ END
+ else begin
+   elid.Clear;
+   plannro.Clear;
+   buscar.Enabled :=false;
+   ld.Date:= now;
+   Coloca1(2);
+   ld.Visible:=false;
+   JvBitBtn1.Enabled:=false;
+ end;
+end;
+
+procedure TActiva_PPconAnticipo.Coloca1(nro:byte);
+var t:integer;
+    txt:string;
+begin
+Modulo2.ObjConexion:=TADOConnection.Create(nil);
+Modulo2.ObjConexion.LoginPrompt:=false;
+Modulo2.ObjConexion.ConnectionString:=modulo2.Sistema.ConectSeg;
+ if nro=1 then begin
+  {if trim(ONOMB.Text) = '' then txt:='NULL'
+    else txt:=chr(39) + trim(ONOMB.Text) + chr(39);
+  if trim(ODNI.Text) = '' then txt:=txt + ' , NULL'
+    else txt:=txt + ' , ' +  trim(ODNI.Text);
+  if trim(OCUIT.Text) = '' then txt:=txt + ' , NULL'
+    else txt:=txt + ' , ' + chr(39) + trim(OCUIT.Text) + chr(39);
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=modulo2.ObjConexion;
+  DataSource1.DataSet:=CONTRIBUYENTE;
+  CONTRIBUYENTE.CommandText:='EXEC SPP_Contribuyentes ' + txt;
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+   messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+   odni.SetFocus;
+  end
+  else begin
+   JvDBGrid2.Columns[0].Width:=60;             JvDBGrid2.Columns[1].Width:=250;
+   JvDBGrid2.Columns[2].Width:=70;             JvDBGrid2.Columns[3].Width:=80;
+   JvDBGrid2.Columns[4].Width:=60;             JvDBGrid2.Columns[5].Width:=70;
+   JvDBGrid2.Columns[6].Width:=120;            JvDBGrid2.Columns[7].Width:=80;
+   JvDBGrid2.Columns[8].Width:=80;             JvDBGrid2.Columns[9].Width:=50;
+   JvDBGrid2.Columns[10].Width:=80;            JvDBGrid2.Columns[11].Width:=90;
+  end;
+  CONTRIBUYENTE.Connection:=nil;  }
+ end;
+ if nro= 2 then  begin
+  CONTRIBCTASBANCOS:=TADODataSet.Create(Self);
+  DataSource1.DataSet:=CONTRIBCTASBANCOS;
+  CONTRIBCTASBANCOS.Close;
+
+  Modulo2.ObjConexion.ConnectionString:=modulo2.Sistema.ConectSeg;
+  CONTRIBCTASBANCOS.Connection:=modulo2.ObjConexion;
+  if CheckBox1.Checked then
+    CONTRIBCTASBANCOS.CommandText:= 'select id,NroPlan,convert(char(10),fecha,103) as FechaEstado , ''Pendiente'' as TipoEstado , ''Activar'' as Activar from [PlanesPagos].[dbo].PlanPagoEstado WHERE (IdTipoEstado = - 1) AND (Activo = 1) and (convert(char(10),fecha,103) = ' + chr(39) + trim(DateToStr(ld.Date)) + chr(39) + ') order by 2'
+   else CONTRIBCTASBANCOS.CommandText:= 'select top 100 id,NroPlan,convert(char(10),fecha,103) as FechaEstado , ''Pendiente'' as TipoEstado , ''Activar'' as Activar from [PlanesPagos].[dbo].PlanPagoEstado WHERE (IdTipoEstado = - 1) AND (Activo = 1) and (convert(char(10),fecha,103) = ' + chr(39) + trim(DateToStr(ld.Date)) + chr(39) + ') order by 2';
+  //CONTRIBCTASBANCOS.CommandText:='[PlanesPagos].[dbo].[SPP_RecreaPagosPPConAnticipos] ';
+  CONTRIBCTASBANCOS.Open;
+  if not CONTRIBCTASBANCOS.IsEmpty then BEGIN
+   for t:=1 to CONTRIBCTASBANCOS.RecordCount do begin
+    grillactabancos.RowCount:=t+1;
+    CONTRIBCTASBANCOS.RecNo:=t;
+    grillactabancos.Cells[0,t]:=CONTRIBCTASBANCOS.Fields[0].AsString;
+    grillactabancos.Cells[1,t]:=CONTRIBCTASBANCOS.Fields[1].AsString;
+    grillactabancos.Cells[2,t]:=CONTRIBCTASBANCOS.Fields[2].AsString;
+    grillactabancos.Cells[3,t]:=CONTRIBCTASBANCOS.Fields[3].AsString;
+    //grillactabancos.Cells[4,t]:=CONTRIBCTASBANCOS.Fields[4].AsString;
+    //grillactabancos.Cells[5,t]:=CONTRIBCTASBANCOS.Fields[5].AsString;
+   end;
+   CONTRIBCTASBANCOS.Connection:=nil;
+  END
+  else  begin
+   messagedlg('ATENCION.. NO se encontraron Planes de Pagos con la' + chr(13)
+   + 'Cuota Anticipo Pagada...Por favor, realice otra busqueda...',mtInformation,[mbok,mbCancel],0);
+   borra.Click ;
+  end;
+  CONTRIBCTASBANCOS.Connection:=nil;
+ end;
+FreeAndNil(Modulo2.ObjConexion);
+end;
+
+procedure TActiva_PPconAnticipo.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TActiva_PPconAnticipo.BORRAClick(Sender: TObject);
+var p,u:integer;
+begin
+  for p:=0 to grillactabancos.ColCount-1 do
+    for u:=1 to grillactabancos.RowCount-1 do grillactabancos.Cells[p,u]:='';
+  grillactabancos.RowCount:=2;
+  CONTRIBCTASBANCOS.Close;
+  buscar.Enabled :=false;
+end;
+
+procedure TActiva_PPconAnticipo.BuscarClick(Sender: TObject);
+var gf:integer;
+var txt:string;
+    comando:widestring;
+    Cnx2:TADOConnection;
+begin
+gf:=messagedlg('Confirma el Cambio de Estado del Plan de Pago Seleccionado?'
+    ,mtWarning,[mbok,mbCancel],0);
+ if gf = 1 then begin
+  {try
+   Cnx2:=TADOConnection.Create(nil);
+   Cnx2.LoginPrompt:=false;
+   Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+   Com1:=TADOCommand.Create(nil);
+   Com1.Connection:=Cnx2;
+   Com1.CommandText:='UPDATE PlanPagoEstado SET IdTipoEstado = 0 WHERE (id= '+ trim(elid.Text) +' ) and (NroPlan=' + trim(plannro.Text) + ') and (activo=1)';
+   Com1.Execute;
+   messagedlg('Estado del Plan Modificado correctamente!',mtConfirmation,[mbok],0);
+   Coloca1(2);
+  except
+   messagedlg('Error a la Modificar el estado de este Plan de Pago...!',mtError,[mbok],0);
+  end;
+  FreeAndNil(Com1);
+  FreeAndNil(Cnx2);  }
+ end;
+ buscar.Enabled:=false;
+end;
+
+end.

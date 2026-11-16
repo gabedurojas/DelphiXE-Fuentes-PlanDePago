@@ -1,0 +1,360 @@
+unit Report_Debitos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet;
+
+type THackStringGrid = class(TJvStringGrid);
+type
+  TConsul_Debitos = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    BORRA: TJvBitBtn;
+    ToolButton3: TToolButton;
+    SALE: TJvBitBtn;
+    Barra1: TStatusBar;
+    JvgGroupBox1: TJvgGroupBox;
+    LB1: TLabel;
+    Label9: TLabel;
+    Label28: TLabel;
+    ONOMB: TEdit;
+    ODNI: TEdit;
+    Buscar: TJvBitBtn;
+    OCUIT: TEdit;
+    JvgGroupBox3: TJvgGroupBox;
+    JvDBGrid2: TJvDBGrid;
+    DataSource1: TDataSource;
+    PC1: TPageControl;
+    TabSheet3: TTabSheet;
+    JvgGroupBox5: TJvgGroupBox;
+    FormularioEmb: TJvEmbeddedFormLink;
+    grillactabancos: TStringGrid;
+    ImageList1: TImageList;
+    frxReport1: TfrxReport;
+    ToolButton2: TToolButton;
+    JvGroupBox3: TJvGroupBox;
+    Label39: TLabel;
+    Shape2: TShape;
+    PopupMenu1: TPopupMenu;
+    Imprimir1: TMenuItem;
+    Label2: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Coloca1(nro:byte);
+    procedure JvDBGrid2CellClick(Column: TColumn);
+    procedure SALEClick(Sender: TObject);
+    procedure BORRAClick(Sender: TObject);
+    procedure ODNIKeyPress(Sender: TObject; var Key: Char);
+    procedure ONOMBKeyPress(Sender: TObject; var Key: Char);
+    procedure OCUITKeyPress(Sender: TObject; var Key: Char);
+    procedure BuscarClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure VerArea(nro:byte);
+    procedure ImprimeConfirmacion();
+    procedure grillactabancosDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure Imprimir1Click(Sender: TObject);
+  private
+    CONTRIBUYENTE,Identidad,CONTRIBCTASBANCOS,DataSet:TADODataSet;{ Private declarations }
+    fecha,respuesta,laidcuenta,dato,FechaAct,elcontrib,
+    eldni,tipocta,lacuenta,lasucur,elbank,elidcontrib,elcuit:string;
+    Com1:TADOCommand;
+  public
+    Objetos:TObjetos;
+    gh:boolean;{ Public declarations }
+  end;
+
+var
+  Consul_Debitos: TConsul_Debitos;
+
+implementation
+
+uses Unidad ,modulo;
+
+{$R *.dfm}
+
+procedure TConsul_Debitos.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(CONTRIBUYENTE);
+FreeAndNil(CONTRIBCTASBANCOS);
+FreeAndNil(DataSet);
+FreeAndNil(Self);
+end;
+
+procedure TConsul_Debitos.FormCreate(Sender: TObject);
+begin
+CONTRIBUYENTE:=TADODataSet.Create(nil);
+DataSource1.DataSet:=CONTRIBUYENTE;
+CONTRIBCTASBANCOS:=TADODataSet.Create(Self);
+DataSet:=TADODataSet.Create(nil);
+end;
+
+procedure TConsul_Debitos.FormActivate(Sender: TObject);
+begin
+if not (gh) then begin
+  grillactabancos.Cells[0,0]:='IdCuenta';
+  grillactabancos.Cells[1,0]:='Cuenta';           grillactabancos.Cells[2,0]:='Banco';
+  grillactabancos.Cells[3,0]:='TipoCuenta';       grillactabancos.Cells[4,0]:='Suc-NroCuenta';
+  grillactabancos.Cells[5,0]:='NroCBU';
+  //imprime.Enabled:=false;
+  FechaAct:=LeftStr(Fec_System(),10);
+  VerArea(1);
+  gh:=true;
+  PC1.ActivePage:=PC1.Pages[0];
+  ODNI.SetFocus;
+end;
+end;
+
+procedure TConsul_Debitos.VerArea(nro:byte);
+begin
+DataSet.ConnectionString:=modulo2.Sistema.ConectUsu;
+  if nro=1 then begin
+    DataSet.CommandText:='SELECT nivel FROM usumodulos WHERE (modulo = 151) AND (codusu = ' + modulo2.Usuario.UsuNro + ');';
+    DataSet.Open;
+    dato:=DataSet.Fields[0].AsString;
+    DataSet.Close;
+  end;
+end;
+
+procedure TConsul_Debitos.grillactabancosDrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+   With Sender as TStringGrid do begin
+     if (trim(grillactabancos.Cells[1,Arow]) = '---> DEBITO DE BAJA')
+      or (trim(grillactabancos.Cells[1,Arow])='CTA. BANCARIA DE BAJA' ) then begin
+       Canvas.Brush.Color := clYellow;
+       Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+     end;
+   end;
+end;
+
+procedure  TConsul_Debitos.ImprimeConfirmacion();
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2: TfrxDBDataset;
+    DtsObjetos, DtsGrilla2:TClientDataSet;
+    t,y:integer;
+begin
+ try
+    DtsObjetos:=TClientDataSet.Create(nil);
+    DtsObjetos.FieldDefs.Clear;
+    DtsObjetos.Active:=False;
+    with DtsObjetos.FieldDefs.AddFieldDef do begin
+      Name:='Orden';
+      DataType:=ftInteger;
+    end;
+    with DtsObjetos.FieldDefs.AddFieldDef do begin
+      Name:='Impuesto';
+      DataType:=ftString;Size:=50;
+    end;
+    with DtsObjetos.FieldDefs.AddFieldDef do begin
+      Name:='Objeto';
+      DataType:=ftString;Size:=250;
+    end;
+    with DtsObjetos.FieldDefs.AddFieldDef do begin
+      Name:='Detalle';
+      DataType:=ftString;Size:=50;
+    end;
+    with DtsObjetos.FieldDefs.AddFieldDef do begin
+      Name:='TipoCta';
+      DataType:=ftString;Size:=50;
+    end;
+    with DtsObjetos.FieldDefs.AddFieldDef do begin
+      Name:='NroCta';
+      DataType:=ftString;Size:=150;
+    end;
+    with DtsObjetos.FieldDefs.AddFieldDef do begin
+      Name:='Credito';
+      DataType:=ftString;Size:=35;
+    end;
+    DtsObjetos.CreateDataSet;
+    DtsObjetos.Active:=True;
+    y:=1;
+    for t:=1 to grillactabancos.RowCount-1 do begin
+      DtsObjetos.Append;
+      DtsObjetos.FieldValues['Orden']:=y;
+      DtsObjetos.FieldValues['Impuesto']:=grillactabancos.Cells[0,t];
+      DtsObjetos.FieldValues['Objeto']:=grillactabancos.Cells[1,t];
+      DtsObjetos.FieldValues['Detalle']:=grillactabancos.Cells[2,t];
+      DtsObjetos.FieldValues['TipoCta']:=grillactabancos.Cells[3,t];
+      DtsObjetos.FieldValues['NroCta']:=grillactabancos.Cells[4,t];
+      DtsObjetos.FieldValues['Credito']:='';//grillactabancos.Cells[5,t];
+      DtsObjetos.Post;
+      y:=y+1;
+    end;
+  except
+    on E: Exception do EnviarLog(Self.Caption, E.Message);
+  end;
+
+//Imprimiendo
+ try
+  ReporteRst:=TfrxReport.Create(nil);
+  frxDB1:=TfrxDBDataset.Create(nil);
+  frxDB1.DataSet:=DtsObjetos;
+  frxDB1.UserName:='frxDBDataset1';
+  ReporteRst.DataSets.Add(frxDB1);
+  ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Consulta_Debitos.fr3');
+  TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+  TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\logoformosa.jpg');
+  ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(elcontrib);
+  ReporteRst.Variables['NroDni'] := QuotedStr(eldni);
+  ReporteRst.Variables['NomTitular'] := QuotedStr(elcuit);
+  ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(FechaAct,'DDMMAAAA'));
+  ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+  ReporteRst.ShowReport;
+ except
+  on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+ end;
+ FreeAndNil(frxDB1);
+ FreeAndNil(ReporteRst);
+ FreeAndNil(DtsObjetos);
+end;
+
+procedure TConsul_Debitos.Imprimir1Click(Sender: TObject);
+begin
+ ImprimeConfirmacion();
+end;
+
+procedure TConsul_Debitos.Coloca1(nro:byte);
+var t:integer;
+    txt:string;
+begin
+Modulo2.ObjConexion:=TADOConnection.Create(nil);
+Modulo2.ObjConexion.LoginPrompt:=false;
+Modulo2.ObjConexion.ConnectionString:=modulo2.Sistema.ConectSeg;
+ if nro=1 then begin
+  if trim(ONOMB.Text) = '' then txt:='NULL'
+    else txt:=chr(39) + trim(ONOMB.Text) + chr(39);
+  if trim(ODNI.Text) = '' then txt:=txt + ' , NULL'
+    else txt:=txt + ' , ' +  trim(ODNI.Text);
+  if trim(OCUIT.Text) = '' then txt:=txt + ' , NULL'
+    else txt:=txt + ' , ' + chr(39) + trim(OCUIT.Text) + chr(39);
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=modulo2.ObjConexion;
+  DataSource1.DataSet:=CONTRIBUYENTE;
+  CONTRIBUYENTE.CommandText:='EXEC SPP_Contribuyentes ' + txt;
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+   messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+   odni.SetFocus;
+  end
+  else begin
+   JvDBGrid2.Columns[0].Width:=60;             JvDBGrid2.Columns[1].Width:=250;
+   JvDBGrid2.Columns[2].Width:=70;             JvDBGrid2.Columns[3].Width:=80;
+   JvDBGrid2.Columns[4].Width:=60;             JvDBGrid2.Columns[5].Width:=70;
+   JvDBGrid2.Columns[6].Width:=120;            JvDBGrid2.Columns[7].Width:=80;
+   JvDBGrid2.Columns[8].Width:=80;             JvDBGrid2.Columns[9].Width:=50;
+   JvDBGrid2.Columns[10].Width:=80;            JvDBGrid2.Columns[11].Width:=90;
+  end;
+  CONTRIBUYENTE.Connection:=nil;
+ end;
+ if nro= 2 then  begin
+  CONTRIBCTASBANCOS.Close;
+  Modulo2.ObjConexion.ConnectionString:=modulo2.Sistema.ConectSeg;
+  CONTRIBCTASBANCOS.Connection:=modulo2.ObjConexion;
+  CONTRIBCTASBANCOS.CommandText:='SPC_ContribuyentesCtasDebitos ' + CONTRIBUYENTE.Fields[0].AsString;
+  CONTRIBCTASBANCOS.Open;
+  if not CONTRIBCTASBANCOS.IsEmpty then BEGIN
+   PopupMenu1.Items[0].Enabled:=true;
+   for t:=1 to CONTRIBCTASBANCOS.RecordCount do begin
+    grillactabancos.RowCount:=t+1;
+    CONTRIBCTASBANCOS.RecNo:=t;
+    grillactabancos.Cells[0,t]:=CONTRIBCTASBANCOS.Fields[0].AsString;
+    grillactabancos.Cells[1,t]:=CONTRIBCTASBANCOS.Fields[1].AsString;
+    grillactabancos.Cells[2,t]:=CONTRIBCTASBANCOS.Fields[2].AsString;
+    grillactabancos.Cells[3,t]:=CONTRIBCTASBANCOS.Fields[3].AsString;
+    grillactabancos.Cells[4,t]:=CONTRIBCTASBANCOS.Fields[4].AsString;
+    grillactabancos.Cells[5,t]:=CONTRIBCTASBANCOS.Fields[5].AsString;
+   end;
+  END
+  else  begin
+   PopupMenu1.Items[0].Enabled:=false;
+   messagedlg('Este Contribuyente No Posee ninguna Cuenta Bancaria y Debitos asociados' + chr(13)
+   + 'Por favor, realice otra busqueda...',mtWarning,[mbok,mbCancel],0);
+   odni.SetFocus;
+  end;
+  CONTRIBCTASBANCOS.Connection:=nil;
+ end;
+FreeAndNil(Modulo2.ObjConexion);
+end;
+
+procedure TConsul_Debitos.JvDBGrid2CellClick(Column: TColumn);
+begin
+ if not CONTRIBUYENTE.IsEmpty then begin
+  elidcontrib:=CONTRIBUYENTE.Fields[0].AsString;
+  elcontrib:=CONTRIBUYENTE.Fields[1].AsString;
+  elcuit:=trim(CONTRIBUYENTE.Fields[4].AsString);
+  eldni:=strcut_midle(trim(CONTRIBUYENTE.Fields[4].AsString),3,10);
+  Coloca1(2);
+ end;
+end;
+
+procedure TConsul_Debitos.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TConsul_Debitos.BORRAClick(Sender: TObject);
+var p,u:integer;
+begin
+  for p:=0 to grillactabancos.ColCount-1 do
+    for u:=1 to grillactabancos.RowCount-1 do grillactabancos.Cells[p,u]:='';
+  grillactabancos.RowCount:=2;
+
+  CONTRIBUYENTE.Close;
+  CONTRIBCTASBANCOS.Close;
+  dataset.Close;
+
+  ocuit.Clear;
+  onomb.Clear;
+  odni.Clear;
+  odni.SetFocus;
+end;
+
+procedure TConsul_Debitos.ODNIKeyPress(Sender: TObject; var Key: Char);
+begin
+if key =#13 then begin
+  Key := #0;
+  ONOMB.SetFocus;
+end
+else begin
+  if ( StrScan('0123456789',Key) <> nil ) or ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+end;
+end;
+
+procedure TConsul_Debitos.ONOMBKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  OCUIT.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ-/ °',Key) <> nil ) or ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+procedure TConsul_Debitos.OCUITKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key =#13 then begin
+  Key := #0;
+  BUSCAR.SetFocus;
+ end
+ else begin
+  if ( StrScan('0123456789',Key) <> nil ) or ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+procedure TConsul_Debitos.BuscarClick(Sender: TObject);
+begin
+Coloca1(1);
+end;
+
+end.

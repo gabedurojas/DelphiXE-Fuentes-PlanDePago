@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="6.9.15" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="4095" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="42511.4031965741" ReportOptions.Description.Text="" ReportOptions.LastChange="46164.3916037616" ScriptLanguage="PascalScript" ScriptText.Text="&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+  <Variables>
+    <item Name=" New Category1"/>
+    <item Name="NombreRespo" Value="'BRAÑA JUAN ANGEL'"/>
+    <item Name="CuimRespo" Value="'20-24525019-4'"/>
+    <item Name="DomicilioRespo" Value="'DESCONOCIDO'"/>
+    <item Name="NombreTit" Value="'CACERES JUAN ALBERTO'"/>
+    <item Name="CuimTit" Value="''"/>
+    <item Name="DomicilioTit" Value="'DESCONOCIDO'"/>
+    <item Name="CuotaDe" Value="'1 de 10'"/>
+    <item Name="Anio" Value="2016"/>
+    <item Name="NroPlan" Value="123466"/>
+    <item Name="NroCuota" Value="1"/>
+    <item Name="FechaIni" Value="'01/01/2016'"/>
+    <item Name="CantObj" Value="20"/>
+    <item Name="Objetos" Value="'JVS001, NBV003, OPS985/1111201 - 21121, 54512, 5452/1111601 - 21121, 54515, 5452/1120501'"/>
+    <item Name="DetalleRecibo" Value="'MULTIPLES PERIODOS - VERIFICAR DOCUMENTACION PLAN'"/>
+    <item Name="NroCobro" Value="'2016-004'"/>
+    <item Name="NroLiquidacion" Value="36232635"/>
+    <item Name="PrimerV" Value="'21/05/2016'"/>
+    <item Name="Importe1" Value="33525.65"/>
+    <item Name="SegundoV" Value="'21/05/2016'"/>
+    <item Name="Importe2" Value="33525.65"/>
+    <item Name="CodBar" Value="'‰|fè!èèJV4$#!LV[Hèè*A$:,ÁŠ'"/>
+    <item Name="NroCodBar" Value="'9270004704004090200400134046230000047040040907'"/>
+    <item Name="NroUsuario" Value="120"/>
+    <item Name="TituloDesc" Value="'PLAN DE FACILIDADES DE PAGO'"/>
+  </Variables>
+  <TfrxDataPage Name="Data" HGuides.Text="" VGuides.Text="" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" HGuides.Text="" VGuides.Text="" PaperWidth="210" PaperHeight="297" PaperSize="9" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" Frame.Typ="0" MirrorMode="0">
+    <TfrxReportTitle Name="ReportTitle1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="1028.03230646" Left="0" Top="18.89765" Width="718.1107">
+      <TfrxPictureView Name="Logo1" AllowVectorExport="True" Left="3.77953" Top="2.77953" Width="45.35436" Height="45.35436" Frame.Typ="0" HightQuality="False" Transparent="False" TransparentColor="16777215"/>
+      <TfrxMemoView Name="Memo1" AllowVectorExport="True" Left="60.47248" Top="11.33859" Width="238.11023134" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="1" Frame.Typ="0" HAlign="haCenter" ParentFont="False" Text="Municipalidad de la Ciudad de Formosa"/>
+      <TfrxMemoView Name="Memo8" AllowVectorExport="True" Left="3.77953" Top="55.91342" Width="37.79514134" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" Frame.Typ="0" HAlign="haRight" ParentFont="False" VAlign="vaCenter" Text="Titular:"/>
+      <TfrxMemoView Name="Memo10" AllowVectorExport="True" Left="3.77953" Top="76.47248" Width="37.79514134" Height="15.11811024" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="False" VAlign="vaCenter" Text="CUIT:"/>
+      <TfrxMemoView Name="Memo11" AllowVectorExport="True" Left="3.77953" Top="97.37013" Width="86.92903134" Height="15.11811024" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="False" VAlign="vaCenter" Text="Domicilio Titular:"/>
+      <TfrxMemoView Name="Memo13" AllowVectorExport="True" Left="3.77953" Top="175.74026" Width="56.69279134" Height="15.11811024" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="False" VAlign="vaCenter" Text="Localidad:"/>
+      <TfrxLineView Name="Line4" AllowVectorExport="True" Left="0" Top="207.87415" Width="718.1107" Height="0" Color="0" Frame.Typ="4"/>
+      <TfrxMemoView Name="Memo3" AllowVectorExport="True" Left="415.7483" Top="177.07885" Width="287.24412134" Height="26.45671" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="1" Frame.Typ="0" HAlign="haCenter" ParentFont="False" Text="* Tarjeta Válida únicamente para depósitos en ventanillads del Banco de Formosa y Sucursales"/>
+      <TfrxLineView Name="Line1" AllowVectorExport="True" Left="359.05535" Top="0" Width="0" Height="207.87415" Color="0" Frame.Typ="0" Diagonal="True"/>
+      <TfrxPictureView Name="Logo2" AllowVectorExport="True" Left="366.61441" Top="3.77953" Width="68.03154" Height="68.03154" Frame.Typ="0" HightQuality="False" Transparent="False" TransparentColor="16777215"/>
+      <TfrxMemoView Name="Memo4" AllowVectorExport="True" Left="64.25201" Top="192.75603" Width="226.77164134" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="1" Frame.Typ="0" HAlign="haCenter" ParentFont="False" Text="--------------- Banco de Formosa ---------------"/>
+      <TfrxMemoView Name="Memo2" AllowVectorExport="True" Left="3.77953" Top="116.04731" Width="351.49629" Height="15.11811024" Font.Charset="1" Font.Color="0" Font.Height="-9" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="False" VAlign="vaCenter" Text="[DomicilioTit]"/>
+      <TfrxShapeView Name="Shape1" AllowVectorExport="True" Left="563.14997" Top="3.77953" Width="143.62214" Height="49.13389" Frame.Typ="0"/>
+      <TfrxMemoView Name="Memo6" AllowVectorExport="True" Left="570.70903" Top="7.55906" Width="136.06292134" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="5" Frame.Typ="0" HAlign="haCenter" ParentFont="False" Text="Permisionario "/>
+      <TfrxMemoView Name="NombreTit" AllowVectorExport="True" Left="41.35436" Top="56.13389" Width="313.70099" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="1" Frame.Typ="0" ParentFont="False" Text="[NombreTit]"/>
+      <TfrxMemoView Name="CuimTit" AllowVectorExport="True" Left="41.57483" Top="76.47248" Width="264.5671" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="1" Frame.Typ="0" ParentFont="False" Text="[CuimTit]"/>
+      <TfrxMemoView Name="NombreRespo" AllowVectorExport="True" Left="60.25201" Top="176.51979" Width="260.78757" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-9" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="False" Text="[NombreRespo]"/>
+      <TfrxMemoView Name="NroPlan" AllowVectorExport="True" Left="597.16574" Top="26.45671" Width="79.37013" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-13" Font.Name="Arial" Font.Style="1" Frame.Typ="0" HAlign="haCenter" ParentFont="False" Text="[NroPlan]"/>
+      <TfrxBarCodeView Name="BarCode2" AllowVectorExport="True" Left="430.86642" Top="90.70872" Width="289" Height="52.91342" BarType="bcCode128C" Expression="&#60;NroCodBar&#62;" Frame.Typ="0" Rotation="0" TestLine="False" Text="9270001148316257201630015853104000011483162572" WideBarRatio="2" Zoom="1" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="0" ColorBar="0"/>
+      <TfrxMemoView Name="Memo5" AllowVectorExport="True" Left="3.77953" Top="134.28355" Width="94.48809134" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" Frame.Typ="0" HAlign="haRight" ParentFont="False" VAlign="vaCenter" Text="Nombre Comercio:"/>
+      <TfrxMemoView Name="DetalleRecibo" AllowVectorExport="True" Left="98.26778" Top="134.28355" Width="257.00804" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="1" Frame.Typ="0" ParentFont="False" Text="[DetalleRecibo]"/>
+      <TfrxMemoView Name="Memo7" AllowVectorExport="True" Left="61.81107" Top="28.45671" Width="238.11023134" Height="18.89765" Font.Charset="1" Font.Color="0" Font.Height="-12" Font.Name="Arial" Font.Style="1" Frame.Typ="0" HAlign="haCenter" ParentFont="False" Text="Subsecretaria de Ingresos Municipales"/>
+      <TfrxMemoView Name="Memo9" AllowVectorExport="True" Left="3.77953" Top="152.1812" Width="102.04715134" Height="15.11811024" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="False" VAlign="vaCenter" Text="Domicilio Comercio:"/>
+      <TfrxMemoView Name="DomicilioRespo" AllowVectorExport="True" Left="105.82684" Top="152.1812" Width="249.44898" Height="15.11812" Font.Charset="1" Font.Color="0" Font.Height="-11" Font.Name="Arial" Font.Style="0" Frame.Typ="0" ParentFont="False" Text="[DomicilioRespo]"/>
+      <TfrxLineView Name="Line2" AllowVectorExport="True" Left="3.77953" Top="52.91342" Width="351.49629" Height="0" Color="0" Frame.Typ="0" Diagonal="True"/>
+    </TfrxReportTitle>
+  </TfrxReportPage>
+</TfrxReport>

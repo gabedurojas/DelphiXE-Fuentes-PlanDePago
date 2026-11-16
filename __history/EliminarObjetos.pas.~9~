@@ -1,0 +1,647 @@
+unit EliminarObjetos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, Grids, DBGrids, StdCtrls, Mask, ComCtrls, ExtCtrls,
+  Buttons,   DBCtrls, StrUtils, JvExButtons,Objetos,
+  JvBitBtn, JvgGroupBox, Vcl.ToolWin, JvExComCtrls, JvToolBar, JvComponentBase,
+  JvEmbeddedForms, Vcl.Menus, RzTreeVw,  Vcl.ImgList, frxClass, frxDBSet,
+  DBClient, MidasLib, frxBarcode;
+
+type
+  Tbajaobjetos = class(TForm)
+    Barra1: TStatusBar;
+    DataSource1: TDataSource;
+    DataSource2: TDataSource;
+    PageControl2: TPageControl;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    Imprime: TBitBtn;
+    NUMPLAN: TMaskEdit;
+    Label18: TLabel;
+    IMPUESTO: TComboBox;
+    Label23: TLabel;
+    CUOTA: TComboBox;
+    Label24: TLabel;
+    VALCUOTA1: TEdit;
+    Label25: TLabel;
+    VEC1: TMaskEdit;
+    Label19: TLabel;
+    VALCUOTA2: TEdit;
+    VEC2: TMaskEdit;
+    Label20: TLabel;
+    Label21: TLabel;
+    Image1: TImage;
+    RESUMEN: TBitBtn;
+    Panel5: TPanel;
+    Label27: TLabel;
+    CONTRIB: TLabel;
+    Label28: TLabel;
+    DNI: TLabel;
+    Label29: TLabel;
+    CUIM: TLabel;
+    FormularioEmb: TJvEmbeddedFormLink;
+    JvToolBar1: TJvToolBar;
+    ToolButton1: TToolButton;
+    SALE: TJvBitBtn;
+    Label12: TLabel;
+    JvgGroupBox1: TJvgGroupBox;
+    LB1: TLabel;
+    Label52: TLabel;
+    Label53: TLabel;
+    Label54: TLabel;
+    codobjeto: TEdit;
+    nrodeplan: TEdit;
+    JvBitBtn1: TJvBitBtn;
+    titular: TEdit;
+    fecplan: TMaskEdit;
+    JvgGroupBox8: TJvgGroupBox;
+    DBGrid2: TDBGrid;
+    TabSheet7: TTabSheet;
+    JvgGroupBox3: TJvgGroupBox;
+    JvgGroupBox2: TJvgGroupBox;
+    Arbol: TRzTreeView;
+    ImageList1: TImageList;
+    ImageList2: TImageList;
+    frxReport1: TfrxReport;
+    JvgGroupBox5: TJvgGroupBox;
+    DBGrid3: TDBGrid;
+    JvgGroupBox6: TJvgGroupBox;
+    DBGrid1: TDBGrid;
+    DataSource3: TDataSource;
+    GroupBox1: TGroupBox;
+    baja: TJvBitBtn;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Coloca1(nro:byte);
+    procedure DBGrid2CellClick(Column: TColumn);
+    procedure VEC2KeyPress(Sender: TObject; var Key: Char);
+    Function los_periodos():widestring;
+    procedure DBGrid2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure nrodeplanKeyPress(Sender: TObject; var Key: Char);
+    procedure codobjetoKeyPress(Sender: TObject; var Key: Char);
+    procedure titularKeyPress(Sender: TObject; var Key: Char);
+    procedure fecplanKeyPress(Sender: TObject; var Key: Char);
+    procedure fecplanExit(Sender: TObject);
+    procedure JvBitBtn2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBGrid3CellClick(Column: TColumn);
+    procedure ColocaCombo(nro:byte);
+    procedure bajaClick(Sender: TObject);
+  private
+    FechaAct,Fec2doVenc,EstadoAct,infoplan:string;
+    gh:boolean;
+    PLANES, ESTCUENTA,LOSOBJETOS:TADODataSet;
+    DtsGrilla2:TClientDataSet;{ Private declarations }
+  public
+    Recibo:TRecibo;
+    Objetos:TObjetos;{ Public declarations }
+  end;
+
+var
+  bajaobjetos: Tbajaobjetos;
+
+implementation
+
+uses modulo, Unidad, Sel_Fecha;
+
+{$R *.dfm}
+procedure Tbajaobjetos.FormCreate(Sender: TObject);
+begin
+gh:=false;
+PLANES:=TADODataSet.Create(nil);
+ESTCUENTA:=TADODataSet.Create(nil);
+LOSOBJETOS:=TADODataSet.Create(nil);
+Recibo:=TRecibo.Create;
+Objetos:=TObjetos.Create;
+end;
+
+procedure Tbajaobjetos.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+///Modulo2.LiberarCombo(ESTADOS);
+FreeAndNil(LOSOBJETOS);
+FreeAndnil(ESTCUENTA);
+FreeAndNil(PLANES);
+FreeAndNil(Recibo);
+FreeAndNil(Self);
+end;
+
+procedure Tbajaobjetos.FormActivate(Sender: TObject);
+begin
+if not(gh) then begin
+  gh:=true;
+  PageControl2.ActivePage:=PageControl2.Pages[0];
+  FechaAct:=LeftStr(Fec_System(),10);
+  nrodeplan.SetFocus;
+  baja.Enabled :=false;
+end;
+end;
+
+procedure Tbajaobjetos.ColocaCombo(nro: Byte);
+begin
+ // if nro=1 then Modulo2.CargaCombo(ESTADOS,'SELECT DISTINCT subrub.Detalle,PlanPagoObjeto.IdSubRubro '
+ //    + ' FROM PlanPagoObjeto inner join municipio.dbo.RubrosSub subrub on subrub.idSubRubro  = PlanPagoObjeto.IdSubRubro'
+ //   + ' WHERE (NroPlan = ' + PLANES.FieldByName('NroPlan').AsString +')'
+  //   + '  and (PlanPagoObjeto.identificador is not null) order by 1 ',Modulo2.Sistema.ConectDb, false);
+end;
+
+
+procedure Tbajaobjetos.Coloca1(nro:byte);
+var param,dmi,tmp:string;
+    Comando:widestring;
+    DataSet1, DataSet2:TADODataSet;
+    Nivel1, Nivel2, Nivel3, Nivel4, Nivel5, Nivel6:TTreeNode;
+    t,y:integer;
+    Cnx2:TADOConnection;
+begin
+Cnx2:=TADOConnection.Create(nil);
+Cnx2.LoginPrompt:=false;
+Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+if nro = 1 then begin
+  try
+    PLANES.Close;
+    if trim(nrodeplan.Text) <> '' then comando:=trim(nrodeplan.Text)
+     else comando:='null';
+    if trim(titular.Text) <> '' then comando:= comando +  ' , ' + chr(39) + trim(titular.Text) + chr(39)
+     else comando:=comando + ' , null';
+    if trim(fecplan.Text) <> '/  /' then comando:=comando + ' , ' + chr(39) + trim(fecplan.Text) + chr(39)
+     else comando:=comando + ' , null';
+    DataSource2.DataSet:=PLANES;
+    PLANES.Connection:=Cnx2;
+    PLANES.CommandText:='SELECT NroPlan, Contribuyente, TipoContribuyente, CantCuotas, '
+    + 'ImporteCuota, IdTipoContribuyente, Estado, ParaImpresion, IdTipoEstado, NroCuim, '
+    + 'FechaCarga, PrimerVto, UltimoVto,Capital, InteresDevengado, TotalAdeudado, '
+    + 'InteresCondonado, InteresFinanciado, TotalFinanciado FROM dbo.Fn_PlanPago(' + comando + ') ';
+    PLANES.Open;
+    if not PLANES.IsEmpty then begin
+      infoplan:='Plan de Facilidades de Pagos Nº: ' + trim(PLANES.FieldByName('NroPlan').AsString)
+      + ' realizado el día ' + trim(PLANES.FieldByName('FechaCarga').AsString)
+      + ' en ' + trim(PLANES.FieldByName('CantCuotas').AsString)
+      + ' cuotas de $ ' + trim(PLANES.FieldByName('ImporteCuota').AsString);
+      Barra1.Panels[1].Text:='Cant. Registros: ' + IntToStr(PLANES.RecordCount);
+    end
+    else begin
+        messagedlg('Atencion no existen resultados de la busqueda, por favor ingrese otro valor',mtWarning,[mbok],0);
+        nrodeplan.SetFocus;
+    end;
+    PLANES.Connection:=nil;
+  except
+    on E: Exception do begin
+      EnviarLog(Self.Caption, E.Message);
+      EnviarLog(Self.Caption, comando);
+    end;
+  end;
+end;
+if nro = 2 then begin
+  Arbol.Items.Clear;
+  Arbol.Items.Add(nil,'DATOS DEL PLAN');
+  Arbol.Items[0].ImageIndex:=3;
+  Arbol.Items[0].SelectedIndex:=3;
+
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'N° Plan: ' + PLANES.FieldByName('NroPlan').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Tipo Contribuyente: ' + PLANES.FieldByName('TipoContribuyente').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Contribuyente: ' + PLANES.FieldByName('Contribuyente').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Fecha Plan: ' + PLANES.FieldByName('FechaCarga').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Cant. Cuotas: ' + PLANES.FieldByName('CantCuotas').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Imp. Cuota: ' + PLANES.FieldByName('ImporteCuota').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'1er. Vto.: ' + PLANES.FieldByName('PrimerVto').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.AddChild(Arbol.Items[0],'Ult. Vto.: ' + PLANES.FieldByName('UltimoVto').AsString);
+  Nivel1.ImageIndex:=-1;Nivel1.SelectedIndex:=-1;
+  Nivel1:=Arbol.Items.Add(Arbol.Items[0],'Contribuyentes');
+  Nivel1.ImageIndex:=1;Nivel1.SelectedIndex:=1;
+  try
+    DataSet2:=TADODataSet.Create(nil);
+    DataSet2.Connection:=Cnx2;
+
+    DataSet1:=TADODataSet.Create(nil);
+    DataSet1.Connection:=Cnx2;
+    DataSet1.CommandText:='SELECT Id, Cuim, Contribuyente, TipoContribuyente, '
+    + 'Provincia, Barrio, Calle, Altura, Piso, Depto, Manzana, Casa, Torre, Sector, '
+    + 'Parcela, LoteRural, Telefono, Domicilio, Dni, TipoDoc FROM dbo.Fn_PlanPagoContribuyente('
+    + PLANES.FieldByName('NroPlan').AsString + ',null)';
+    DataSet1.Open;
+    for t:=1 to DataSet1.RecordCount do begin
+      DataSet1.RecNo:=t;
+      dmi:=DataSet1.FieldByName('Barrio').AsString + ' - ';
+      if DataSet1.FieldByName('Calle').AsString <> '' then dmi:=dmi + DataSet1.FieldByName('Calle').AsString + '  ';
+      if DataSet1.FieldByName('Altura').AsString <> '' then dmi:=dmi + DataSet1.FieldByName('Altura').AsString + ' - ';
+      for y:=8 to 15 do begin
+        if trim(DataSet1.Fields[y].AsString) <> '' then dmi:=dmi + DataSet1.Fields[y].FieldName + ' ' + trim(DataSet1.Fields[y].AsString) + ' - ';
+      end;
+      if DataSet1.FieldByName('TipoContribuyente').AsString = 'TITULAR' then begin
+        Recibo.NombreTit:=DataSet1.FieldByName('Contribuyente').AsString;
+        Recibo.CuimTit:=DataSet1.FieldByName('Cuim').AsString;
+        Recibo.DomicilioTit:=dmi;
+      end
+      else begin
+        Recibo.NombreRespo:=DataSet1.FieldByName('Contribuyente').AsString;
+        Recibo.CuimRespo:=DataSet1.FieldByName('Cuim').AsString;
+        Recibo.DomicilioRespo:=dmi;
+      end;
+
+      Nivel2:=Arbol.Items.AddChild(Nivel1,DataSet1.FieldByName('TipoContribuyente').AsString + ' -> ' + DataSet1.FieldByName('Contribuyente').AsString);
+      Nivel2.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'N° Cuim: ' + DataSet1.FieldByName('Cuim').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'TipoDoc: ' + DataSet1.FieldByName('TipoDoc').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'N° Dni: ' + DataSet1.FieldByName('Dni').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Provincia: ' + DataSet1.FieldByName('Provincia').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Barrio: ' + DataSet1.FieldByName('Barrio').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Calle: ' + DataSet1.FieldByName('Calle').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Altura: ' + DataSet1.FieldByName('Altura').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Piso: ' + DataSet1.FieldByName('Piso').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Depto: ' + DataSet1.FieldByName('Depto').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Manzana: ' + DataSet1.FieldByName('Manzana').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Casa: ' + DataSet1.FieldByName('Casa').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Torre: ' + DataSet1.FieldByName('Torre').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Sector: ' + DataSet1.FieldByName('Sector').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Parcela: ' + DataSet1.FieldByName('Parcela').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'LoteRural: ' + DataSet1.FieldByName('LoteRural').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Domicilio: ' + DataSet1.FieldByName('Domicilio').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'N° Telefono: ' + DataSet1.FieldByName('Telefono').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+    end;
+
+    Nivel1:=Arbol.Items.Add(Arbol.Items[0],'Estados');
+    Nivel1.ImageIndex:=9;
+    Nivel1.SelectedIndex:=9;
+    DataSet1.Close;
+    DataSet1.CommandText:='SELECT Id, IdTipoEstado, Detalle, Fecha, Activo, '
+      + 'NroUsuario, Observaciones FROM dbo.Fn_PlanPagoEstado(' + PLANES.FieldByName('NroPlan').AsString + ')';
+    DataSet1.Open;
+    for t:=1 to DataSet1.RecordCount do begin
+      DataSet1.RecNo:=t;
+      Nivel2:=Arbol.Items.AddChild(Nivel1,DataSet1.FieldByName('Detalle').AsString);
+      if DataSet1.FieldByName('Activo').AsBoolean then begin
+        Nivel2.ImageIndex:=17;
+        Nivel2.SelectedIndex:=17;
+        EstadoAct:=DataSet1.FieldByName('Detalle').AsString;
+      end
+      else begin
+        Nivel2.ImageIndex:=15;
+        Nivel2.SelectedIndex:=15;
+      end;
+
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Fecha: ' + DataSet1.FieldByName('Fecha').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'NroUsuario: ' + DataSet1.FieldByName('NroUsuario').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Observaciones: ' + DataSet1.FieldByName('Observaciones').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+    end;
+
+    Nivel1:=Arbol.Items.Add(Arbol.Items[0],'Objetos');
+    Nivel1.ImageIndex:=11;
+    Nivel1.SelectedIndex:=11;
+    DataSet1.Close;
+    param:='';dmi:='';tmp:='';
+    Objetos.CantObjetos:=0;
+    Objetos.Identidad.Clear;
+    Objetos.EsContenedor.Clear;
+    Objetos.Rubro.Clear;
+    Objetos.ConDeuda.Clear;
+    Objetos.CodObjeto.Clear;
+    Objetos.Descripcion.Clear;
+    DataSet1.CommandText:='SELECT Id, Identificador, IdSubRubro, Objeto, DetalleObjeto, '
+    + 'Rubro,DetalleConcatenado FROM dbo.Fn_PlanPagoObjeto(' + PLANES.FieldByName('NroPlan').AsString + ')';
+    DataSet1.Open;
+    Recibo.CantObj:=IntToStr(DataSet1.RecordCount);Objetos.CantObjetos:=DataSet1.RecordCount;
+    Recibo.Objetos:=DataSet1.FieldByName('DetalleConcatenado').AsString;
+    for t:=1 to DataSet1.RecordCount do begin
+      DataSet1.RecNo:=t;
+      Objetos.CodObjeto.Append(DataSet1.FieldByName('Objeto').AsString);
+      Objetos.Descripcion.Add(trim(DataSet1.FieldByName('DetalleObjeto').AsString));
+      Objetos.Rubro.Add(trim(DataSet1.FieldByName('Rubro').AsString));
+
+      if param <> DataSet1.FieldByName('IdSubRubro').AsString then begin
+        Nivel2:=Arbol.Items.AddChild(Nivel1,DataSet1.FieldByName('IdSubRubro').AsString + ' - ' + DataSet1.FieldByName('Rubro').AsString);
+        param:=DataSet1.FieldByName('IdSubRubro').AsString;
+      end;
+      Nivel3:=Arbol.Items.AddChild(Nivel2,'Objeto: ' + DataSet1.FieldByName('Objeto').AsString);
+      Nivel3.ImageIndex:=-1;Nivel2.SelectedIndex:=-1;
+      Nivel4:=Arbol.Items.AddChild(Nivel3,'Identificador: ' + DataSet1.FieldByName('Identificador').AsString);
+      Nivel4.ImageIndex:=-1;Nivel4.SelectedIndex:=-1;
+      Nivel4:=Arbol.Items.AddChild(Nivel3,'DetalleObjeto: ' + DataSet1.FieldByName('DetalleObjeto').AsString);
+      Nivel4.ImageIndex:=-1;Nivel4.SelectedIndex:=-1;
+      Nivel4:=Arbol.Items.AddChild(Nivel3,'Periodos Adeudados');
+      Nivel4.ImageIndex:=5;
+      Nivel4.SelectedIndex:=5;
+
+      DataSet2.CommandText:='SELECT Id, Periodo, convert(varchar(10),FechaVencimiento,103) as FechaVencimiento, '
+      + 'Capital, Interes, SubTotal, PorcientoDescuento, TotalDescuento, TotalPeriodo FROM dbo.PlanPagoObjetoPeriodo '
+      + 'WHERE (IdPlanObjeto = ' +  DataSet1.FieldByName('Id').AsString + ') Order by Periodo';
+      DataSet2.Open;
+      for y:=1 to DataSet2.RecordCount do begin
+        DataSet2.RecNo:=y;
+        Nivel5:=Arbol.Items.AddChild(Nivel4,DataSet2.FieldByName('Periodo').AsString + ' -> ' + DataSet2.FieldByName('FechaVencimiento').AsString);
+        Nivel5.ImageIndex:=-1;Nivel5.SelectedIndex:=-1;
+        Nivel6:=Arbol.Items.AddChild(Nivel5,'Capital: ' + DataSet2.FieldByName('Capital').AsString);
+        Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+        Nivel6:=Arbol.Items.AddChild(Nivel5,'Interes: ' + DataSet2.FieldByName('Interes').AsString);
+        Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+        Nivel6:=Arbol.Items.AddChild(Nivel5,'SubTotal: ' + DataSet2.FieldByName('SubTotal').AsString);
+        Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+        Nivel6:=Arbol.Items.AddChild(Nivel5,'PorcientoDescuento: ' + DataSet2.FieldByName('PorcientoDescuento').AsString);
+        Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+        Nivel6:=Arbol.Items.AddChild(Nivel5,'TotalDescuento: ' + DataSet2.FieldByName('TotalDescuento').AsString);
+        Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+        Nivel6:=Arbol.Items.AddChild(Nivel5,'TotalPeriodo: ' + DataSet2.FieldByName('TotalPeriodo').AsString);
+        Nivel6.ImageIndex:=-1;Nivel6.SelectedIndex:=-1;
+      end;
+      DataSet2.Close;
+    end;
+    DataSet1.Close;
+    Recibo.NroUsuario:=Modulo2.Usuario.UsuNro;
+    Recibo.TituloDesc:='PLAN DE FACILIDADES DE PAGO';
+    Recibo.DetalleRecibo:='MULTIPLES PERIODOS - VERIFICAR DOCUMENTACION PLAN';
+
+    Recibo.Anio:=RightStr(FechaAct,4);
+    Recibo.NroPlan:=PLANES.FieldByName('NroPlan').AsString;
+    Recibo.FechaIni:=FechaAct;
+  except
+    on E: Exception do begin
+      EnviarLog(Self.Caption, E.Message);
+      EnviarLog(Self.Caption, comando);
+    end;
+  end;
+  FreeAndNil(DataSet2);
+  FreeAndNil(DataSet1);
+end;
+if nro = 3 then begin
+  try
+    ESTCUENTA.Close;
+    DataSource3.DataSet:=ESTCUENTA;
+    ESTCUENTA.Connection:=Cnx2;
+    ESTCUENTA.CommandText:='SELECT row_number() over (order by Periodo asc) as Orden,Periodo,'
+    + 'convert(char(10),FechaVencimiento,103) as PeriodoVencimiento'
+    +',Capital,Interes,SubTotal,CapitalRef,InteresRef,SubTotalRef,PorcientoDescuento,TotalDescuento,TotalPeriodo'
+    +' FROM PlanPagoObjetoPeriodo where (IdPlanObjeto = '+ LOSOBJETOS.FieldByName('ID').AsString + ')';
+    ESTCUENTA.Open;
+    if not ESTCUENTA.IsEmpty  then begin
+      DBGrid1.Columns[0].Width:=50;
+      DBGrid1.Columns[1].Width:=50;
+      DBGrid1.Columns[2].Width:=80;
+      DBGrid1.Columns[3].Width:=50;
+      DBGrid1.Columns[4].Width:=50;
+      DBGrid1.Columns[5].Width:=60;
+      DBGrid1.Columns[6].Width:=60;
+      DBGrid1.Columns[7].Width:=60;
+      DBGrid1.Columns[8].Width:=75;
+      DBGrid1.Columns[9].Width:=75;
+      DBGrid1.Columns[10].Width:=75;
+      DBGrid1.Columns[11].Width:=75;
+    end;
+    ESTCUENTA.Connection:=nil;
+  except
+    on E: Exception do begin
+      EnviarLog(Self.Caption, E.Message);
+      EnviarLog(Self.Caption, comando);
+    end;
+  end;
+end;
+if nro = 4 then begin
+  try
+    LOSOBJETOS.Close;
+    DataSource1.DataSet:=LOSOBJETOS;
+    LOSOBJETOS.Connection:=Cnx2;
+    LOSOBJETOS.CommandText:='SELECT NroPlan,rub.descripcion, CodigoObjeto as ObjetoRubro, id '
+    + ' FROM PlanPagoObjeto inner join [municipio].[dbo].[RubrosSub] rub on PlanPagoObjeto.IdSubRubro = rub.idSubRubro '
+    + ' where Identificador is not null and NroPlan is not null and NroPlan = '+ PLANES.FieldByName('NroPlan').AsString
+    + ' order by 1';
+    LOSOBJETOS.Open;
+     if not LOSOBJETOS.IsEmpty  then begin
+      DBGrid3.Columns[0].Width:=100;
+      DBGrid3.Columns[1].Width:=450;
+      DBGrid3.Columns[2].Width:=100;
+      DBGrid3.Columns[3].Width:=80;
+     end;
+    LOSOBJETOS.Connection:=nil;
+  except
+    on E: Exception do begin
+      EnviarLog(Self.Caption, E.Message);
+      EnviarLog(Self.Caption, comando);
+    end;
+  end;
+end;
+Cnx2.Close;
+FreeAndNil(Cnx2);
+end;
+
+procedure Tbajaobjetos.DBGrid2CellClick(Column: TColumn);
+begin
+if not PLANES.IsEmpty  then begin
+ if trim(DBGrid2.Fields[8].Text) = '1'  then begin
+   messagedlg('ATENCION, este Plan seleccionado esta de ''BAJA'', Imposible realizar la impresión de los Periodos...'
+              + chr(13) + 'Por favor busque realice otra busqueda...',mtInformation,[mbok],0);
+   nrodeplan.SetFocus;
+ end
+ else begin
+  Imprime.Enabled:=false;
+  NUMPLAN.Text:='000000';
+  VEC1.Clear;
+  VEC2.Clear;
+  VALCUOTA1.Text:='0';
+  VALCUOTA2.Text:='0';
+  Coloca1(2);
+  ColocaCombo(1);
+  LOSOBJETOS.Close;
+  ESTCUENTA.Close;
+  PageControl2.ActivePage:=PageControl2.Pages[2];
+  Coloca1(4);
+  //estados.SetFocus;
+ end;
+end;
+  Barra1.SimpleText:='...';
+end;
+
+procedure Tbajaobjetos.VEC2KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = chr(13) then Imprime.SetFocus;
+end;
+
+procedure Tbajaobjetos.JvBitBtn1Click(Sender: TObject);
+begin
+Coloca1(1);
+end;
+
+procedure Tbajaobjetos.JvBitBtn2Click(Sender: TObject);
+begin
+close;
+end;
+
+Function Tbajaobjetos.los_periodos():widestring;
+var j,an:integer;
+    pran:string;
+    cont:widestring;
+    kf:boolean;
+begin
+{Damos los Periodos involucrados}
+cont:='';
+kf:=false;
+an:=0;
+for j:=1 to PLANES.RecordCount do begin
+  PLANES.RecNo:=j;
+  pran:=strcut(trim(PLANES.Fields[1].AsString),4);
+  if an <> strtoint(pran) then begin
+    if trim(cont) <> '' then cont:=cont + '/' + inttostr(an) + ' - '
+    else begin
+      if an=0 then an:=strtoint(pran)
+      else cont:=cont + '/' + inttostr(an) + ' - ';
+    end;
+    an:=strtoint(pran);
+    kf:=false;
+  end;
+  if not(kf) then begin
+    cont:=cont + strcut_midle(trim(PLANES.Fields[1].Text),5,6);
+    kf:=true;
+  end
+  else cont:=cont + ',' + strcut_midle(trim(PLANES.Fields[1].Text),5,6);
+end;
+cont:=cont + '/' + inttostr(an) + ' - ';
+los_periodos:=cont;
+end;
+
+procedure Tbajaobjetos.SALEClick(Sender: TObject);
+begin
+close;
+end;
+
+procedure Tbajaobjetos.titularKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  jvbitbtn1.SetFocus;
+end
+else begin
+  if ( StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ%. /°-',Key) <> nil ) or
+      ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+end;
+end;
+
+procedure Tbajaobjetos.nrodeplanKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  jvbitbtn1.SetFocus;
+end
+else begin
+  if ( StrScan('0123456789',Key) <> nil ) or
+      ( Key = Char(VK_BACK) ) then
+   else Key := #0;
+end;
+//if key = chr(13) then jvbitbtn1.SetFocus
+//else begin
+//  if ( StrScan('0123456789',Key) <> nil ) or
+//     ( Key = Char(VK_BACK) ) then
+//  else Key := #0;
+//end;
+end;
+
+procedure Tbajaobjetos.DBGrid3CellClick(Column: TColumn);
+begin
+if not LOSOBJETOS.IsEmpty  then begin
+  coloca1(3);
+end;
+end;
+
+procedure Tbajaobjetos.bajaClick(Sender: TObject);
+var t:integer;
+    comando:widestring;
+     Com1:TADOCommand;
+      Cnx2:TADOConnection;
+
+begin
+ t:=messagedlg('Desea dar de BAJA este OBJETO de este Plan de Pago?',mtInformation,[mbok,mbCancel],0);
+ if t = 1 then begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  try
+   { comando:='SPA_PlanPagoRefinanciado ' + NroPlan
+    + ' , ' + chr(39) + modulo2.Sistema.MyIP + chr(39);
+    Com1.CommandText:=comando;
+    Com1.Execute;
+    messagedlg('OBJETO ELIMINADA Correctamente ',mtConfirmation,[mbok],0);  }
+    baja.Enabled:=false;
+  except
+   EnviarLog(self.Caption,comando);
+   messagedlg('ERROR al dar de BAJA este Objeto del Plan de Pago',mterror,[mbok],0);
+  end;
+ end;
+end;
+
+procedure Tbajaobjetos.codobjetoKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = chr(13) then jvbitbtn1.SetFocus;
+end;
+
+procedure Tbajaobjetos.fecplanExit(Sender: TObject);
+var kl:Tdatetime;
+begin
+try
+  kl:=strtodate(trim(fecplan.Text));
+except
+  messagedlg('La Fecha Ingresada No es Válida',mterror,[mbok],0);
+  fecplan.SetFocus;
+end;
+end;
+
+procedure Tbajaobjetos.fecplanKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = chr(13) then jvbitbtn1.SetFocus;
+end;
+
+procedure Tbajaobjetos.DBGrid2DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+var t:byte;
+begin
+if trim(DBGrid2.Fields[8].Text) = '3' then t:=1
+else t:=2;
+case t of
+   1:begin
+       DBGrid2.Canvas.Brush.Color:=clLime;
+       DBGrid2.Canvas.FillRect(Rect);
+       DBGrid2.Canvas.Font.Color:= clBlack;
+     end;
+   2:begin
+       DBGrid2.Canvas.Brush.Color:=clWindow;
+       DBGrid2.Canvas.FillRect(Rect);
+       DBGrid2.Canvas.Font.Color:= clBlack;
+     end;
+  end;
+  DBGrid2.DefaultDrawColumnCell(Rect,Datacol,Column,State);
+end;
+
+end.

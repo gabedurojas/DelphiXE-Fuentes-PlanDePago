@@ -1,0 +1,539 @@
+unit Comercio;
+
+interface
+
+uses Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Menus, Vcl.StdCtrls, Vcl.Mask, RzEdit, Vcl.Grids,
+  Vcl.DBGrids, JvExDBGrids, JvDBGrid, JvgGroupBox, RzTabs, JvExStdCtrls,
+  JvBehaviorLabel, JvExExtCtrls, JvExtComponent, JvPanel, Vcl.ExtCtrls, ADODB,
+  StrUtils, Vcl.Buttons, JvExButtons, JvBitBtn, Data.DB;
+
+
+type
+  TComercioTasa = class(TForm)
+    Panel0: TPanel;
+    JvPanel2: TJvPanel;
+    JvBehaviorLabel2: TJvBehaviorLabel;
+    Label20: TLabel;
+    Label14: TLabel;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    TabSheet2: TRzTabSheet;
+    JvgGroupBox3: TJvgGroupBox;
+    GRILLA1: TJvDBGrid;
+    Panel1: TPanel;
+    JvgGroupBox1: TJvgGroupBox;
+    Label6: TLabel;
+    Label8: TLabel;
+    ANIO: TRzEdit;
+    Grupo1: TJvgGroupBox;
+    GRILLA2: TJvDBGrid;
+    Panel2: TPanel;
+    Grupo2: TJvgGroupBox;
+    Label3: TLabel;
+    Label10: TLabel;
+    PERIO: TRzEdit;
+    PopupMenu1: TPopupMenu;
+    Nuevo1: TMenuItem;
+    N1: TMenuItem;
+    ObtenerValoresOriginales1: TMenuItem;
+    ID: TRzEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    FECHA: TRzEdit;
+    BASE: TRzNumericEdit;
+    IMPORTE: TRzNumericEdit;
+    R2: TRzEdit;
+    R3: TRzEdit;
+    Label4: TLabel;
+    R4: TRzEdit;
+    Label5: TLabel;
+    R5: TRzEdit;
+    Label7: TLabel;
+    Label9: TLabel;
+    GUARDA: TJvBitBtn;
+    R1: TRzEdit;
+    Label11: TLabel;
+    N2: TMenuItem;
+    ImpactarenPRODUCCION1: TMenuItem;
+    procedure Panel0MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Label20Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    Function Consultas(nro: byte; ValorAPasar: String):string;
+    procedure GRILLA1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure GRILLA1CellClick(Column: TColumn);
+    procedure Nuevo1Click(Sender: TObject);
+    procedure ObtenerValoresOriginales1Click(Sender: TObject);
+    procedure Label14Click(Sender: TObject);
+    procedure GRILLA2CellClick(Column: TColumn);
+    procedure BASEKeyPress(Sender: TObject; var Key: Char);
+    procedure BASEExit(Sender: TObject);
+    procedure IMPORTEKeyPress(Sender: TObject; var Key: Char);
+    procedure IMPORTEExit(Sender: TObject);
+    procedure IMPORTEChange(Sender: TObject);
+    procedure GUARDAClick(Sender: TObject);
+    procedure GRILLA2DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure ImpactarenPRODUCCION1Click(Sender: TObject);
+
+
+  private
+    gh:boolean;
+    DataSet1, DataSet2, DataSet3:TADODataSet;
+    DTS1, DTS2: TDataSource;
+    { Private declarations }
+  public
+    { Public declarations }
+
+  end;
+
+var
+  ComercioTasa: TComercioTasa;
+
+implementation
+
+{$R *.dfm}
+
+uses Unidad, Modulo, Sel_Periodo;
+
+procedure TComercioTasa.Label14Click(Sender: TObject);
+begin
+if Self.WindowState = wsNormal then Self.WindowState:=wsMaximized
+else Self.WindowState:=wsNormal;
+end;
+
+procedure TComercioTasa.Label20Click(Sender: TObject);
+begin
+Close;
+end;
+
+
+procedure TComercioTasa.Panel0MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ReleaseCapture();
+Perform( WM_SYSCOMMAND, $F012, 0 );
+end;
+
+procedure TComercioTasa.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(DataSet1);
+FreeAndNil(DataSet2);
+FreeAndNil(DataSet3);
+end;
+
+procedure TComercioTasa.FormCreate(Sender: TObject);
+begin
+gh:=false;
+DataSet1:=TADODataSet.Create(nil);
+DataSet2:=TADODataSet.Create(nil);
+DataSet3:=TADODataSet.Create(nil);
+DTS1:=TDataSource.Create(nil);
+DTS1.DataSet:=DataSet1;
+DTS2:=TDataSource.Create(nil);
+DTS2.DataSet:=DataSet2;
+GRILLA1.DataSource:=DTS1;
+GRILLA2.DataSource:=DTS2;
+end;
+
+
+
+procedure TComercioTasa.FormActivate(Sender: TObject);
+begin
+if not(gh) then begin
+  Consultas(1, '');
+  PC1.ActivePage:=PC1.Pages[0];
+end;
+end;
+
+Function TComercioTasa.Consultas(nro: byte; ValorAPasar: String):string;
+var t:integer;
+    valor:string;
+    comando:widestring;
+    Cnx1:TADOConnection;
+    Com1:TADOCommand;
+begin
+if nro = 1 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectDb;
+
+    DataSet1.Close;
+    DataSet1.Connection:=Cnx1;
+
+    comando:='SELECT Id, CONVERT(varchar(10), Fecha, 103) Fecha, Periodo, Activo, '
+    + 'NroUsuario, FechaCarga, Impactado, FechaImpacto FROM TMP_VALCAB ORDER BY 1';
+    DataSet1.CommandText:=comando;
+    DataSet1.Open;
+    DataSet1.Connection:=nil;
+    Result:='';
+except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+end;
+if nro = 2 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectDb;
+
+    DataSet2.Close;
+    DataSet2.Connection:=Cnx1;
+
+    comando:='SELECT * FROM dbo.FN_TMP_VALDET (' + ID.Text + ');';
+    DataSet2.CommandText:=comando;
+    DataSet2.Open;
+    DataSet2.Connection:=nil;
+    Result:='';
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+end;
+if nro = 3 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectDb;
+
+    DataSet3.Close;
+    DataSet3.Connection:=Cnx1;
+
+    comando:='SELECT YEAR(GETDATE()) * 100 + MONTH(GETDATE()) AS PERIODO;';
+    DataSet3.CommandText:=comando;
+    DataSet3.Open;
+    DataSet3.Connection:=nil;
+    Result:=DataSet3.FieldByName('PERIODO').AsString;
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+end;
+if nro = 4 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectDb;
+
+    Com1:=TADOCommand.Create(nil);
+    Com1.Connection:=Cnx1;
+
+    DataSet3.Close;
+    DataSet1.Close;
+    DataSet3.Connection:=Cnx1;
+    DataSet1.Connection:=Cnx1;
+
+    comando:='EXEC SPA_TMP_VALCAB ' + modulo2.Usuario.UsuNro + ', ' + ValorAPasar;
+    DataSet3.CommandText:=comando;
+    DataSet3.Open;
+    valor:=DataSet3.Fields[0].AsString;
+    DataSet3.Close;
+
+    comando:='EXEC SPA_TMP_VALDET ' + valor;
+    Com1.CommandText:=comando;
+    Com1.Execute;
+
+    FreeAndNil(Com1);
+
+    comando:='SELECT Id, CONVERT(varchar(10), Fecha, 103) Fecha, Periodo, Activo, '
+    + 'NroUsuario, FechaCarga, Impactado, FechaImpacto FROM TMP_VALCAB ORDER BY 1';
+    DataSet1.CommandText:=comando;
+    DataSet1.Open;
+
+    DataSet3.Connection:=nil;
+    DataSet1.Connection:=nil;
+    Result:='';
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+end;
+if nro = 5 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectDb;
+
+    Com1:=TADOCommand.Create(nil);
+    Com1.Connection:=Cnx1;
+
+    DataSet2.Close;
+    DataSet2.Connection:=Cnx1;
+
+    comando:='EXEC SPA_TMP_VALDET ' + ValorAPasar;
+    Com1.CommandText:=comando;
+    Com1.Execute;
+
+    comando:='SELECT * FROM dbo.FN_TMP_VALDET (' + ID.Text + ');';
+    DataSet2.CommandText:=comando;
+    DataSet2.Open;
+    DataSet2.Connection:=nil;
+    Result:='';
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+end;
+if nro = 6 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectDb;
+
+    Com1:=TADOCommand.Create(nil);
+    Com1.Connection:=Cnx1;
+
+    DataSet2.Close;
+    DataSet2.Connection:=Cnx1;
+
+    comando:='EXEC SPM_TMP_VALDET ' + R1.Text + ', ' + BASE.Text + ' , ' + IMPORTE.Text + ' , ' + modulo2.Usuario.UsuNro;
+    Com1.CommandText:=comando;
+    Com1.Execute;
+
+    comando:='SELECT * FROM dbo.FN_TMP_VALDET (' + ID.Text + ');';
+    DataSet2.CommandText:=comando;
+    DataSet2.Open;
+
+    DataSet2.locate('Id',R1.text,[locaseinsensitive]);
+    DataSet2.Connection:=nil;
+    Result:='';
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+end;
+if nro = 7 then begin
+  try
+    Cnx1:=TADOConnection.Create(nil);
+    Cnx1.LoginPrompt:=false;
+    Cnx1.ConnectionString:=Modulo2.Sistema.ConectDb;
+
+    Com1:=TADOCommand.Create(nil);
+    Com1.Connection:=Cnx1;
+
+    DataSet2.Close;
+    DataSet2.Connection:=Cnx1;
+
+    comando:='EXEC SPP_TMP_VALDET ' + ValorAPasar;
+    Com1.CommandText:=comando;
+    Com1.Execute;
+
+    Result:='';
+  except
+    messagedlg('Error al Conectar al Servidor',mterror,[mbok],0);
+  end;
+end;
+Cnx1.Close;
+FreeAndNil(Cnx1);
+end;
+
+procedure TComercioTasa.GRILLA1CellClick(Column: TColumn);
+begin
+if DataSet1.RecordCount > 0 then begin
+  if DataSet1.FieldByName('Activo').AsBoolean then begin
+    ID.Text:=DataSet1.FieldByName('Id').AsString;
+    FECHA.Text:=DataSet1.FieldByName('Fecha').AsString;
+    PERIO.Text:=DataSet1.FieldByName('Periodo').AsString;
+    ANIO.Text:=LeftStr(PERIO.Text, 4);
+    Consultas(2, '');
+    PC1.ActivePage:=PC1.Pages[1];
+  end
+  else messagedlg('Solo es posible EDITAR el registro ACTIVO. De lo contrario crear uno NUEVO!',mtWarning,[mbok],0);
+end
+else messagedlg('No existe aún un registro ACTIVO. Debe crear uno NUEVO!',mtError,[mbok],0);
+end;
+
+procedure TComercioTasa.GRILLA1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var h:byte;
+begin
+h:=0;
+if DataSet1.FieldByName('Activo').AsBoolean then h:=1;
+case h of
+  0:begin
+    if par(DataSet1.RecNo) then
+      GRILLA1.Canvas.Brush.Color:=clWindow
+    else
+      GRILLA1.Canvas.Brush.Color:=clSkyBlue;
+    GRILLA1.Canvas.FillRect(Rect);
+    GRILLA1.Canvas.Font.Color:= clBlack;
+    end;
+  1:begin
+    GRILLA1.Canvas.Brush.Color:=$00739DC8;
+    GRILLA1.Canvas.FillRect(Rect);
+    GRILLA1.Canvas.Font.Color:= clBlack;
+    end;
+end;
+GRILLA1.DefaultDrawColumnCell(Rect,Datacol,Column,State);
+end;
+
+
+procedure TComercioTasa.Nuevo1Click(Sender: TObject);
+var IngresoPeriodo:TIngresoPeriodo;
+    t, y:integer;
+    valor:string;
+    d:boolean;
+begin
+ IngresoPeriodo:= TIngresoPeriodo.create(nil);
+ try
+  IngresoPeriodo.Peri:=Consultas(3, '');
+  y:=StrToInt(rightstr(IngresoPeriodo.Peri, 2));
+  for t:=y to 12 do begin
+    IngresoPeriodo.PERIODO.Items.Append(LeftStr(IngresoPeriodo.Peri, 4) + StrFill(IntToStr(t), 2, '0', ''));
+  end;
+  IngresoPeriodo.ShowModal;
+  d:=IngresoPeriodo.ConCod;
+  if d then
+    valor:=IngresoPeriodo.PERIODO.Text;
+
+ finally
+  IngresoPeriodo.Free;
+ end;
+ if d then begin
+  Consultas(4, valor);
+  messagedlg('Registro NUEVO generado con éxito!',mtInformation,[mbok],0);
+ end
+ else messagedlg('No se ha seleccionado un Periodo!!',mtError,[mbok],0);
+end;
+
+procedure TComercioTasa.ObtenerValoresOriginales1Click(Sender: TObject);
+var gf:integer;
+begin
+ if DataSet1.RecordCount > 0 then begin
+  if DataSet1.FieldByName('Activo').AsBoolean then begin
+    ID.Text:=DataSet1.FieldByName('Id').AsString;
+    FECHA.Text:=DataSet1.FieldByName('Fecha').AsString;
+    PERIO.Text:=DataSet1.FieldByName('Periodo').AsString;
+    ANIO.Text:=LeftStr(PERIO.Text, 4);
+    gf:=messagedlg('Confirma reemplazar los valores?. Se eliminarán los cambios ya realizados!',mtWarning,[mbok,mbCancel],0);
+    if gf = 1 then begin
+      Consultas(5, ID.Text);
+      PC1.ActivePage:=PC1.Pages[1];
+    end;
+  end
+  else messagedlg('Solo es posible realizar la acción sobre el registro ACTIVO!',mtWarning,[mbok],0);
+ end
+ else messagedlg('No existe aún un registro ACTIVO. Debe crear uno NUEVO!',mtError,[mbok],0);
+end;
+
+
+procedure TComercioTasa.GRILLA2CellClick(Column: TColumn);
+begin
+ if not DataSet2.IsEmpty then begin
+//SELECT Id, Regimen, Anio, Superfice_Categoria, Porcentaje, Minimo_MontoCuota, UT, TipoNomenclador, NroUsuario, Modificado, FechaModificado
+  R1.Text:=DataSet2.FieldByName('Id').AsString;
+  R2.Text:=DataSet2.FieldByName('Regimen').AsString;
+  R3.Text:=DataSet2.FieldByName('Superfice_Categoria').AsString;
+  R4.Text:=DataSet2.FieldByName('UT').AsString;
+  R5.Text:=DataSet2.FieldByName('Anio').AsString;
+
+  IMPORTE.Value:=DataSet2.FieldByName('Minimo_MontoCuota').AsExtended;
+  BASE.Value:=DataSet2.FieldByName('Porcentaje').AsExtended;
+  if DataSet2.FieldByName('Regimen').AsString = 'Simplificado' then begin
+    BASE.ReadOnly:=false;
+    //BASE.Color:=clWindow;
+    BASE.SetFocus;
+  end
+  else begin
+    BASE.ReadOnly:=true;
+    //BASE.Color:=clInfoBk;
+    IMPORTE.SetFocus;
+  end;
+  GUARDA.Enabled:=false;
+ end;
+end;
+
+procedure TComercioTasa.GRILLA2DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+var h:byte;
+begin
+ h:=0;
+ if DataSet2.FieldByName('Modificado').AsBoolean then h:=1;
+ case h of
+  0:begin
+    if par(DataSet1.RecNo) then
+      GRILLA2.Canvas.Brush.Color:=clWindow
+    else
+      GRILLA2.Canvas.Brush.Color:=clSkyBlue;
+
+    GRILLA2.Canvas.FillRect(Rect);
+    GRILLA2.Canvas.Font.Color:= clBlack;
+    end;
+  1:begin
+    GRILLA2.Canvas.Brush.Color:=$00739DC8;
+    GRILLA2.Canvas.FillRect(Rect);
+    GRILLA2.Canvas.Font.Color:= clBlack;
+    end;
+ end;
+ GRILLA2.DefaultDrawColumnCell(Rect,Datacol,Column,State);
+end;
+
+procedure TComercioTasa.BASEExit(Sender: TObject);
+begin
+ if BASE.Value <= 0 then begin
+  messagedlg('ERROR!! El valor ingresado es inválido',mterror,[mbok],0);
+  BASE.SetFocus;
+ end;
+end;
+
+procedure TComercioTasa.BASEKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  IMPORTE.SetFocus;
+ end;
+end;
+
+procedure TComercioTasa.IMPORTEChange(Sender: TObject);
+begin
+GUARDA.Enabled:=true;
+end;
+
+procedure TComercioTasa.IMPORTEExit(Sender: TObject);
+begin
+ if IMPORTE.Value <= 0 then begin
+  messagedlg('ERROR!! El valor ingresado es inválido',mterror,[mbok],0);
+  IMPORTE.SetFocus;
+ end;
+end;
+
+procedure TComercioTasa.IMPORTEKeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  GUARDA.SetFocus;
+ end;
+end;
+
+
+procedure TComercioTasa.GUARDAClick(Sender: TObject);
+begin
+if trim(R1.Text) <> '' then begin
+  Consultas(6, '');
+  R1.Clear;R2.Clear;R3.Clear;R4.Clear;R5.Clear;
+  BASE.Value:=0; IMPORTE.Value:=0;
+  GUARDA.Enabled:=false;
+  GRILLA2.SetFocus;
+end
+else messagedlg('ERROR!! Identificador VACIO. Imposible Guardar!!',mterror,[mbok],0);
+end;
+
+
+procedure TComercioTasa.ImpactarenPRODUCCION1Click(Sender: TObject);
+var gf:integer;
+begin
+if DataSet1.FieldByName('Impactado').AsBoolean then
+  messagedlg('ERROR!! No se puede procesar un registro ya Impactado!',mterror,[mbok],0)
+else begin
+  if DataSet1.FieldByName('Activo').AsBoolean then begin
+    gf:=messagedlg('Confirma IMPACTAR los valores?. Se çambiarán los valores del TRI!',mtWarning,[mbok,mbCancel],0);
+    if gf = 1 then begin
+      Consultas(7, DataSet1.FieldByName('Id').AsString);
+    end;
+  end
+  else messagedlg('Solo es posible realizar la acción sobre el registro ACTIVO!',mtWarning,[mbok],0);
+end;
+end;
+
+
+end.

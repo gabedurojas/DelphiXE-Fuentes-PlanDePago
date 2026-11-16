@@ -1,0 +1,876 @@
+unit BoletaDeuda_ImpNew;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet, RzTabs;
+
+type THackStringGrid = class(TJvStringGrid);
+type
+  TBolDeuda_ImpNew = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton3: TToolButton;
+    SALE: TJvBitBtn;
+    Barra1: TStatusBar;
+    FormularioEmb: TJvEmbeddedFormLink;
+    frxReport2: TfrxReport;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    TabSheet2: TRzTabSheet;
+    ImageList2: TImageList;
+    Label7: TLabel;
+    TabSheet3: TRzTabSheet;
+    JvDBGrid3: TJvDBGrid;
+    DataSource2: TDataSource;
+    PopupMenu1: TPopupMenu;
+    SeleccionarTodos1: TMenuItem;
+    grilla5: TStringGrid;
+    EliminarSeleccin1: TMenuItem;
+    JvGroupBox2: TJvGroupBox;
+    Label28: TLabel;
+    Shape2: TShape;
+    Shape3: TShape;
+    Label29: TLabel;
+    grilla2: TJvStringGrid;
+    GroupBox1: TGroupBox;
+    CheckBox1: TCheckBox;
+    ToolButton2: TToolButton;
+    ImpDispo: TJvBitBtn;
+    ImpNotaDirector1: TMenuItem;
+    imprime: TJvBitBtn;
+    JvBitBtn1: TJvBitBtn;
+    EliminaBoleta: TJvBitBtn;
+    Panel1: TPanel;
+    Label13: TLabel;
+    Label11: TLabel;
+    Label15: TLabel;
+    Label19: TLabel;
+    Label21: TLabel;
+    Label20: TLabel;
+    Label17: TLabel;
+    modifdom: TJvBitBtn;
+    D3: TComboBox;
+    D4: TComboBox;
+    D6: TEdit;
+    D8: TEdit;
+    D11: TEdit;
+    D9: TEdit;
+    D13: TEdit;
+    Label1: TLabel;
+    Shape1: TShape;
+    Label2: TLabel;
+    domi: TEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure imprimeClick(Sender: TObject);
+    procedure Coloca1(nro:byte;valor:string);
+    procedure JvDBGrid3CellClick(Column: TColumn);
+    procedure SeleccionarTodos1Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    function VerificaGrillaDeuda(grilla:string):boolean;
+    procedure EliminarSeleccin1Click(Sender: TObject);
+    procedure grilla2DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
+      State: TGridDrawState);
+    procedure grilla2Click(Sender: TObject);
+    procedure ImpDispoClick(Sender: TObject);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure EliminaBoletaClick(Sender: TObject);
+    procedure ImpNotaDirector1Click(Sender: TObject);
+    procedure CargaCombos(nro:byte);
+    procedure D3Exit(Sender: TObject);
+    procedure D3KeyPress(Sender: TObject; var Key: Char);
+    procedure D4Exit(Sender: TObject);
+    procedure D4KeyPress(Sender: TObject; var Key: Char);
+    procedure D6KeyPress(Sender: TObject; var Key: Char);
+    procedure D8KeyPress(Sender: TObject; var Key: Char);
+    procedure D11KeyPress(Sender: TObject; var Key: Char);
+    procedure D9KeyPress(Sender: TObject; var Key: Char);
+    procedure D13KeyPress(Sender: TObject; var Key: Char);
+    procedure modifdomClick(Sender: TObject);
+    procedure domiKeyPress(Sender: TObject; var Key: Char);
+  private
+    CONTRIBUYENTE,LOSOBJETOS,DataSet1,DataSet3,DataSet4,LOSOBJETOSTOT,DataSet2:TADODataSet;{ Private declarations }
+    fecha,respuesta,laidcuenta,dato,FechaAct,elcontrib,fechalote,ger,eldnicont,
+    eldni,tipocta,lacuenta,lasucur,elbank,elidcontrib,elcuit,Filtro,NroImp:string;
+    DtsCuotas,DtsNotas,LasBoletas:TClientDataSet;
+    Com1:TADOCommand;
+  public
+    Opcion:boolean;
+    Objetos:TObjetos;
+    sumad,suma:double;
+    selecfila:integer;
+    tot1,tot2,tot3,dispo,max,min:string;
+    gh:boolean;{ Public declarations }
+  end;
+
+var
+  BolDeuda_ImpNew: TBolDeuda_ImpNew;
+
+implementation
+
+uses Unidad ,modulo;
+
+{$R *.dfm}
+
+procedure TBolDeuda_ImpNew.FormActivate(Sender: TObject);
+begin
+if not (gh) then begin
+  gh:=true;
+  FechaAct:=LeftStr(Fec_System(),10);
+  PC1.ActivePage:=PC1.Pages[0];
+  Coloca1(0,'');
+  CheckBox1.Checked:=true;
+  impdispo.Enabled:=false;
+  imprime.Enabled:=false;
+
+  CargaCombos(5);
+  CargaCombos(6);
+
+  grilla2.Cells[0,0]:='Estado';           grilla2.Cells[1,0]:='Imprime';
+  grilla2.Cells[2,0]:='NroBoletaDeuda';   grilla2.Cells[3,0]:='NroLote';
+  grilla2.Cells[4,0]:='Contribuyente';
+  grilla2.Cells[5,0]:='NroDni';           grilla2.Cells[6,0]:='Barrio';
+  grilla2.Cells[7,0]:='Calle';            grilla2.Cells[8,0]:='Altura';
+  grilla2.Cells[9,0]:='Depto.';
+  grilla2.Cells[10,0]:='Manzana';         grilla2.Cells[11,0]:='Casa';
+  grilla2.Cells[12,0]:='Torre';           grilla2.Cells[13,0]:='Domicilio';
+  grilla2.Cells[14,0]:='ImporteDeuda';    grilla2.Cells[15,0]:='IdContrib';
+  grilla2.Cells[16,0]:='Impreso';         grilla2.Cells[17,0]:='ID';
+  grilla2.Cells[18,0]:='CUIT';            grilla2.Cells[18,0]:='Estado';
+
+  grilla5.Cells[0,0]:='Rubro';            grilla5.Cells[1,0]:='Capital';
+  grilla5.Cells[2,0]:='Interes';          grilla5.Cells[3,0]:='ImporteDeuda';
+  grilla5.Cells[4,0]:='PeriodoDeuda';     //grilla5.Cells[5,0]:='ord.';
+
+  panel1.Visible :=false;
+  if Opcion=true then  begin
+   impdispo.Visible:=true;
+   imprime.Visible:=true;
+   JvBitBtn1.Visible:=true;
+   popupmenu1.AutoPopup:=true;
+   CheckBox1.Visible:=true;
+   EliminaBoleta.Visible:=false;
+  end
+  else begin
+   impdispo.Visible:=false;
+   imprime.Visible:=false;
+   JvBitBtn1.Visible:=false;
+   popupmenu1.AutoPopup:=false;
+   CheckBox1.Visible:=false;
+   EliminaBoleta.Visible:=True;
+  end;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(CONTRIBUYENTE);
+FreeAndNil(LOSOBJETOS);
+FreeAndNil(LOSOBJETOSTOT);
+FreeAndNil(DataSet3);
+FreeAndNil(DataSet1);
+FreeAndNil(DataSet4);
+FreeAndNil(Self);
+end;
+
+procedure TBolDeuda_ImpNew.FormCreate(Sender: TObject);
+begin
+CONTRIBUYENTE:=TADODataSet.Create(nil);
+LOSOBJETOS:=TADODataSet.Create(nil);
+LOSOBJETOSTOT:=TADODataSet.Create(nil);
+DataSet3:=TADODataSet.Create(nil);
+DataSource2.DataSet:=DataSet3;
+DataSet4:=TADODataSet.Create(nil);
+DataSet1:=TADODataSet.Create(nil);
+end;
+
+procedure TBolDeuda_ImpNew.CargaCombos(nro:byte);
+begin
+  if nro=5 then Modulo2.CargaCombo(D3,'SELECT Detalle,Id FROM Barrios ORDER BY Detalle',modulo2.Sistema.ConectSeg,false);
+  if nro=6 then Modulo2.CargaCombo(D4,'SELECT Descrip,Calle FROM CALLES WHERE (Dpto_Polit=1) AND'
+     + ' (LOCALIDAD=1) ORDER BY DESCRIP',modulo2.Sistema.ConectUsu,false);
+end;
+
+procedure TBolDeuda_ImpNew.EliminaBoletaClick(Sender: TObject);
+var gf,t,b,a:integer;
+    clav1:string;
+begin
+ verificagrilladeuda('grilla2');
+ if selecfila = 0 then begin
+   messagedlg('            I M P O S I B L E   E L I M I N A R  ' + chr(13)
+   + 'porque no existe ningun Boleta de Deuda Seleccionada... ',mtError,[mbok],0);
+   grilla2.SetFocus;
+ end
+ else begin
+  if selecfila > 1 then begin
+   messagedlg('            I M P O S I B L E   E L I M I N A R  ' + chr(13)
+   + 'porque existir mas de una Boleta de Deuda Seleccionada... ',mtError,[mbok],0);
+   for b:=0 to grilla2.ColCount-1 do
+    for t:=1 to grilla2.RowCount-1 do  grilla2.Cells[1,t]:='';
+     verificagrilladeuda('grilla2');
+   grilla2.SetFocus;
+  end
+  else begin
+   gf:=messagedlg('Confirma la ELIMINACION de la Boleta de Deuda Nro ' + lacuenta + ' ..',mtWarning,[mbok,mbCancel],0);
+   if gf = 1 then begin
+    for a:=1 to grilla2.RowCount-1 do begin
+     if (grilla2.Cells[1,a] = 'X') then begin
+      DataSet2:=TADODataSet.Create(nil);
+      DataSet2.ConnectionString:=Modulo2.Sistema.ConectInti;
+      DataSet2.CommandText:='EXECUTE SPE_EliminaBoletaDeuda ' + trim(grilla2.Cells[17,a])
+      + ' , ' + inttostr(strtoint(trim(grilla2.Cells[2,a])));
+      DataSet2.Open;
+      clav1:=DataSet2.Fields[0].AsString;
+      DataSet2.Close;
+      if trim(clav1)='OK' then  begin
+       messagedlg('Boleta de Deuda ELIMINADA Correctamente',mtConfirmation,[mbok],0);
+       coloca1(2,lasucur);
+       PC1.ActivePage:=PC1.Pages[1];
+      end
+        else  messagedlg('ERROR al Eliminar la Boleta de Deuda Seleccionada... ',mtError,[mbok],0);
+     FreeAndNil(DataSet2);
+     end;
+    end;
+   end;
+  end;
+ end;
+end;
+
+procedure TBolDeuda_ImpNew.EliminarSeleccin1Click(Sender: TObject);
+var b,t:integer;
+begin
+ for b:=0 to grilla2.ColCount-1 do
+   for t:=1 to grilla2.RowCount-1 do  grilla2.Cells[1,t]:='';
+   verificagrilladeuda('grilla2');
+end;
+
+function TBolDeuda_ImpNew.VerificaGrillaDeuda(grilla:string):boolean;
+var j,a:integer;
+begin
+ selecfila:=0;
+ Result:=true;
+ for j:=1 to grilla2.RowCount-1 do begin
+  if trim(grilla2.Cells[1,j])='X' then begin
+    selecfila:=selecfila+1;
+  end;
+ end;
+end;
+
+procedure TBolDeuda_ImpNew.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+     VK_F4 : begin
+         imprime.Click;
+     end;
+     VK_F9 : begin
+       //  limpia.Click;
+     end;
+  end;
+end;
+
+procedure TBolDeuda_ImpNew.imprimeClick(Sender: TObject);
+var ReporteRst: TfrxReport;
+    frxDB1,frxDB2: TfrxDBDataset;
+    t,y,gf:integer;
+    Com1:TADOCommand;
+begin
+t:=messagedlg('Confirma la Impresión de la Intimación seleccionada?',mtWarning,[mbok,mbCancel],0);
+if t = 1 then begin
+ if selecfila = 0 then begin
+   messagedlg('            I M P O S I B L E   I M P R I M I R ' + chr(13)
+   + 'porque no existe ningun Boleta de Deuda Seleccionado... ',mtError,[mbok],0);
+   grilla2.SetFocus;
+ end
+ else begin
+   Com1:=TADOCommand.Create(nil);
+   Com1.ConnectionString:=Modulo2.Sistema.ConectInti;
+   for gf:=1 to grilla2.RowCount-1 do begin
+    if (grilla2.Cells[1,gf] = 'X') then begin
+      try
+       Com1.CommandText :='UPDATE IntimacionContribuyente SET Impreso=1, '
+       + ' FechaImpresion=' + chr(39) + FechaAct + chr(39)
+       + ' where (id='+ trim(grilla2.Cells[17,gf]) + ')';
+       Com1.Execute;
+      except
+       on E: Exception do begin
+        EnviarLog(Self.Caption, E.Message);
+        EnviarLog(Self.Caption, Com1.CommandText);
+       end;
+      end;
+      FreeAndNil(Com1);
+      try
+       LasBoletas:=TClientDataSet.Create(nil);
+       LasBoletas.FieldDefs.Clear;
+       LasBoletas.Active:=False;
+       with LasBoletas.FieldDefs.AddFieldDef do begin
+         Name:='Rubro';
+         DataType:=ftString;Size:=150;
+       end;
+       with LasBoletas.FieldDefs.AddFieldDef do begin
+         Name:='Capital';
+         DataType:=ftString;Size:=50;
+       end;
+       with LasBoletas.FieldDefs.AddFieldDef do begin
+         Name:='Interes';
+        DataType:=ftString;Size:=50;
+       end;
+       with LasBoletas.FieldDefs.AddFieldDef do begin
+         Name:='ImporteDeuda';
+         DataType:=ftString;Size:=50;
+       end;
+       with LasBoletas.FieldDefs.AddFieldDef do begin
+         Name:='PeriodoDeuda';
+        DataType:=ftString;Size:=280;
+       end;
+       //with LasBoletas.FieldDefs.AddFieldDef do begin
+       //  Name:='Orden';
+       //  DataType:=ftString;Size:=1;
+       //end;
+       LasBoletas.CreateDataSet;
+       LasBoletas.Active:=True;
+       for t:=1 to Grilla5.RowCount-1 do begin
+        LasBoletas.Append;
+        LasBoletas.FieldValues['Rubro']:=trim(grilla5.Cells[0,t]);
+        LasBoletas.FieldValues['Capital']:=trim(grilla5.Cells[1,t]);
+        LasBoletas.FieldValues['Interes']:=trim(grilla5.Cells[2,t]);
+        LasBoletas.FieldValues['ImporteDeuda']:=trim(grilla5.Cells[3,t]);
+        LasBoletas.FieldValues['PeriodoDeuda']:=trim(grilla5.Cells[4,t]);
+        //LasBoletas.FieldValues['Orden']:=trim(grilla5.Cells[5,t]);
+        LasBoletas.Post;
+       end;
+      except
+        on E: Exception do EnviarLog(Self.Caption, E.Message);
+      end;
+
+      ///imprimiendo
+      try
+       ReporteRst:=TfrxReport.Create(nil);
+       frxDB1:=TfrxDBDataset.Create(nil);
+       frxDB1.DataSet:=LasBoletas;
+       frxDB1.UserName:='frxDBDataset1';
+       ReporteRst.DataSets.Add(frxDB1);
+       ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Imp_BoletoDeuda.fr3');
+       TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+       //if trim(grilla2.Cells[19,gf]) = 'Baja' then TfrxPictureView(ReporteRst.FindObject('Picture1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\boletadeudabaja.bmp')
+       // else TfrxPictureView(ReporteRst.FindObject('Picture1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\boletadeudabajablanco.bmp');
+       ReporteRst.Variables['NroImp'] := QuotedStr(trim(grilla2.Cells[2,gf])+ ger);
+       ReporteRst.Variables['NroLote'] :=  QuotedStr(trim(grilla2.Cells[3,gf]));
+       ReporteRst.Variables['ElqueSuscribe'] := QuotedStr(trim(grilla2.Cells[4,gf]));
+       //ReporteRst.Variables['NroDni'] := QuotedStr(trim(grilla2.Cells[18,gf]));
+       ReporteRst.Variables['NroDni'] := QuotedStr(trim(grilla2.Cells[5,gf]));
+       ReporteRst.Variables['Barrio'] := QuotedStr(trim(grilla2.Cells[6,gf]));
+       ReporteRst.Variables['Calle'] := QuotedStr(trim(grilla2.Cells[7,gf]));
+       ReporteRst.Variables['Altura'] := QuotedStr(trim(grilla2.Cells[8,gf]));
+       ReporteRst.Variables['Dpto'] := QuotedStr(trim(grilla2.Cells[9,gf]));
+       ReporteRst.Variables['Mza'] := QuotedStr(trim(grilla2.Cells[10,gf]));
+       ReporteRst.Variables['Casa'] := QuotedStr(trim(grilla2.Cells[11,gf]));
+       ReporteRst.Variables['Torre'] := QuotedStr(trim(grilla2.Cells[12,gf]));
+       ReporteRst.Variables['DomTitular'] := QuotedStr(trim(grilla2.Cells[13,gf]));
+       ReporteRst.Variables['FechaActual'] := QuotedStr(trim(fechalote));
+       ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro + ' /Reg.Imp ' + AuditaImpresos('Imp BD Nº : ' + trim(grilla2.Cells[2,gf]),trim(grilla2.Cells[5,gf])));
+       ReporteRst.Variables['Tot1'] := QuotedStr(tot1);
+       ReporteRst.Variables['Tot2'] := QuotedStr(tot2);
+       ReporteRst.Variables['Tot3'] := QuotedStr(tot3);
+       ReporteRst.Variables['NumaLetra'] := QuotedStr(numtopesos(tot3));
+       ReporteRst.PrepareReport;
+       ReporteRst.PrintOptions.ShowDialog:=false;
+       if CheckBox1.Checked then ReporteRst.PrintOptions.Copies:=2
+        else ReporteRst.PrintOptions.Copies:=1;
+       ReporteRst.Print;
+      except
+        on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+      end;
+      FreeAndNil(frxDB1);
+      FreeAndNil(ReporteRst);
+    end;
+   end;
+  end;
+end;
+end;
+
+///// aca solo habilito la columna 1
+procedure TBolDeuda_ImpNew.grilla2Click(Sender: TObject);
+begin
+ if grilla2.Cells[0,grilla2.Row] <> '' then begin
+  if grilla2.Cells[0,grilla2.Row] <> 'Baja' then begin
+   if trim(grilla2.Cells[1,grilla2.Row])='' then grilla2.Cells[1,grilla2.Row]:='X'
+    else grilla2.Cells[1,grilla2.Row]:='';
+   Dato:=grilla2.Cells[17,grilla2.Row];
+   lacuenta:=grilla2.Cells[2,grilla2.Row];
+   eldnicont:=grilla2.Cells[5,grilla2.Row];
+   Coloca1(3,Dato);
+   verificagrilladeuda('grilla2');
+  end;
+ end;
+end;
+
+procedure TBolDeuda_ImpNew.grilla2DrawCell(Sender: TObject; ACol, ARow: Integer;
+  Rect: TRect; State: TGridDrawState);
+begin
+  With Sender as TStringGrid do begin
+   //if trim(grilla2.Cells[16,Arow]) = 'SI' then begin
+   //  Canvas.Brush.Color := clwindow;
+   //   Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+   //end;
+   if trim(grilla2.Cells[19,Arow]) = 'Baja' then begin
+     Canvas.Brush.Color := clFuchsia;
+     Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+   end;
+   if trim(grilla2.Cells[19,Arow]) = 'Bloqueo de Periodos' then begin
+     Canvas.Brush.Color := clLime;
+     Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+   end;
+  end;
+end;
+
+procedure TBolDeuda_ImpNew.Coloca1(nro:byte;valor:string);
+var t,b,y:integer;
+    tx:string;
+    Cnx2:TADOConnection;
+begin
+sumad:=0;
+try
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+ if nro = 0 then begin
+  DataSet3.Close;
+  DataSet3.Connection:=Cnx2;
+  DataSet3.CommandText:='select NroLote,FechaLote,NombreUsuario,Usuario,NroDisposicion,IdIntimacionlote,Confirmado '
+  + ' from Fn_LotesBoletoDeudaContribuyentes (1)';
+  DataSet3.Open;
+  DataSet3.Connection:=nil;
+ end;
+ if nro = 1 then begin
+  DataSet1.Close;
+  DataSet1.Connection:=Cnx2;
+  DataSet1.CommandText:='SELECT min(dbo.IntimacionContribuyente.NroControl) as minimo, '
+  + 'Max(dbo.IntimacionContribuyente.NroControl) as maximo'
+  + ' FROM dbo.IntimacionLote INNER JOIN dbo.IntimacionContribuyente ON dbo.IntimacionLote.Id = dbo.IntimacionContribuyente.IdIntimacionLote  '
+  + ' WHERE (dbo.IntimacionLote.EsBoletaDeuda = 1) AND (dbo.IntimacionLote.NroLote=' + valor+ ')';
+  DataSet1.Open;
+  if not DataSet1.IsEmpty  then begin
+    min:=trim(DataSet1.Fields[0].AsString);//;DataSet1.FieldByName('minimo').AsString;
+    max:=trim(DataSet1.Fields[1].AsString);//;DataSet1.FieldByName('maximo').AsString;
+  end;
+  DataSet1.Connection:=nil;
+ end;
+ if nro = 2 then begin
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=Cnx2;
+  CONTRIBUYENTE.CommandText:=
+  'SELECT NroBoletaDeuda,NroLote,Contribuyente,NroDni,Barrio,Calle,Altura,Dpto, '
+  + 'Mza, Casa, Torre, Domicilio, ImporteDeuda, IdContribuyente, Impreso, Id , Cuit, DetalleEstado '
+  + ' FROM LasBoletasDeDuedasAImprimir  where (IdLote=' + valor+ ') order by 1';
+  {'SELECT right(''000000'' + convert(nvarchar(6),NroControl) ,6) as NroBoletaDeuda,'
+  +'intimacionlote.NroLote,IntimacionContribuyente.Contribuyente,'
+  + ' case when IntimacionContribuyente.Contribuyente like ''%S.R.L.%'''
+  + ' or IntimacionContribuyente.Contribuyente like ''%SRL%'''
+  + ' or IntimacionContribuyente.Contribuyente like ''%S R L%'''
+  + ' or IntimacionContribuyente.Contribuyente like ''%SA%'''
+  + ' or IntimacionContribuyente.Contribuyente like ''%S.A.%'''
+  + ' or IntimacionContribuyente.Contribuyente like ''%S A%'''
+  + ' then SeguridadWEB.dbo.Contribuyentes.Cuit else IntimacionContribuyente.NroDni end as NroDni,'
+  +'Barrio,Calle,'
+  +'Altura,Dpto,Mza,Casa,Torre,Domicilio,ImporteDeuda, IntimacionContribuyente.IdContribuyente,'
+  +'case when impreso= 1 then ''SI'' else ''NO'' end as Impreso, IntimacionContribuyente.id,'
+  +'SeguridadWEB.dbo.Contribuyentes.Cuit,dbo.TiposEstados.DetalleEstado FROM IntimacionContribuyente '
+  +' INNER JOIN dbo.IntimacionContribuyenteEstado AS estado ON dbo.IntimacionContribuyente.Id = estado.IdIntimacionContribuyente '
+  +' INNER JOIN dbo.IntimacionLote ON dbo.IntimacionLote.Id = dbo.IntimacionContribuyente.IdIntimacionLote '
+  +' INNER JOIN SeguridadWEB.dbo.ContribuyentesIdentidad ON SeguridadWEB.dbo.ContribuyentesIdentidad.NroDni = dbo.IntimacionContribuyente.NroDni '
+  +' INNER JOIN SeguridadWEB.dbo.Contribuyentes ON SeguridadWEB.dbo.Contribuyentes.Id = SeguridadWEB.dbo.ContribuyentesIdentidad.IdContribuyente '
+  +' INNER JOIN dbo.TiposEstados ON estado.IdTipoEstado = dbo.TiposEstados.NroEstado '
+  +' where SeguridadWEB.dbo.ContribuyentesIdentidad.Activo=1 and '
+  +' (IntimacionContribuyente.IdIntimacionLote=' + valor+ ') AND (estado.Activo = 1) order by 1';  }
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+    messagedlg('Nro de Lote sin Registros para Imprimir...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+    PC1.ActivePage:=PC1.Pages[0];
+  end
+  else begin
+   for t:=1 to CONTRIBUYENTE.RecordCount do begin
+    CONTRIBUYENTE.RecNo:=t;
+    grilla2.RowCount:=t + 1;
+    //grilla2.Cells[0,t]:=StrFill(IntToStr(t),2,'0','');
+    grilla2.Cells[0,t]:=CONTRIBUYENTE.FieldByName('DetalleEstado').AsString;
+    grilla2.Cells[1,t]:='';
+    grilla2.Cells[2,t]:=CONTRIBUYENTE.FieldByName('NroBoletaDeuda').AsString;
+    grilla2.Cells[3,t]:=CONTRIBUYENTE.FieldByName('NroLote').AsString;
+    grilla2.Cells[4,t]:=CONTRIBUYENTE.FieldByName('Contribuyente').AsString;
+    grilla2.Cells[5,t]:=CONTRIBUYENTE.FieldByName('NroDni').AsString;
+    grilla2.Cells[6,t]:=CONTRIBUYENTE.FieldByName('Barrio').AsString;
+    grilla2.Cells[7,t]:=CONTRIBUYENTE.FieldByName('Calle').AsString;
+    grilla2.Cells[8,t]:=CONTRIBUYENTE.FieldByName('Altura').AsString;
+    grilla2.Cells[9,t]:=CONTRIBUYENTE.FieldByName('Dpto').AsString;
+    grilla2.Cells[10,t]:=CONTRIBUYENTE.FieldByName('Mza').AsString;
+    grilla2.Cells[11,t]:=CONTRIBUYENTE.FieldByName('Casa').AsString;
+    grilla2.Cells[12,t]:=CONTRIBUYENTE.FieldByName('Torre').AsString;
+    grilla2.Cells[13,t]:=CONTRIBUYENTE.FieldByName('Domicilio').AsString;
+    grilla2.Cells[14,t]:=CONTRIBUYENTE.FieldByName('ImporteDeuda').AsString;
+    grilla2.Cells[15,t]:=CONTRIBUYENTE.FieldByName('IdContribuyente').AsString;
+    grilla2.Cells[16,t]:=CONTRIBUYENTE.FieldByName('Impreso').AsString;
+    grilla2.Cells[17,t]:=CONTRIBUYENTE.FieldByName('ID').AsString;
+    grilla2.Cells[18,t]:=CONTRIBUYENTE.FieldByName('Cuit').AsString;
+    grilla2.Cells[19,t]:=CONTRIBUYENTE.FieldByName('DetalleEstado').AsString;
+    PC1.ActivePage:=PC1.Pages[1];
+   end;
+   Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(CONTRIBUYENTE.RecordCount);
+  end;
+  CONTRIBUYENTE.Connection:=nil;
+ end;
+ if nro = 3 then begin
+  LOSOBJETOS.Close;
+  LOSOBJETOS.Connection:=Cnx2;
+  //LOSOBJETOS.CommandText:='SELECT Rubro,Capital,Interes,ImporteDeuda,PeriodoDeuda '
+  //+ ' from Fn_ContribuyentesDeudaObjetosBoletoDeuda (' + valor + ') where Orden < 4';
+  LOSOBJETOS.CommandText:='SELECT Rubro,Capital,Interes,ImporteDeuda,PeriodoDeuda '
+  + ' from Fn_ContribuyentesDeudaObjetosBoletoDeudanew (' + valor + ') order by orden,PeriodoDeuda';
+  LOSOBJETOS.Open;
+  if LOSOBJETOS.IsEmpty then begin
+    messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+  for t:=1 to LOSOBJETOS.RecordCount do begin
+    LOSOBJETOS.RecNo:=t;
+    grilla5.RowCount:=t + 1;
+    grilla5.Cells[0,t]:=LOSOBJETOS.FieldByName('Rubro').AsString;
+    grilla5.Cells[1,t]:=LOSOBJETOS.FieldByName('Capital').AsString;
+    grilla5.Cells[2,t]:=LOSOBJETOS.FieldByName('Interes').AsString;
+    grilla5.Cells[3,t]:=LOSOBJETOS.FieldByName('ImporteDeuda').AsString;
+    grilla5.Cells[4,t]:=LOSOBJETOS.FieldByName('PeriodoDeuda').AsString;
+    //grilla5.Cells[5,t]:=LOSOBJETOS.FieldByName('Orden').AsString;
+  end;
+  Coloca1(4,valor);
+  //   try
+  //    JvDBGrid1.datasource.dataset.disablecontrols;
+  //    JvDBGrid1.datasource.dataset.first;
+  //    while not JvDBGrid1.datasource.dataset.eof do begin
+  //      if  (trim(JvDBGrid1.Fields[3].Value)='') then begin
+  //         //sumad := sumad + JvDBGrid1.datasource.dataset.fieldbyname('ImporteDeuda').asfloat;
+  //         sumad := sumad + strtofloat(JvDBGrid1.datasource.dataset.fieldbyname('ImporteDeuda').AsString);
+  //      end;
+  //      JvDBGrid1.datasource.dataset.next;
+  //    end;
+  //   finally
+  //    JvDBGrid1.datasource.dataset.enablecontrols;
+  //   end;
+  // JvDBGrid1.Columns[0].Width:=250;          JvDBGrid1.Columns[1].Width:=80;
+  // JvDBGrid1.Columns[2].Width:=80;           JvDBGrid1.Columns[3].Width:=900;
+  end;
+  LOSOBJETOS.Connection:=nil;
+ end;
+ if nro = 4 then  begin
+  LOSOBJETOSTOT.Close;
+  LOSOBJETOSTOT.Connection:=Cnx2;
+  //LOSOBJETOSTOT.CommandText:='SELECT Capital,Interes,ImporteDeuda '
+  //+ ' from Fn_ContribuyentesDeudaObjetosBoletoDeuda (' + valor + ') where Orden = 4';
+  LOSOBJETOSTOT.CommandText:='SELECT top 1 Capital,Interes,ImporteDeuda FROM '
+  + ' Fn_ContribuyentesDeudaObjetosBoletoDeudaNew (' + valor + ') order by orden desc';
+  LOSOBJETOSTOT.Open;
+  if LOSOBJETOSTOT.IsEmpty then begin
+    messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   tot1:=LOSOBJETOSTOT.FieldByName('Capital').AsString;
+   tot2:=LOSOBJETOSTOT.FieldByName('Interes').AsString;
+   tot3:=LOSOBJETOSTOT.FieldByName('ImporteDeuda').AsString;
+  end;
+  LOSOBJETOSTOT.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+except
+  on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+  end
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D11KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  D9.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D13KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  domi.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D3Exit(Sender: TObject);
+begin
+if D3.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione un Barrio válido',mterror,[mbok],0);
+  D3.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D3KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  D4.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D4Exit(Sender: TObject);
+begin
+if D4.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione una Calle válida',mterror,[mbok],0);
+  D4.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D4KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  D6.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D6KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  D8.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D8KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  D11.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.D9KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  D13.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.domiKeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  modifdom.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_ImpNew.ImpDispoClick(Sender: TObject);
+ var   t,y,gf:integer;
+   texto:string;
+   ReporteRst: TfrxReport;
+   frxDB1: TfrxDBDataset;
+   DtsObjetos:TClientDataSet;
+begin
+  t:=messagedlg('Confirma la Impresión de la Disposición?',mtWarning,[mbok,mbCancel],0);
+  if t = 1 then begin
+   try
+     DtsObjetos:=TClientDataSet.Create(nil);
+     DtsObjetos.FieldDefs.Clear;
+     DtsObjetos.Active:=False;
+     with DtsObjetos.FieldDefs.AddFieldDef do begin
+       Name:='NroIntimacion';
+       DataType:=ftString;Size:=50;
+     end;
+     with DtsObjetos.FieldDefs.AddFieldDef do begin
+       Name:='NroLote';
+       DataType:=ftString;Size:=50;
+     end;
+     with DtsObjetos.FieldDefs.AddFieldDef do begin
+       Name:='Contribuyente';
+       DataType:=ftString;Size:=250;
+     end;
+     with DtsObjetos.FieldDefs.AddFieldDef do begin
+       Name:='TotalDeuda';
+       DataType:=ftString;Size:=50;
+     end;
+     DtsObjetos.CreateDataSet;
+     DtsObjetos.Active:=True;
+     for t:=1 to Grilla2.RowCount-1 do begin
+      if trim(grilla2.Cells[0,t]) <> 'Baja' then begin
+       DtsObjetos.Append;
+       DtsObjetos.FieldValues['NroIntimacion']:=grilla2.Cells[2,t] + ger;
+       //DtsObjetos.FieldValues['NroLote']:=grilla2.Cells[18,t];
+       DtsObjetos.FieldValues['NroLote']:=grilla2.Cells[5,t];
+       DtsObjetos.FieldValues['Contribuyente']:=grilla2.Cells[4,t];
+       //grilla2.Cells[14,t]:=AnsiReplaceStr(AnsiReplaceStr(CONTRIBUYENTE.FieldByName('ImporteDeuda').AsString,chr(44),chr(46)),chr(46),chr(44));
+       //DtsObjetos.FieldValues['TotalDeuda']:= AnsiReplaceStr(AnsiReplaceStr(trim(grilla2.Cells[14,t]),chr(44),chr(46)),chr(46),chr(44));
+       DtsObjetos.FieldValues['TotalDeuda']:=grilla2.Cells[14,t];
+       DtsObjetos.Post;
+      end;
+     end;
+   except
+    on E: Exception do EnviarLog(Self.Caption, E.Message);
+   end;
+
+    //Imprimiendo
+   try
+    ReporteRst:=TfrxReport.Create(nil);
+    frxDB1:=TfrxDBDataset.Create(nil);
+    frxDB1.DataSet:=DtsObjetos;
+    frxDB1.UserName:='frxDBDataset1';
+    ReporteRst.DataSets.Add(frxDB1);
+    ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Dispo_BoletaDeuda.fr3');
+    ReporteRst.Variables['NroDispo'] := QuotedStr(dispo);
+    ReporteRst.Variables['Min'] := QuotedStr(min + ger);
+    ReporteRst.Variables['Max'] := QuotedStr(max + ger);
+    ReporteRst.Variables['FechaCalculo'] := QuotedStr(fechalote);
+    ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro + ' /Reg.Imp ' + AuditaImpresos('Imp Dispo BD Nº : ' + trim(dispo),trim(eldnicont)));
+    ReporteRst.ShowReport;
+   except
+    on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+   end;
+   FreeAndNil(frxDB1);
+   FreeAndNil(ReporteRst);
+   FreeAndNil(DtsObjetos);
+  end;
+end;
+
+procedure TBolDeuda_ImpNew.ImpNotaDirector1Click(Sender: TObject);
+begin
+  panel1.Visible :=true;
+  d3.SetFocus;
+  if grilla2.Cells[0,grilla2.Row] <> '' then begin
+   elidcontrib:=trim(grilla2.Cells[17,grilla2.Row]);
+   D3.ItemIndex:=D3.Items.IndexOf(trim(grilla2.Cells[6,grilla2.Row]));
+   D4.ItemIndex:=D4.Items.IndexOf(trim(grilla2.Cells[7,grilla2.Row]));
+   D6.Text:=trim(grilla2.Cells[8,grilla2.Row]);
+   D8.Text:=trim(grilla2.Cells[9,grilla2.Row]);
+   D11.Text:=trim(grilla2.Cells[11,grilla2.Row]);
+   D9.Text:=trim(grilla2.Cells[10,grilla2.Row]);
+   D13.Text:=trim(grilla2.Cells[12,grilla2.Row]);
+   domi.Text:=trim(grilla2.Cells[13,grilla2.Row]);
+  end;
+end;
+
+procedure TBolDeuda_ImpNew.JvBitBtn1Click(Sender: TObject);
+ var   t,y,gf:integer;
+   texto:string;
+   ReporteRst: TfrxReport;
+   frxDB1: TfrxDBDataset;
+   DtsNotas:TClientDataSet;
+begin
+ if selecfila = 0 then begin
+   messagedlg('            I M P O S I B L E   I M P R I M I R ' + chr(13)
+   + 'porque no existe ninguna Boleta de Deuda Seleccionado... ',mtError,[mbok],0);
+   grilla2.SetFocus;
+ end
+ else begin
+  t:=messagedlg('Confirma la Impresión de la Nota?',mtWarning,[mbok,mbCancel],0);
+  if t = 1 then begin
+   for t:=1 to grilla2.RowCount -1 do begin
+    if (grilla2.Cells[1,t] = 'X') and (grilla2.Cells[19,t] <> 'Baja') then begin
+     try
+      ReporteRst:=TfrxReport.Create(nil);
+      frxDB1:=TfrxDBDataset.Create(nil);
+      frxDB1.UserName:='frxDBDataset1';
+      ReporteRst.DataSets.Add(frxDB1);
+      ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Nota_BoletaDeuda.fr3');
+      TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+      //TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\logoformosa.jpg');
+      //ReporteRst.Variables['NroIntimacion']:=QuotedStr(trim(CONTRIBUYENTE.Fields[1].AsString));
+      ReporteRst.Variables['NroBoleta'] := QuotedStr(trim(grilla2.Cells[2,t]) + ger);
+      ReporteRst.Variables['NroDni']:=QuotedStr(trim(grilla2.Cells[5,t]));
+      //ReporteRst.Variables['NroDni']:=QuotedStr(trim(grilla2.Cells[18,t]));
+      ReporteRst.Variables['NomRespo']:=QuotedStr(trim(grilla2.Cells[4,t]));
+      ReporteRst.Variables['ElqueSuscribe']:=QuotedStr(trim(grilla2.Cells[14,t]));
+      ReporteRst.Variables['NroDispo'] := QuotedStr(dispo);
+      ReporteRst.Variables['Desde'] := QuotedStr(min + ger);
+      ReporteRst.Variables['Hasta'] := QuotedStr(max + ger);
+      ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(fechalote,'DDMMAAAA'));
+      ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro + ' /Reg.Imp ' + AuditaImpresos('Imp Nota BD Nº : ' + trim(trim(grilla2.Cells[2,t]) + ger),trim(grilla2.Cells[5,t])));
+      ReporteRst.ShowReport;
+     except
+      on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+     end;
+     FreeAndNil(frxDB1);
+     FreeAndNil(ReporteRst);
+    end;
+   end;
+  end;
+ end;
+end;
+
+procedure TBolDeuda_ImpNew.JvDBGrid3CellClick(Column: TColumn);
+begin
+ panel1.Visible :=false;
+ impdispo.Enabled:=true;
+ imprime.Enabled:=true;
+ lasucur:=trim(DataSet3.Fields[5].AsString);
+ coloca1(2,DataSet3.Fields[5].AsString);
+ coloca1(1,DataSet3.Fields[0].AsString);
+ fechalote:=trim(DataSet3.Fields[1].AsString);
+ dispo:=trim(DataSet3.Fields[4].AsString);
+ ger:=rightstr(dispo,3);
+ //PC1.ActivePage:=PC1.Pages[1];
+ verificagrilladeuda('grilla2');
+end;
+
+procedure TBolDeuda_ImpNew.modifdomClick(Sender: TObject);
+var gf:integer;
+    txt1:widestring;
+    Cnx2:TADOConnection;
+begin
+gf:=messagedlg('Confirma MODIFICAR el Domicilio del Contribuyente de esta Boleta de Deuda?',mtWarning,[mbok,mbCancel],0);
+  if gf = 1 then begin
+    Com1:=TADOCommand.Create(nil);
+    Com1.ConnectionString:=Modulo2.Sistema.ConectInti;
+    try
+     Com1.CommandText:='SPM_IntimacionContribuyenteDomicilios '  + elidcontrib
+     + ' , ' + chr(39) + trim(d3.text) + chr(39)
+     + ' , ' + chr(39) + trim(d4.text) + chr(39)
+     + ' , ' + trim(d6.text)
+     + ' , ' + chr(39) + trim(d8.text) + chr(39)
+     + ' , ' + chr(39) + trim(d9.text) + chr(39)
+     + ' , ' + chr(39) + trim(d11.text)+ chr(39)
+     + ' , ' + chr(39) + trim(d13.text)+ chr(39)
+     + ' , ' + chr(39) + trim(domi.text)+ chr(39);
+     Com1.Execute;
+     messagedlg('Domicilio Modificado Correctamente!!',mtConfirmation,[mbok],0);
+     PANEL1.Visible:=FALSE;
+     coloca1(2,DataSet3.Fields[5].AsString);
+    except
+      on E: Exception do begin
+       messagedlg('ERROR al Modificar los Datos del Domicilio',mtError,[mbok],0);
+       EnviarLog(Self.Caption, E.Message);
+       EnviarLog(Self.Caption, Com1.CommandText);
+      end;
+    end;
+    FreeAndNil(Com1);
+  end;
+end;
+
+procedure TBolDeuda_ImpNew.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TBolDeuda_ImpNew.SeleccionarTodos1Click(Sender: TObject);
+var b,t:integer;
+begin
+for b:=0 to grilla2.ColCount-1 do
+   for t:=1 to grilla2.RowCount-1 do  grilla2.Cells[1,t]:='X';
+   verificagrilladeuda('grilla2');
+end;
+
+end.

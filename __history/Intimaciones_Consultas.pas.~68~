@@ -1,0 +1,1133 @@
+unit Intimaciones_Consultas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet, RzTabs, Vcl.PlatformDefaultStyleActnCtrls, Vcl.ActnPopup,
+  VclTee.TeeGDIPlus, VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs,
+  VCLTee.Chart, JvSimLogic, FireDAC.Stan.Intf, FireDAC.Phys,
+  FireDAC.Phys.ODBCBase, FireDAC.Phys.ODBC;
+
+type THackStringGrid = class(TJvStringGrid);
+type
+  TConsultas_Intimaciones = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    exporta: TJvBitBtn;
+    ToolButton3: TToolButton;
+    Barra1: TStatusBar;
+    FormularioEmb: TJvEmbeddedFormLink;
+    frxReport2: TfrxReport;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    ImageList2: TImageList;
+    Label7: TLabel;
+    TabSheet3: TRzTabSheet;
+    JvDBGrid3: TJvDBGrid;
+    DataSource2: TDataSource;
+    grilla1: TStringGrid;
+    todos: TRichEdit;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    imprime: TJvBitBtn;
+    ToolButton2: TToolButton;
+    SALE: TJvBitBtn;
+    GroupBox2: TGroupBox;
+    JvDBGrid1: TJvDBGrid;
+    DataSource1: TDataSource;
+    v: TRzTabSheet;
+    JvDBGrid2: TJvDBGrid;
+    DataSource3: TDataSource;
+    PopupActionBar1: TPopupActionBar;
+    BORRAROBJETO1: TMenuItem;
+    Panel1: TPanel;
+    Label22: TLabel;
+    ElimObjeto: TJvBitBtn;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    JvBitBtn1: TJvBitBtn;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Timer1: TTimer;
+    TabSheet2: TRzTabSheet;
+    GrillaAgrup: TStringGrid;
+    Grafico2: TChart;
+    Series1: TBarSeries;
+    GroupBox3: TGroupBox;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    MOTIVO: TEdit;
+    GroupBox4: TGroupBox;
+    DBGrid1: TDBGrid;
+    DataSource4: TDataSource;
+    TabSheet4: TRzTabSheet;
+    Label14: TLabel;
+    L3: TMaskEdit;
+    Label15: TLabel;
+    L7: TEdit;
+    Label16: TLabel;
+    Origen: TComboBox;
+    Label17: TLabel;
+    Edit4: TEdit;
+    guardallamados: TJvBitBtn;
+    grillallamados: TStringGrid;
+    L10: TCheckBox;
+    JvSIMConnector1: TJvSIMConnector;
+    grillatelef: TStringGrid;
+    elmensaje: TGroupBox;
+    Image2: TImage;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label23: TLabel;
+    Bevel1: TBevel;
+    Label24: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    Grupoobjeto: TGroupBox;
+    Label28: TLabel;
+    Edit5: TEdit;
+    BuscaObj: TJvBitBtn;
+    PopupMenu1: TPopupMenu;
+    ExportarObjetosEliminados1: TMenuItem;
+    RE5: TRichEdit;
+    modiperi: TJvBitBtn;
+    Panel2: TPanel;
+    Label29: TLabel;
+    Label30: TLabel;
+    JvBitBtn2: TJvBitBtn;
+    JvBitBtn3: TJvBitBtn;
+    Memo1: TMemo;
+    Label31: TLabel;
+    Label32: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure exportaClick(Sender: TObject);
+    procedure Coloca1(nro:byte;valor:string);
+    procedure grilla1SelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure JvDBGrid3CellClick(Column: TColumn);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    function VerificaGrillaDeuda(grilla:string):boolean;
+    procedure imprimeClick(Sender: TObject);
+    procedure grilla1Click(Sender: TObject);
+    procedure BORRAROBJETO1Click(Sender: TObject);
+    procedure JvDBGrid2CellClick(Column: TColumn);
+    procedure ElimObjetoClick(Sender: TObject);
+    procedure JvBitBtn1Click(Sender: TObject);
+    procedure VerArea(nro:byte);
+    procedure Timer1Timer(Sender: TObject);
+    procedure MOTIVOKeyPress(Sender: TObject; var Key: Char);
+    procedure MOTIVOExit(Sender: TObject);
+    procedure CargaCombos(nro:byte);
+    procedure OrigenExit(Sender: TObject);
+    procedure OrigenKeyPress(Sender: TObject; var Key: Char);
+    procedure guardallamadosClick(Sender: TObject);
+    procedure grillatelefClick(Sender: TObject);
+    procedure L3Exit(Sender: TObject);
+    procedure L3KeyPress(Sender: TObject; var Key: Char);
+    procedure L7KeyPress(Sender: TObject; var Key: Char);
+    procedure L10KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit4KeyPress(Sender: TObject; var Key: Char);
+    procedure grillallamadosDrawCell(Sender: TObject; ACol, ARow: Integer;
+      Rect: TRect; State: TGridDrawState);
+    procedure L7Exit(Sender: TObject);
+    procedure L3Change(Sender: TObject);
+    procedure L7Change(Sender: TObject);
+    procedure OrigenChange(Sender: TObject);
+    procedure Edit4Change(Sender: TObject);
+    procedure grilla1DrawCell(Sender: TObject; ACol, ARow: Integer; Rect: TRect;
+      State: TGridDrawState);
+    procedure Edit5KeyPress(Sender: TObject; var Key: Char);
+    procedure BuscaObjClick(Sender: TObject);
+    procedure Edit5Change(Sender: TObject);
+    procedure grillallamadosClick(Sender: TObject);
+    procedure ExportarObjetosEliminados1Click(Sender: TObject);
+    procedure JvBitBtn3Click(Sender: TObject);
+    procedure modiperiClick(Sender: TObject);
+    procedure JvBitBtn2Click(Sender: TObject);
+  private
+    CONTRIBUYENTE,TELEFONOS,LOSOBJETOS,LOSLLAMADOS,DataSet3,DataSet2,DataSet1,DataBaja,
+    DataAgrup,DataElim,DataSet4:TADODataSet;{ Private declarations }
+
+    fecha,respuesta,laidcuenta,dato,FechaAct,elcontrib,fechalote,idintima,idlote,eldni,
+    elidcontrib,elcuit,NroImp,elrub,elobjeto,elimporte,dato1,idllamado,dato2:string;
+
+    Com1:TADOCommand;
+  public
+    Objetos:TObjetos;
+    sumad,suma:double;
+    losllam:integer;
+    gh,modif:boolean;{ Public declarations }
+  end;
+
+var
+  Consultas_Intimaciones: TConsultas_Intimaciones;
+
+implementation
+
+uses Unidad ,modulo;
+
+{$R *.dfm}
+
+procedure TConsultas_Intimaciones.FormActivate(Sender: TObject);
+begin
+ if not (gh) then begin
+  gh:=true;
+  modif:=false;
+  Panel1.Visible:=false;
+  Panel2.Visible:=false;
+  FechaAct:=LeftStr(Fec_System(),10);
+  l3.Text := FechaAct;
+  PC1.ActivePage:=PC1.Pages[0];
+  label1.Caption:='...';
+  label10.Visible:=false;
+  L10.Checked :=FALSE;
+  elmensaje.Visible :=false;
+  Grupoobjeto.Visible :=false;
+  CargaCombos(7);
+  Coloca1(0,'');
+  grilla1.Cells[0,0]:='Orden';            grilla1.Cells[1,0]:='Nrolote';
+  grilla1.Cells[2,0]:='NroIntimacion';    grilla1.Cells[3,0]:='EstadoIntimacion';
+  grilla1.Cells[4,0]:='TotalDeuda';       grilla1.Cells[5,0]:='Contribuyente';
+  grilla1.Cells[6,0]:='NroDni';           grilla1.Cells[7,0]:='Barrio';
+  grilla1.Cells[8,0]:='Calle';            grilla1.Cells[9,0]:='Altura';
+  grilla1.Cells[10,0]:='Depto';           grilla1.Cells[11,0]:='Manzana';
+  grilla1.Cells[12,0]:='Casa';            grilla1.Cells[13,0]:='Torre';
+  grilla1.Cells[14,0]:='Domicilio';       grilla1.Cells[15,0]:='ID';
+  grilla1.Cells[16,0]:='NroTelefono';
+
+  grillatelef.Cells[0,0]:='Telefonos Exitentes';
+
+  grillallamados.Cells[0,0]:='IdContrib,';     grillallamados.Cells[1,0]:='FechaLlamado';
+  grillallamados.Cells[2,0]:='Telefono';       grillallamados.Cells[3,0]:='OrigenTelefono';
+  grillallamados.Cells[4,0]:='ConRespuesta';   grillallamados.Cells[5,0]:='Observaciones';
+  grillallamados.Cells[6,0]:='NroUsuario';     grillallamados.Cells[7,0]:='Id';
+
+  GrillaAgrup.Cells[0,0]:='Rubro';       GrillaAgrup.Cells[1,0]:='Cantidad';
+  GrillaAgrup.Cells[2,0]:='Deuda';       GrillaAgrup.Cells[3,0]:='';
+  grafico2.Series[0].Clear;
+
+  VerArea(1);
+  if dato <> '0' then begin
+    PopupActionBar1.Items[0].Visible :=true;
+    GrupoObjeto.Visible :=true;
+  end
+  else begin
+    PopupActionBar1.Items[0].Visible :=false;
+    GrupoObjeto.Visible :=false;
+  end;
+
+  VerArea(2);
+  if dato1 <> '' then begin
+    PC1.Pages[3].TabVisible :=true;
+  end
+  else begin
+    PC1.Pages[3].TabVisible :=false;
+  end;
+
+  modiperi.Visible:=false;
+  VerArea(3);
+  if dato2 <> '' then begin
+    modiperi.Visible:=true;
+  end
+  else begin
+    modiperi.Visible:=false;
+  end;
+
+ end;
+end;
+
+procedure TConsultas_Intimaciones.FormCreate(Sender: TObject);
+begin
+  CONTRIBUYENTE:=TADODataSet.Create(nil);
+  LOSOBJETOS:=TADODataSet.Create(nil);
+  TELEFONOS:=TADODataSet.Create(nil);
+  LOSLLAMADOS:=TADODataSet.Create(nil);
+  DataSet3:=TADODataSet.Create(nil);
+  DataSource2.DataSet:=DataSet3;
+  DataSet2:=TADODataSet.Create(nil);
+  DataSource1.DataSet:=DataSet2;
+  DataSet1:=TADODataSet.Create(nil);
+  DataSource3.DataSet:=DataSet1;
+  DataAgrup:=TADODataSet.Create(nil);
+  DataElim:=TADODataSet.Create(nil);
+  DataSource4.DataSet:=DataElim;
+  DataSet4:=TADODataSet.Create(nil);
+end;
+
+procedure TConsultas_Intimaciones.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FreeAndNil(CONTRIBUYENTE);
+  FreeAndNil(LOSOBJETOS);
+  FreeAndNil(DataSet1);
+  FreeAndNil(DataSet2);
+  FreeAndNil(DataSet3);
+  FreeAndNil(DataSet4);
+  FreeAndNil(DataBaja);
+  FreeAndNil(DataElim);
+  FreeAndnil(DataAgrup);
+  FreeAndNil(Self);
+end;
+
+procedure TConsultas_Intimaciones.BuscaObjClick(Sender: TObject);
+begin
+coloca1(3,idintima);  // idintima
+edit5.Clear;
+end;
+
+procedure TConsultas_Intimaciones.CargaCombos(nro:byte);
+begin
+ // if nro=5 then Modulo2.CargaCombo(D3,'SELECT Detalle,Id FROM Barrios ORDER BY Detalle',modulo2.Sistema.ConectSeg,false);
+ // if nro=6 then Modulo2.CargaCombo(D4,'SELECT Descrip,Calle FROM CALLES WHERE (Dpto_Polit=1) AND'
+ //    + ' (LOCALIDAD=1) ORDER BY DESCRIP',modulo2.Sistema.ConectUsu,false);
+  if nro=7 then Modulo2.CargaCombo(origen,'SELECT Detalle, NroOrigen FROM TipoOrigen WHERE (NroOrigen >= 3)',modulo2.Sistema.ConectInti,false);
+end;
+
+procedure TConsultas_Intimaciones.VerArea(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ if nro=1 then begin
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_PlanPagoUsuariosAdmin (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato:=DataSet2.Fields[0].AsString
+   else dato:='0';
+  DataSet2.Connection:=nil;
+ end;
+ if nro=2 then begin
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_IntimacionesUsuariosLlamados (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato1:=DataSet2.Fields[0].AsString
+   else dato1:='';
+  DataSet2.Connection:=nil;
+ end;
+ if nro=3 then begin
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_IntimacionAdmin (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato2:=DataSet2.Fields[0].AsString
+   else dato2:='';
+  DataSet2.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+function TConsultas_Intimaciones.VerificaGrillaDeuda(grilla:string):boolean;
+var j,a:integer;
+begin
+ Result:=true;
+ for j:=1 to grilla1.RowCount-1 do begin
+  if trim(grilla1.Cells[1,j])='' then begin
+   Result:=false;
+   break;
+  end;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+   VK_F4 : begin
+     exporta.Click;
+   end;
+   VK_F2 : begin
+     imprime.Click;
+   end;
+   VK_F5 : begin
+     panel1.Visible:=false;
+   end;
+  end;
+end;
+
+procedure TConsultas_Intimaciones.exportaClick(Sender: TObject);
+var t,p,a:integer;
+   texto:string;
+begin
+ a:=messagedlg('Desea Exportar a Excel las Intimaciones de este Lote seleccionado?',mtWarning,[mbok,mbCancel],0);
+ if a = 1 then begin
+  todos.Clear;
+  todos.Lines.Add('');
+  todos.Lines.Add('RESUMEN DE LOTES DE INTIMACIONES GENERADOS');
+  for t:=0 to grilla1.RowCount -1   DO BEGIN
+   texto:='';
+   for p:=0 to grilla1.ColCount - 1 do begin
+    texto:= texto + grilla1.Cells[p,t] + chr(9);
+   end;
+   todos.Lines.Add(texto);
+  end;
+  todos.SelectAll;
+  todos.CopyToClipboard;
+  messagedlgpos('Datos Procesados y Listos para pegarlos a Excel',mtwarning,[mbok],0,screen.Width div 3,screen.Height div 3);
+  PC1.ActivePage:=PC1.Pages[0];
+ end;
+end;
+
+procedure TConsultas_Intimaciones.ExportarObjetosEliminados1Click(
+  Sender: TObject);
+var texto:widestring;
+var txt:string;
+var t,y:integer;
+begin
+ RE5.Clear;texto:='';
+ for t:=0 to DBGrid1.FieldCount-1 do begin
+  texto:=texto + DBGrid1.Fields[t].FieldName + chr(9);
+ end;
+ RE5.Lines.Add(texto);
+ for y:=1 to DBGrid1.DataSource.DataSet.RecordCount do begin
+  DBGrid1.DataSource.DataSet.RecNo:=y;
+  texto:='';
+  for t:=0 to DBGrid1.FieldCount-1 do begin
+   texto:=texto + DBGrid1.Fields[t].AsString + chr(9);
+  end;
+  RE5.Lines.Add(texto);
+ end;
+ RE5.SelectAll;
+ RE5.CopyToClipboard;
+ messagedlgpos('Se Copiaron los Datos al Clipboard',mtwarning,[mbok],0,screen.Width div 3,screen.Height div 3);
+end;
+
+procedure TConsultas_Intimaciones.grilla1Click(Sender: TObject);
+begin
+ if trim(grilla1.Cells[0,grilla1.Row]) <> '' then begin
+  edit5.Clear;
+  NroImp:=trim(grilla1.Cells[2,grilla1.Row]);
+  respuesta:=trim(grilla1.Cells[4,grilla1.Row]);
+  elcontrib:=trim(grilla1.Cells[5,grilla1.Row]);
+  eldni:=trim(grilla1.Cells[6,grilla1.Row]);
+  LABEL24.Caption :=elcontrib;
+  LABEL25.Caption :=NroImp;
+  LABEL26.Caption :=eldni;
+  LABEL27.Caption :=respuesta;
+  coloca1(3,trim(grilla1.Cells[15,grilla1.Row]));
+  idintima:=trim(grilla1.Cells[15,grilla1.Row]);
+  Coloca1(5,'');
+  Coloca1(6,'');
+  PC1.ActivePage:=PC1.Pages[2];
+  Barra1.Panels[2].Text:='NroIntimacion: ' + trim(grilla1.Cells[2,grilla1.Row]);
+ end;
+end;
+
+procedure TConsultas_Intimaciones.grilla1DrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+ With Sender as TStringGrid do begin
+  if trim(grilla1.Cells[3,Arow]) = 'Baja' then begin
+   Canvas.Brush.Color := clyellow;
+   Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+  end;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.grilla1SelectCell(Sender: TObject; ACol, ARow: Integer;
+  var CanSelect: Boolean);
+begin
+  if (ACol=2) then grilla1.Options := grilla1.Options + [goEditing]
+   else grilla1.Options := grilla1.Options - [goEditing];
+end;
+
+procedure TConsultas_Intimaciones.grillallamadosClick(Sender: TObject);
+begin
+  modif:=true;
+  idllamado:=trim(grillallamados.Cells[7,grillallamados.Row]);
+  l3.Text :=trim(grillallamados.Cells[1,grillallamados.Row]);
+  l7.Text :=trim(grillallamados.Cells[2,grillallamados.Row]);
+  origen.ItemIndex:=origen.Items.IndexOf(trim(grillallamados.Cells[3,grillallamados.Row]));
+  if trim(grillallamados.Cells[4,grillallamados.Row])='True' then l10.Checked:=true
+   else  l10.Checked:=false;
+  edit4.Text :=trim(grillallamados.Cells[5,grillallamados.Row]);
+  l3.SetFocus;
+  guardallamados.Caption :='MODIFICAR';
+end;
+
+procedure TConsultas_Intimaciones.grillallamadosDrawCell(Sender: TObject; ACol,
+  ARow: Integer; Rect: TRect; State: TGridDrawState);
+begin
+ With Sender as TStringGrid do begin
+  if trim(grillallamados.Cells[4,Arow]) = 'NO' then begin
+   Canvas.Brush.Color := clyellow;
+   Canvas.TextRect( Rect, Rect.Left+2, Rect.Top+2, Cells[acol, arow]);
+  end;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.grillatelefClick(Sender: TObject);
+begin
+ if trim(grillatelef.Cells[0,grillatelef.Row]) <> '' then begin
+  l7.Text :=trim(grillatelef.Cells[0,grillatelef.Row]);
+  l7.SetFocus;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.imprimeClick(Sender: TObject);
+var t,y,a:integer;
+   texto:string;
+   ReporteRst: TfrxReport;
+   frxDB1,frxDB2: TfrxDBDataset;
+   DtsObjetos, DtsGrilla2:TClientDataSet;
+begin
+a:=messagedlg('Desea Imprimir las Intimaciones de este Lote seleccionado?',mtWarning,[mbok,mbCancel],0);
+ if a = 1 then begin
+  try
+   DtsObjetos:=TClientDataSet.Create(nil);
+   DtsObjetos.FieldDefs.Clear;
+   DtsObjetos.Active:=False;
+   with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Orden';
+    DataType:=ftInteger;
+   end;
+   with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Nrolote';
+    DataType:=ftString;Size:=50;
+   end;
+   with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='NroIntimacion';
+    DataType:=ftString;Size:=50;
+   end;
+   with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='TotalDeuda';
+    DataType:=ftString;Size:=50;
+   end;
+   with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='Contribuyente';
+    DataType:=ftString;Size:=250;
+   end;
+   with DtsObjetos.FieldDefs.AddFieldDef do begin
+    Name:='EstadoIntimacion';
+    DataType:=ftString;Size:=100;
+   end;
+   DtsObjetos.CreateDataSet;
+   DtsObjetos.Active:=True;
+   y:=1;
+   for t:=1 to grilla1.RowCount-1 do begin
+    DtsObjetos.Append;
+    DtsObjetos.FieldValues['Orden']:=y;
+    DtsObjetos.FieldValues['Nrolote']:=grilla1.Cells[1,t];
+    DtsObjetos.FieldValues['NroIntimacion']:=grilla1.Cells[2,t];
+    DtsObjetos.FieldValues['TotalDeuda']:=grilla1.Cells[4,t];
+    DtsObjetos.FieldValues['Contribuyente']:=grilla1.Cells[5,t];
+    DtsObjetos.FieldValues['EstadoIntimacion']:=grilla1.Cells[3,t];
+    DtsObjetos.Post;
+    y:=y+1;
+   end;
+  except
+    on E: Exception do EnviarLog(Self.Caption, E.Message);
+  end;
+  //Imprimiendo
+  try
+   ReporteRst:=TfrxReport.Create(nil);
+   frxDB1:=TfrxDBDataset.Create(nil);
+   frxDB1.DataSet:=DtsObjetos;
+   frxDB1.UserName:='frxDBDataset1';
+   ReporteRst.DataSets.Add(frxDB1);
+   ReporteRst.LoadFromFile(Modulo2.Sistema.Path_todo + '\Reportes\Con_Intimaciones.fr3');
+   TfrxPictureView(ReporteRst.FindObject('Logo1')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\LogoM2.jpg');
+   TfrxPictureView(ReporteRst.FindObject('Logo2')).Picture.LoadFromFile(Modulo2.Sistema.Path_todo + '\Imagenes\logoformosa.jpg');
+   ReporteRst.Variables['LugarFecha'] := QuotedStr('FORMOSA, ' + FechaToStr(FechaAct,'DDMMAAAA'));
+   ReporteRst.Variables['NroUsuario'] := QuotedStr(Modulo2.Usuario.UsuNro);
+   ReporteRst.ShowReport;
+  except
+   on E: Exception do EnviarLog(Self.Caption, 'Error en Reporte ' + E.Message);
+  end;
+  FreeAndNil(frxDB1);
+  FreeAndNil(ReporteRst);
+  FreeAndNil(DtsObjetos);
+ end;
+end;
+
+procedure TConsultas_Intimaciones.BORRAROBJETO1Click(Sender: TObject);
+begin
+   Panel1.Visible:=true;
+   edit1.Text:=elrub;
+   edit2.Text:=elobjeto;
+   edit3.Text:=elimporte;
+   motivo.SetFocus;
+end;
+
+procedure TConsultas_Intimaciones.Coloca1(nro:byte;valor:string);
+var t,b,y,a,p,u,gf:integer;
+    tx:string;
+    Cnx2:TADOConnection;
+begin
+ losllam:=0;
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+ if nro = 0 then begin
+  DataSet3.Close;
+  DataSet3.Connection:=Cnx2;
+  DataSet3.CommandText:='select NroLote,FechaLote,NombreUsuario,Usuario from Fn_LotesIntimacionContribuyentes (1)';
+  DataSet3.Open;
+  DataSet3.Connection:=nil;
+ end;
+ if nro = 1 then begin
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT EstadoIntimacion,Cantidad FROM Fn_IntimacionesDatosAgrupados (' + valor+ ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then begin
+   JvDBGrid1.Columns[0].Width:=120;
+   JvDBGrid1.Columns[1].Width:=60;
+  end;
+  DataSet2.Connection:=nil;
+ end;
+ if nro = 2 then begin
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=Cnx2;
+  CONTRIBUYENTE.CommandText:='SELECT Nrolote,case when NroLote = 1 then NroControl else NroIntimacion end as NroIntimacion '    //NroIntimacion,
+  + ',EstadoIntimacion,TotalDeuda,Contribuyente,NroDni,Barrio,Calle,Altura,Depto,Manzana,'
+  + 'Casa,Torre,Domicilio,ID,nrotelefono FROM Fn_IntimacionContribuyentesLotes (' + valor + ')';
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+    messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   for t:=1 to CONTRIBUYENTE.RecordCount do begin
+    CONTRIBUYENTE.RecNo:=t;
+    grilla1.RowCount:=t + 1;
+    grilla1.Cells[0,t]:=StrFill(IntToStr(t),2,'0','');
+    grilla1.Cells[1,t]:=CONTRIBUYENTE.FieldByName('Nrolote').AsString;
+    grilla1.Cells[2,t]:=CONTRIBUYENTE.FieldByName('NroIntimacion').AsString;
+    grilla1.Cells[3,t]:=CONTRIBUYENTE.FieldByName('EstadoIntimacion').AsString;
+    grilla1.Cells[4,t]:=CONTRIBUYENTE.FieldByName('TotalDeuda').AsString;
+    grilla1.Cells[5,t]:=CONTRIBUYENTE.FieldByName('Contribuyente').AsString;
+    grilla1.Cells[6,t]:=CONTRIBUYENTE.FieldByName('NroDni').AsString;
+    grilla1.Cells[7,t]:=CONTRIBUYENTE.FieldByName('Barrio').AsString;
+    grilla1.Cells[8,t]:=CONTRIBUYENTE.FieldByName('Calle').AsString;
+    grilla1.Cells[9,t]:=CONTRIBUYENTE.FieldByName('Altura').AsString;
+    grilla1.Cells[10,t]:=CONTRIBUYENTE.FieldByName('Depto').AsString;
+    grilla1.Cells[11,t]:=CONTRIBUYENTE.FieldByName('Manzana').AsString;
+    grilla1.Cells[12,t]:=CONTRIBUYENTE.FieldByName('Casa').AsString;
+    grilla1.Cells[13,t]:=CONTRIBUYENTE.FieldByName('Torre').AsString;
+    grilla1.Cells[14,t]:=CONTRIBUYENTE.FieldByName('Domicilio').AsString;
+    grilla1.Cells[15,t]:=CONTRIBUYENTE.FieldByName('ID').AsString;
+    grilla1.Cells[16,t]:=CONTRIBUYENTE.FieldByName('nrotelefono').AsString;
+   end;
+   Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(CONTRIBUYENTE.RecordCount);
+  end;
+  CONTRIBUYENTE.Connection:=nil;
+ end;
+ if nro = 3 then begin
+  DataSet1.Close;
+  DataSet1.Connection:=Cnx2;
+  DataSet1.CommandText:='SELECT IdIntimacionContribuyente,DetalleImpu as descripcion,CodigoObjeto,'
+  +'Capital,Interes,ImporteDeuda,ImportePagado,ImporteDeuda - ImportePagado as DeudaActual,PeriodoDeuda,id'
+  + ' FROM Fn_IntimacionContribuyenteObjetos (' + valor + ')';
+  DataSet1.Open;
+  if not Dataset1.IsEmpty  then begin
+   JvDBGrid2.Columns[0].Width:=60;
+   JvDBGrid2.Columns[1].Width:=300;
+   JvDBGrid2.Columns[2].Width:=80;
+   JvDBGrid2.Columns[3].Width:=80;
+   JvDBGrid2.Columns[4].Width:=80;
+   JvDBGrid2.Columns[5].Width:=80;
+   JvDBGrid2.Columns[6].Width:=80;
+   JvDBGrid2.Columns[7].Width:=80;
+   JvDBGrid2.Columns[8].Width:=250;
+   JvDBGrid2.Columns[9].Width:=80;
+  end;
+  DataSet1.Connection:=nil;
+  DataElim.Close;
+  DataElim.Connection:=Cnx2;
+  DataElim.CommandText:='SELECT Identificador,CodigoObjeto,IdSubRubro,DetalleImpu,'
+  +'Capital,Interes,ImporteDeuda,PeriodoDeuda,motivo,id,IdIntimacionContribuyente'
+  + ' FROM Fn_IntimacionContribuyenteObjetosEliminados (' + valor + ')';
+  DataElim.Open;
+  if not DataElim.IsEmpty  then begin
+   PopupMenu1.Items[0].Visible :=true;
+   DBGrid1.Columns[0].Width:=60;
+   DBGrid1.Columns[1].Width:=100;
+   DBGrid1.Columns[2].Width:=80;
+   DBGrid1.Columns[3].Width:=80;
+   DBGrid1.Columns[4].Width:=80;
+   DBGrid1.Columns[5].Width:=80;
+   DBGrid1.Columns[6].Width:=80;
+   DBGrid1.Columns[7].Width:=80;
+   DBGrid1.Columns[8].Width:=250;
+   DBGrid1.Columns[9].Width:=80;
+   DBGrid1.Columns[10].Width:=80;
+  end
+  else PopupMenu1.Items[0].Visible :=false;
+  DataElim.Connection:=nil;
+ end;
+ if nro=4 then begin
+  suma:=0;
+  grafico2.Series[0].Clear;
+  grafico2.BottomAxis.Maximum:=7;
+  grafico2.BottomAxis.Minimum:=0;
+  grafico2.Title.Text.Clear;
+  grafico2.BottomAxis.Title.Font.Size:=14;
+  grafico2.BottomAxis.Title.Caption:='Cantidades';
+  grafico2.LeftAxis.Title.Font.Size:=14;
+  grafico2.LeftAxis.Title.Caption:='Tipos Tramites';
+  grafico2.Title.Font.Size:=14;
+  grafico2.Title.Text.Add('Cantidad de Tramites');
+  DataAgrup.Close;
+  DataAgrup.Connection:=Cnx2;
+  DataAgrup.CommandText:='SELECT Rubros,CantidaObjetos,TotalDeuda FROM Fn_IntimacionLotesDatosAgrupados (' + valor + ')';
+  DataAgrup.Open;
+  if not DataAgrup.IsEmpty  then begin
+   for t:=1 to DataAgrup.RecordCount do begin
+    DataAgrup.RecNo:=t;
+    GrillaAgrup.RowCount:=t+1;
+    GrillaAgrup.Cells[0,t]:=DataAgrup.FieldByName('Rubros').AsString;
+    GrillaAgrup.Cells[1,t]:=DataAgrup.FieldByName('CantidaObjetos').AsString;
+    GrillaAgrup.Cells[2,t]:=DataAgrup.FieldByName('TotalDeuda').AsString;
+    grafico2.Series[0].Add(DataAgrup.Fields[1].AsFloat,inttostr(a),536870912);
+    suma := suma + DataAgrup.Fields[2].AsFloat;
+   end;
+   label11.Caption:= '$ ' + floattostr(suma);
+  end;
+  DataAgrup.Connection:=nil;
+ end;
+ if nro = 5 then begin
+  for p:=0 to grillatelef.ColCount-1 do
+   for u:=1 to grillatelef.RowCount-1 do grillatelef.Cells[p,u]:='';
+  grillatelef.RowCount:=2;
+  TELEFONOS.Close;
+  TELEFONOS.Connection:=Cnx2;
+  TELEFONOS.CommandText:='SELECT telefono FROM [SeguridadWEB].[dbo].[FN_Contribuyente_Telefonos] '
+  +'(' + eldni +',' + idlote + ') where telefono <> '''' and telefono is not null';
+  TELEFONOS.Open;
+  if TELEFONOS.IsEmpty then begin
+   // messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   for t:=1 to TELEFONOS.RecordCount do begin
+    TELEFONOS.RecNo:=t;
+    grillatelef.RowCount:=t + 1;
+    grillatelef.Cells[0,t]:=TELEFONOS.FieldByName('telefono').AsString;
+   end;
+  end;
+  TELEFONOS.Connection:=nil;
+ end;
+ if nro = 6 then begin
+   for p:=0 to grillallamados.ColCount-1 do
+    for u:=1 to grillallamados.RowCount-1 do grillallamados.Cells[p,u]:='';
+  grillallamados.RowCount:=2;
+  LOSLLAMADOS.Close;
+  LOSLLAMADOS.Connection:=Cnx2;
+  LOSLLAMADOS.CommandText:='SELECT IdIntimacionContribuyente,convert(char(10),[Fecha],103) FechaLlamado,[Telefono] '
+  +',[Origen], case when [ConRespuesta] = 0 then ''NO'' else ''SI'' end ConRespuesta  ,[Observaciones],[NroUsuario], Id '
+  +' FROM [IntimacionesNew].[dbo].[IntimacionContribuyenteLlamados] where (IdIntimacionContribuyente= '+ idintima +')';
+  LOSLLAMADOS.Open;
+  if LOSLLAMADOS.IsEmpty then begin
+   // messagedlg('Contribuyente Inexistente...' + chr(13) + 'Por favor realice otra Busqueda..',mtWarning,[mbok,mbCancel],0);
+  end
+  else begin
+   for t:=1 to LOSLLAMADOS.RecordCount do begin
+    LOSLLAMADOS.RecNo:=t;
+    grillallamados.RowCount:=t + 1;
+    grillallamados.Cells[0,t]:=LOSLLAMADOS.FieldByName('IdIntimacionContribuyente').AsString;
+    grillallamados.Cells[1,t]:=LOSLLAMADOS.FieldByName('FechaLlamado').AsString;
+    grillallamados.Cells[2,t]:=LOSLLAMADOS.FieldByName('Telefono').AsString;
+    grillallamados.Cells[3,t]:=LOSLLAMADOS.FieldByName('Origen').AsString;
+    grillallamados.Cells[4,t]:=LOSLLAMADOS.FieldByName('ConRespuesta').AsString;
+    grillallamados.Cells[5,t]:=LOSLLAMADOS.FieldByName('Observaciones').AsString;
+    grillallamados.Cells[6,t]:=LOSLLAMADOS.FieldByName('NroUsuario').AsString;
+    grillallamados.Cells[7,t]:=LOSLLAMADOS.FieldByName('Id').AsString;
+   end;
+  end;
+  for gf:=1 to grillallamados.RowCount-1 do begin
+   if (grillallamados.Cells[4,gf] = 'NO') then begin
+    losllam:= losllam +1;
+   end;
+  end;
+  if losllam = 3 then elmensaje.Visible :=true
+   else  elmensaje.Visible :=false;
+  LOSLLAMADOS.Connection:=nil;
+ end;
+ if nro=7 then begin
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+  DataSet3.Close;
+  DataSet3.Connection:=Cnx2;
+  DataSet3.CommandText:='SELECT PeriodoDeuda FROM IntimacionContribuyenteObjeto  WHERE (iD = ' + valor + ')';
+  DataSet3.Open;
+  if not Dataset3.IsEmpty  then MEMO1.Text:=DataSet3.Fields[0].AsString
+   else MEMO1.Clear;
+  DataSet3.Connection:=nil;
+ end;
+ Cnx2.Close;
+ FreeAndNil(Cnx2);
+end;
+
+procedure TConsultas_Intimaciones.Edit4Change(Sender: TObject);
+begin
+if losllam = 3  then  guardallamados.Enabled :=false
+ else guardallamados.Enabled :=true;
+end;
+
+procedure TConsultas_Intimaciones.Edit4KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  if losllam = 3  THEN EDIT4.SetFocus
+   ELSE  guardallamados.SetFocus;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.Edit5Change(Sender: TObject);
+var t,p,u:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectInti;
+ if (length(trim(edit5.Text))>= 3) then begin
+  DataSet1.Close;
+  DataSet1.Connection:=Cnx2;
+  DataSet1.CommandText:='SELECT IdIntimacionContribuyente,DetalleImpu as descripcion,CodigoObjeto,'
+  +'Capital,Interes,ImporteDeuda,ImportePagado,ImporteDeuda - ImportePagado as DeudaActual,PeriodoDeuda,id'
+  + ' FROM Fn_IntimacionContribuyenteObjetos (' + idintima + ')'
+  + ' where CodigoObjeto like  ' + QuotedStr(trim(edit5.Text) + chr(37)) ;;
+  DataSet1.Open;
+  if not Dataset1.IsEmpty  then begin
+   JvDBGrid2.Columns[0].Width:=60;
+   JvDBGrid2.Columns[1].Width:=300;
+   JvDBGrid2.Columns[2].Width:=80;
+   JvDBGrid2.Columns[3].Width:=80;
+   JvDBGrid2.Columns[4].Width:=80;
+   JvDBGrid2.Columns[5].Width:=80;
+   JvDBGrid2.Columns[6].Width:=80;
+   JvDBGrid2.Columns[7].Width:=80;
+   JvDBGrid2.Columns[8].Width:=250;
+   JvDBGrid2.Columns[9].Width:=80;
+  end;
+  DataSet1.Connection:=nil;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.Edit5KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  buscaobj.SetFocus;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.ElimObjetoClick(Sender: TObject);
+var t,p,gf:integer;
+    pso:boolean;
+    txt1:widestring;
+    Cnx2:TADOConnection;
+begin
+ p:=messagedlg('Desea Realmente ELIMAR este Objeto ya guardado?',mtWarning,[mbok,mbCancel],0);
+ if p = 1 then begin
+  if TRIM(MOTIVO.Text) = '' then begin
+   messagedlg('ERROR Debe Ingresar un Motivo de Eliminacion..',mterror,[mbok],0);
+   motivo.SetFocus;
+  end
+  else begin
+   pso:=false;
+   try
+    Cnx2:=TADOConnection.Create(nil);
+    Cnx2.LoginPrompt:=false;
+    Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+    DataBaja:=TADODataSet.Create(nil);
+    DataBaja.Connection:=Cnx2;
+    DataBaja.CommandText:='EXEC SPB_ObjetosIntimacionesNew ' + trim(label8.Caption)
+    + ',' + trim(label9.Caption) + ',' + modulo2.Usuario.UsuNro  + ',' + chr(39) + trim(motivo.Text) + chr(39);
+    DataBaja.Open;
+    if DataBaja.Fields[0].AsString = 'OK' then begin
+     messagedlg('OBJETO ELIMINADO correctamente!',mtConfirmation,[mbok],0);
+     pso:=true;
+    end
+    else begin
+     messagedlg('Eror al ELIMINAR el Objeto, consulte con un Administrador...!',mtConfirmation,[mbok],0);
+    end;
+    DataBaja.Close;
+   except
+    on E: Exception do begin
+     EnviarLog(Self.Caption, E.Message);
+     EnviarLog(Self.Caption, Com1.CommandText);
+     messagedlg('ERROR al Guardar los datos',mterror,[mbok],0);
+    end;
+   end;
+   FreeAndNil(DataBaja);
+   Cnx2.Close;
+   FreeAndNil(Cnx2);
+   if pso then begin
+    MOTIVO.Clear;
+    Panel1.Visible:=false;
+    Coloca1(0,'');
+    coloca1(3,idintima);
+    PC1.ActivePage:=PC1.Pages[2];
+   end;
+  end;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.JvBitBtn1Click(Sender: TObject);
+begin
+ MOTIVO.Clear;
+ Panel1.Visible:=false;
+end;
+
+procedure TConsultas_Intimaciones.JvBitBtn2Click(Sender: TObject);
+ VAR  Cnx2:TADOConnection;
+begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  try
+   Com1.CommandText:= 'UPDATE [IntimacionesNew].[dbo].[IntimacionContribuyenteObjeto] '
+   + ' SET [PeriodoDeuda] = ' + chr(39) + trim(memo1.Text) + chr(39)
+   + ' WHERE [id] = ' + label32.Caption  ;
+   Com1.Execute;
+   messagedlg('Periodos del Objeto seleccionado Modificado correctamente!',mtConfirmation,[mbok],0);
+   MEMO1.Clear;
+   Panel2.Visible:=false;
+   coloca1(3,trim(grilla1.Cells[15,grilla1.Row]));
+  except
+   EnviarLog(self.Caption,Com1.CommandText);
+   messagedlg('ERROR al Modificar el periodo del Objeto....',mterror,[mbok],0);
+   Panel2.Visible:=TRUE;
+  end;
+end;
+
+procedure TConsultas_Intimaciones.JvBitBtn3Click(Sender: TObject);
+begin
+ Panel2.Visible:=false;
+end;
+
+procedure TConsultas_Intimaciones.guardallamadosClick(Sender: TObject);
+VAR  Cnx2:TADOConnection;
+  tx,valcuit:string;
+begin
+ if trim(l7.Text) = '' then  begin
+   messagedlg('ERROR al Guardar el llamado por No existir un Nro de Telefono ingresado',mterror,[mbok],0);
+   l7.Text;
+ end
+ else begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=modulo2.Sistema.ConectInti;
+  Com1:=TADOCommand.Create(nil);
+  Com1.Connection:=Cnx2;
+  if modif=false then begin  /// se guarda el llamado
+   try
+    if L10.Checked then tx:='1'
+     else tx:='0';
+    Com1.CommandText:='SPA_IntimacionContribuyenteLlamados ' + idintima
+    + ' , ' + chr(39) + trim(l3.Text) + chr(39)
+    + ' , ' + chr(39) + trim(l7.Text) + chr(39)
+    + ' , ' + chr(39) + trim(origen.Text) + chr(39)
+    + ' , ' + tx
+    + ' , ' + chr(39) + trim(edit4.Text) + chr(39)
+    + ' , ' + modulo2.Usuario.UsuNro ;
+    Com1.Execute;
+    messagedlg('Llamado Guardado correctamente!',mtConfirmation,[mbok],0);
+    coloca1(6,'');
+    l7.Clear;
+    origen.ItemIndex :=0;
+    l10.Checked :=false;
+    edit4.Clear;
+    guardallamados.Enabled :=false;
+   except
+     EnviarLog(self.Caption,Com1.CommandText);
+     messagedlg('ERROR al Guardar el llamado',mterror,[mbok],0);
+   end;
+  end
+  else begin  /// se modifica el llamado
+   try
+    if L10.Checked then tx:='1'
+     else tx:='0';
+    Com1.CommandText:= 'UPDATE [IntimacionesNew].[dbo].[IntimacionContribuyenteLlamados] '
+    + ' SET [Fecha] = ' + chr(39) + trim(l3.Text) + chr(39)
+    + ',[Telefono] = ' + chr(39) + trim(l7.Text) + chr(39)
+    + ',[Origen] = ' + chr(39) + trim(origen.Text) + chr(39)
+    + ',[ConRespuesta] = ' + tx
+    + ',[Observaciones] = ' + chr(39) + trim(edit4.Text) + chr(39)
+    + ',[NroUsuario] = ' + modulo2.Usuario.UsuNro
+    + ' WHERE [IdIntimacionContribuyente] = ' + idllamado  ;
+    Com1.Execute;
+    messagedlg('Llamado Modificado correctamente!',mtConfirmation,[mbok],0);
+    coloca1(6,'');
+    l7.Clear;
+    origen.ItemIndex :=0;
+    l10.Checked :=false;
+    edit4.Clear;
+    guardallamados.Enabled :=false;
+   except
+     EnviarLog(self.Caption,Com1.CommandText);
+     messagedlg('ERROR al Modificar el llamado',mterror,[mbok],0);
+   end;
+  end;
+   FreeAndNil(Com1);
+ end;
+end;
+
+procedure TConsultas_Intimaciones.JvDBGrid2CellClick(Column: TColumn);
+begin
+ elrub:=trim(DataSet1.Fields[1].AsString);
+ elobjeto:=trim(DataSet1.Fields[2].AsString);
+ elimporte:='$ ' + trim(DataSet1.Fields[5].AsString);
+ label8.Caption:=trim(DataSet1.Fields[0].AsString);
+ label9.Caption:= trim(DataSet1.Fields[9].AsString);
+ label32.Caption:= trim(DataSet1.Fields[9].AsString);
+ coloca1(7,trim(DataSet1.Fields[9].AsString));
+ Barra1.Panels[3].Text:='Id Objeto: ' + DataSet1.Fields[7].AsString;
+ if modiperi.Visible =true then modiperi.SetFocus
+  else buscaobj.SetFocus;
+end;
+
+procedure TConsultas_Intimaciones.JvDBGrid3CellClick(Column: TColumn);
+begin
+ coloca1(2,DataSet3.Fields[0].AsString);
+ coloca1(1,DataSet3.Fields[0].AsString);
+ coloca1(4,DataSet3.Fields[0].AsString);
+ idlote:=trim(DataSet3.Fields[0].AsString);
+ fechalote:=trim(DataSet3.Fields[1].AsString);
+ PC1.ActivePage:=PC1.Pages[1];
+end;
+
+procedure TConsultas_Intimaciones.L10KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  edit4.SetFocus;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.L3Change(Sender: TObject);
+begin
+if losllam = 3  then  guardallamados.Enabled :=false
+ else guardallamados.Enabled :=true;
+end;
+
+procedure TConsultas_Intimaciones.L3Exit(Sender: TObject);
+var fec:Tdatetime;
+begin
+  try
+   fec:=strtodate(trim(L3.Text));
+  except
+   messagedlg('La fecha del Llamado es Erronea!!',mterror,[mbok],0);
+   L3.SetFocus;
+  end;
+end;
+
+procedure TConsultas_Intimaciones.L3KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  L7.SetFocus;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.L7Change(Sender: TObject);
+begin
+if losllam = 3  then  guardallamados.Enabled :=false
+ else guardallamados.Enabled :=true;
+end;
+
+procedure TConsultas_Intimaciones.L7Exit(Sender: TObject);
+begin
+ if Length(l7.Text) < 6 then begin
+  messagedlg('ERROR!! Este Campo esta incompleto, por favor verificar que contenga al menos 6 caracteress...',mtwarning,[mbok],0);
+  l7.SetFocus;
+ end
+ ELSE origen.SetFocus;
+end;
+
+procedure TConsultas_Intimaciones.L7KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  origen.SetFocus;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.modiperiClick(Sender: TObject);
+begin
+  Panel2.Visible:=TRUE;
+  MEMO1.SetFocus;
+end;
+
+procedure TConsultas_Intimaciones.MOTIVOExit(Sender: TObject);
+begin
+ if trim(motivo.Text) = '' then begin
+  messagedlg('Error!! Debe ingresar un Motivo de la Eliminación de esta Intimación',mterror,[mbok],0);
+  motivo.SetFocus;
+ end
+ ELSE ELIMOBJETO.SetFocus;
+end;
+
+procedure TConsultas_Intimaciones.MOTIVOKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  ELIMOBJETO.SetFocus;
+ end
+ else begin
+  if (StrScan('0123456789abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ ',Key) <> nil) or (Key = Char(VK_BACK) ) then
+   else Key := #0;
+ end;
+end;
+
+procedure TConsultas_Intimaciones.OrigenChange(Sender: TObject);
+begin
+if losllam = 3  then  guardallamados.Enabled :=false
+ else guardallamados.Enabled :=true;
+end;
+
+procedure TConsultas_Intimaciones.OrigenExit(Sender: TObject);
+begin
+if origen.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione un Origen de Domicilio válido',mterror,[mbok],0);
+  origen.SetFocus;
+end;
+end;
+
+procedure TConsultas_Intimaciones.OrigenKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  L10.SetFocus;
+end;
+end;
+
+procedure TConsultas_Intimaciones.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TConsultas_Intimaciones.Timer1Timer(Sender: TObject);
+begin
+  Label10.visible := not (Label10.visible);
+  Label10.Repaint;
+end;
+
+end.

@@ -1,0 +1,716 @@
+unit BoletaDeuda_Bloqueo;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, DB, ADODB, Mask, Buttons, Grids, DBGrids,
+  ExtCtrls, StrUtils, JvExDBGrids, JvDBGrid, JvgGroupBox, JvExButtons, JvBitBtn,
+  ToolWin, JvExGrids, JvStringGrid, Menus, ImgList, JvDataEmbedded,Objetos,
+  JvComponentBase, JvEmbeddedForms, JvExStdCtrls, JvGroupBox, frxClass,DBClient, MidasLib ,
+  frxDBSet, RzTabs, JvExExtCtrls, JvExtComponent, JvCaptionPanel;
+
+type THackStringGrid = class(TJvStringGrid);
+type
+  TBolDeuda_Bloqueo = class(TForm)
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    confirma: TJvBitBtn;
+    ToolButton3: TToolButton;
+    SALE: TJvBitBtn;
+    Barra1: TStatusBar;
+    FormularioEmb: TJvEmbeddedFormLink;
+    frxReport2: TfrxReport;
+    PC1: TRzPageControl;
+    TabSheet1: TRzTabSheet;
+    ImageList2: TImageList;
+    Label7: TLabel;
+    PopupMenu1: TPopupMenu;
+    SeleccionarTodos1: TMenuItem;
+    grilla1: TStringGrid;
+    EliminarSeleccin1: TMenuItem;
+    JvgGroupBox1: TJvgGroupBox;
+    Label1: TLabel;
+    filtrar: TJvBitBtn;
+    Edit3: TEdit;
+    Panel1: TPanel;
+    Aceptar: TJvBitBtn;
+    cancela: TJvBitBtn;
+    TabSheet2: TRzTabSheet;
+    grilla2: TStringGrid;
+    TabSheet3: TRzTabSheet;
+    JvDBGrid3: TJvDBGrid;
+    DataSource1: TDataSource;
+    PANEL11: TJvCaptionPanel;
+    ACEPTAR1: TJvBitBtn;
+    CANCELA1: TJvBitBtn;
+    Label6: TLabel;
+    L3: TMaskEdit;
+    Label2: TLabel;
+    expte: TEdit;
+    Label9: TLabel;
+    L4: TComboBox;
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure confirmaClick(Sender: TObject);
+    procedure Coloca1(nro:byte;valor:string);
+    procedure grilla1SelectCell(Sender: TObject; ACol, ARow: Integer;
+      var CanSelect: Boolean);
+    procedure grilla1Click(Sender: TObject);
+    procedure SeleccionarTodos1Click(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    function VerificaGrillaDeuda(grilla:string):boolean;
+    function VerificaGrilla(grilla:string):boolean;
+    procedure EliminarSeleccin1Click(Sender: TObject);
+    procedure CargaCombos(nro:byte);
+    procedure L4Exit(Sender: TObject);
+    procedure L4KeyPress(Sender: TObject; var Key: Char);
+    procedure Edit3Exit(Sender: TObject);
+    procedure Edit3KeyPress(Sender: TObject; var Key: Char);
+    procedure filtrarClick(Sender: TObject);
+    procedure cancelaClick(Sender: TObject);
+    procedure AceptarClick(Sender: TObject);
+    procedure L3Exit(Sender: TObject);
+    procedure L3KeyPress(Sender: TObject; var Key: Char);
+    procedure expteExit(Sender: TObject);
+    procedure expteKeyPress(Sender: TObject; var Key: Char);
+    procedure grilla2Click(Sender: TObject);
+    procedure PC1Change(Sender: TObject);
+    procedure JvDBGrid3CellClick(Column: TColumn);
+    procedure VerArea(nro:byte);
+    procedure ACEPTAR1Click(Sender: TObject);
+    procedure CANCELA1Click(Sender: TObject);
+  private
+    CONTRIBUYENTE,LOSOBJETOS,DataSet3,DataSet4,DataSet2:TADODataSet;{ Private declarations }
+    fecha,respuesta,laidcuenta,dato,FechaAct,elcontrib,Nrousu,
+    eldni,tipocta,lacuenta,lasucur,elbank,elidcontrib,elcuit,Filtro,NroImp,ellote:string;
+    DtsCuotas:TClientDataSet;
+    Com1:TADOCommand;
+    cants,cantis,cant:integer;
+  public
+    Objetos:TObjetos;
+    sumad,suma:double;
+    selecfila:integer;
+    observ:string;
+    gh:boolean;{ Public declarations }
+  end;
+
+var
+  BolDeuda_Bloqueo: TBolDeuda_Bloqueo;
+
+implementation
+
+uses Unidad ,modulo;
+
+{$R *.dfm}
+
+procedure TBolDeuda_Bloqueo.Edit3Exit(Sender: TObject);
+begin
+  if (trim(Edit3.Text) = '0') then begin
+    messagedlg('Error!! Ingrese un Valor válido',mterror,[mbok],0);
+    Edit3.SetFocus;
+  end;
+end;
+
+procedure TBolDeuda_Bloqueo.Edit3KeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #13 then begin
+    Key := #0;
+    filtrar.SetFocus;
+  end
+  else begin
+    if ( StrScan('0123456789',Key) <> nil ) or  ( Key = Char(VK_BACK) ) then
+     else Key := #0;
+  end;
+end;
+
+procedure TBolDeuda_Bloqueo.EliminarSeleccin1Click(Sender: TObject);
+var b,t:integer;
+begin
+for b:=0 to grilla1.ColCount-1 do
+   for t:=1 to grilla1.RowCount-1 do  grilla1.Cells[1,t]:='';
+   verificagrilladeuda('grilla1');
+end;
+
+procedure TBolDeuda_Bloqueo.expteExit(Sender: TObject);
+begin
+   //if trim(expte.Text ) = '' then begin
+    //messagedlg('El Nro de Expte es Erroneo!!',mterror,[mbok],0);
+    //expte.SetFocus;
+   //end
+   //else begin
+    observ:='Fecha de Bloqueo ' + trim(l3.Text) +  ' S/Expte: ' + trim(expte.Text) ;
+   //end;
+end;
+
+procedure TBolDeuda_Bloqueo.VerArea(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+  Cnx2:=TADOConnection.Create(nil);
+  Cnx2.LoginPrompt:=false;
+  Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;
+  if nro=1 then begin
+   DataSet2.Close;
+   DataSet2.Connection:=Cnx2;
+   DataSet2.CommandText:='SELECT NroUsuario FROM Fn_DesbloqueoBDAdmin  (' + modulo2.Usuario.UsuNro + ')';
+   DataSet2.Open;
+   if not Dataset2.IsEmpty  then Nrousu:=DataSet2.Fields[0].AsString
+    else Nrousu:='0';
+   DataSet2.Connection:=nil;
+  end;
+  Cnx2.Close;
+  FreeAndNil(Cnx2);
+end;
+
+procedure TBolDeuda_Bloqueo.expteKeyPress(Sender: TObject; var Key: Char);
+begin
+  if key = #13 then begin
+    Key := #0;
+    aceptar.SetFocus;
+  end;
+end;
+
+procedure TBolDeuda_Bloqueo.filtrarClick(Sender: TObject);
+var p,u,gf:integer;
+begin
+  PC1.ActivePage:=PC1.Pages[1];
+  Dato:='(dbo.IntimacionLote.NroLote = ' + trim(edit3.Text) + ')';
+  Coloca1(2,dato);
+  Coloca1(1,dato);
+end;
+
+procedure TBolDeuda_Bloqueo.FormActivate(Sender: TObject);
+begin
+if not (gh) then begin
+  gh:=true;
+  FechaAct:=LeftStr(Fec_System(),10);
+  PC1.ActivePage:=PC1.Pages[0];
+  grilla1.Cells[0,0]:='Orden';            grilla1.Cells[1,0]:='Selec';
+  grilla1.Cells[2,0]:='NroBoletoDeuda';   grilla1.Cells[3,0]:='Contribuyente';
+  grilla1.Cells[4,0]:='NroDni';           grilla1.Cells[5,0]:='Barrio';
+  grilla1.Cells[6,0]:='Calle';            grilla1.Cells[7,0]:='Altura';
+  grilla1.Cells[8,0]:='Depto.';           grilla1.Cells[9,0]:='Manzana';
+  grilla1.Cells[10,0]:='Casa';            grilla1.Cells[11,0]:='Torre';
+  grilla1.Cells[12,0]:='Domicilio';       grilla1.Cells[13,0]:='ImporteDeuda';
+  grilla1.Cells[14,0]:='Estado';          grilla1.Cells[15,0]:='NroLote';
+  grilla1.Cells[16,0]:='Id';
+
+  grilla2.Cells[0,0]:='Orden';            grilla2.Cells[1,0]:='Selec';
+  grilla2.Cells[2,0]:='NroBoletoDeuda';   grilla2.Cells[3,0]:='Contribuyente';
+  grilla2.Cells[4,0]:='NroDni';           grilla2.Cells[5,0]:='Barrio';
+  grilla2.Cells[6,0]:='Calle';            grilla2.Cells[7,0]:='Altura';
+  grilla2.Cells[8,0]:='Depto.';           grilla2.Cells[9,0]:='Manzana';
+  grilla2.Cells[10,0]:='Casa';            grilla2.Cells[11,0]:='Torre';
+  grilla2.Cells[12,0]:='Domicilio';       grilla2.Cells[13,0]:='ImporteDeuda';
+  grilla2.Cells[14,0]:='Estado';          grilla2.Cells[15,0]:='NroLote';
+  grilla2.Cells[16,0]:='Id';
+
+  CargaCombos(1);
+  l3.Visible:=false;
+  label6.Visible:=false;
+  l3.Text:= FechaAct;
+  panel11.Visible:=false;
+  confirma.Enabled :=false;
+  Coloca1(0,'1');
+  VerArea(1);
+  if Nrousu <> '' then   begin
+    grilla2.Enabled :=true;
+  end
+  else begin
+    grilla2.Enabled :=false;
+  end;
+
+end;
+end;
+
+procedure TBolDeuda_Bloqueo.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+FreeAndNil(CONTRIBUYENTE);
+FreeAndNil(LOSOBJETOS);
+FreeAndNil(DataSet3);
+FreeAndNil(Self);
+end;
+
+procedure TBolDeuda_Bloqueo.FormCreate(Sender: TObject);
+begin
+CONTRIBUYENTE:=TADODataSet.Create(nil);
+LOSOBJETOS:=TADODataSet.Create(nil);
+DataSet3:=TADODataSet.Create(nil);
+DataSet2:=TADODataSet.Create(nil);
+DataSource1.DataSet:=DataSet3;
+end;
+
+procedure TBolDeuda_Bloqueo.CargaCombos(nro:byte);
+begin
+  if nro=1 then Modulo2.CargaCombo(L4,'SELECT DetalleEstado,NroEstado FROM TiposEstados where nroestado > 1 '
+  + ' and nroestado=11',modulo2.Sistema.ConectInti,false);
+end;
+
+procedure TBolDeuda_Bloqueo.CANCELA1Click(Sender: TObject);
+begin
+  messagedlg('Ud. Ha Cancelado la Opcion de Asignar Estados a las Intimaciones seleccionadas',mtInformation,[mbok],0);
+  panel11.Visible:=false;
+  EDIT3.SetFocus;
+end;
+
+function TBolDeuda_Bloqueo.VerificaGrillaDeuda(grilla:string):boolean;
+var j,a:integer;
+begin
+ selecfila:=0;
+ Result:=true;
+ for j:=1 to grilla1.RowCount-1 do begin
+  if trim(grilla1.Cells[1,j])='X' then begin
+    selecfila:=selecfila+1;
+    Result:=false;
+    break;
+  end;
+ end;
+ if selecfila=0 then  confirma.Enabled :=false
+  else confirma.Enabled :=true;
+ end;
+
+function TBolDeuda_Bloqueo.VerificaGrilla(grilla:string):boolean;
+var j,a:integer;
+begin
+ selecfila:=0;
+ Result:=true;
+ for j:=1 to grilla2.RowCount-1 do begin
+  if trim(grilla2.Cells[1,j])='X' then begin
+    selecfila:=selecfila+1;
+    Result:=false;
+    break;
+  end;
+ end;
+ if selecfila=0 then  confirma.Enabled :=false
+  else confirma.Enabled :=true;
+end;
+
+procedure TBolDeuda_Bloqueo.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  case key of
+   VK_F4 : begin
+     aceptar.Click;
+   end;
+   VK_F3 : begin
+     filtrar.Click;
+   end;
+   VK_F7 : begin
+    if selecfila> 0 then confirma.Click;
+   end;
+  end;
+end;
+
+procedure TBolDeuda_Bloqueo.confirmaClick(Sender: TObject);
+var t,y,gf,p,u:integer;
+    Com2:TADOCommand;
+    texto:string;
+begin
+ if pc1.ActivePageIndex=1 then begin
+  panel11.Visible:=true;
+  l4.SetFocus;
+ end;
+ if pc1.ActivePageIndex=2 then begin
+  t:=messagedlg('Confirma el Cambio de Estados para las Boletas de Deudas seleccionadas?',mtWarning,[mbok,mbCancel],0);
+  if t = 1 then begin
+   if selecfila = 0 then begin
+    messagedlg('            I M P O S I B L E   C O N F I R M A R ' + chr(13)
+    + 'porque no existe ninguna Intimación Seleccionada ',mtError,[mbok],0);
+    panel11.Visible:=false;
+    grilla2.SetFocus;
+   end
+   else begin
+    Com2:=TADOCommand.Create(nil);
+    Com2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+     texto:='Desbloqueo por Boleto de Deuda p/Sistema';
+     for gf:=1 to grilla2.RowCount-1 do begin
+      if (grilla2.Cells[1,gf] = 'X') then begin
+       try
+        Com2.CommandText :='SPB_BloqueosDesdeBoletaDeuda ' + trim(grilla2.Cells[15,gf])
+        + ' , ' + trim(grilla2.Cells[2,gf])
+        + ' , ' + chr(39) + texto + chr(39)
+        + ' , ' + modulo2.Usuario.UsuNro;
+        Com2.Execute;
+       except
+        on E: Exception do begin
+          EnviarLog(Self.Caption, E.Message);
+          EnviarLog(Self.Caption, Com2.CommandText);
+        end;
+       end;
+      end;
+     end;
+      messagedlg('Estados Guardados Correctamente!!',mtConfirmation,[mbok],0);
+      LOSOBJETOS.Close;
+      FreeAndNil(Com2);
+   end;
+  end;
+  filtrar.Click;
+ end;
+end;
+
+procedure TBolDeuda_Bloqueo.grilla1Click(Sender: TObject);
+begin
+ if grilla1.Cells[0,grilla1.Row] <> '' then begin
+  if trim(grilla1.Cells[1,grilla1.Row])='' then grilla1.Cells[1,grilla1.Row]:='X'
+   else grilla1.Cells[1,grilla1.Row]:='';
+   verificagrilladeuda('grilla1');
+ end;
+end;
+
+///// aca solo habilito la columna 1
+procedure TBolDeuda_Bloqueo.grilla1SelectCell(Sender: TObject; ACol, ARow: Integer;
+  var CanSelect: Boolean);
+begin
+  if (ACol=2) then grilla1.Options := grilla1.Options + [goEditing]
+   else grilla1.Options := grilla1.Options - [goEditing];
+end;
+
+procedure TBolDeuda_Bloqueo.grilla2Click(Sender: TObject);
+begin
+ if grilla2.Cells[0,grilla2.Row] <> '' then begin
+   if trim(grilla2.Cells[1,grilla2.Row])='' then grilla2.Cells[1,grilla2.Row]:='X'
+    else grilla2.Cells[1,grilla2.Row]:='';
+    verificagrilla('grilla2');
+ end;
+end;
+
+procedure TBolDeuda_Bloqueo.ACEPTAR1Click(Sender: TObject);
+var t,y,gf,p,u:integer;
+    Com1,Com2:TADOCommand;
+begin
+t:=messagedlg('Confirma el Cambio de Estados para las Boletas de Deudas seleccionadas?',mtWarning,[mbok,mbCancel],0);
+if t = 1 then begin
+ if selecfila = 0 then begin
+   messagedlg('            I M P O S I B L E   C O N F I R M A R ' + chr(13)
+   + 'porque no existe ninguna Boleta de Deuda Seleccionada ',mtError,[mbok],0);
+   panel11.Visible:=false;
+   grilla1.SetFocus;
+ end
+ else begin
+  Com1:=TADOCommand.Create(nil);
+  Com1.ConnectionString:=Modulo2.Sistema.ConectInti;
+  Com2:=TADOCommand.Create(nil);
+  Com2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+  for gf:=1 to grilla1.RowCount-1 do begin
+   if (grilla1.Cells[1,gf] = 'X') then begin
+    try
+     Com1.CommandText :='UPDATE IntimacionContribuyenteEstado SET Activo=0 '
+     + ' where (IdIntimacionContribuyente='+ trim(grilla1.Cells[16,gf]) + ')';
+     Com1.Execute;
+     Com1.CommandText :='SPA_IntimacionContribuyenteEstado ' + trim(grilla1.Cells[16,gf])
+     + ' , ' + TComboClase(L4.Items.Objects[L4.ItemIndex]).Param1
+     + ' , 1 , '  + modulo2.Usuario.UsuNro
+     + ' , ' + chr(39) + observ + chr(39);
+     Com1.Execute;
+     Com2.CommandText :='SPA_BloqueosDesdeBoletaDeuda ' + trim(grilla1.Cells[15,gf])
+     + ' , ' + trim(grilla1.Cells[2,gf])
+     + ' , ' + modulo2.Usuario.UsuNro;
+     Com2.Execute;
+    except
+    on E: Exception do begin
+     EnviarLog(Self.Caption, E.Message);
+     EnviarLog(Self.Caption, Com1.CommandText);
+     EnviarLog(Self.Caption, E.Message);
+     EnviarLog(Self.Caption, Com2.CommandText);
+    end;
+    end;
+   end;
+  end;
+  messagedlg('Estados Guardados Correctamente!!',mtConfirmation,[mbok],0);
+  panel11.Visible:=false;
+  label6.Visible:=false;
+  label2.Visible:=false;
+  l3.Visible:=false;
+  expte.Visible:=false;
+  CONTRIBUYENTE.Close;
+  FreeAndNil(Com1);
+  FreeAndNil(Com2);
+ end;
+ filtrar.Click;
+end;
+end;
+
+procedure TBolDeuda_Bloqueo.JvDBGrid3CellClick(Column: TColumn);
+begin
+ ellote:=trim(DataSet3.Fields[0].AsString);
+ edit3.Text :=ellote;
+ filtrar.Click;
+ PC1.ActivePage:=PC1.Pages[1];
+end;
+
+procedure TBolDeuda_Bloqueo.AceptarClick(Sender: TObject);
+var t,y,gf,p,u:integer;
+    Com1,Com2:TADOCommand;
+begin
+t:=messagedlg('Confirma el Cambio de Estados para las Boletas de Deudas seleccionadas?',mtWarning,[mbok,mbCancel],0);
+if t = 1 then begin
+ if selecfila = 0 then begin
+   messagedlg('            I M P O S I B L E   C O N F I R M A R ' + chr(13)
+   + 'porque no existe ninguna Boleta de Deuda Seleccionada ',mtError,[mbok],0);
+   panel11.Visible:=false;
+   grilla1.SetFocus;
+ end
+ else begin
+  Com1:=TADOCommand.Create(nil);
+  Com1.ConnectionString:=Modulo2.Sistema.ConectInti;
+  Com2:=TADOCommand.Create(nil);
+  Com2.ConnectionString:=Modulo2.Sistema.ConectUsu;
+  for gf:=1 to grilla1.RowCount-1 do begin
+   if (grilla1.Cells[1,gf] = 'X') then begin
+    try
+     Com1.CommandText :='UPDATE IntimacionContribuyenteEstado SET Activo=0 '
+     + ' where (IdIntimacionContribuyente='+ trim(grilla1.Cells[16,gf]) + ')';
+     Com1.Execute;
+     Com1.CommandText :='SPA_IntimacionContribuyenteEstado ' + trim(grilla1.Cells[16,gf])
+     + ' , ' + TComboClase(L4.Items.Objects[L4.ItemIndex]).Param1
+     + ' , 1 , '  + modulo2.Usuario.UsuNro
+     + ' , ' + chr(39) + observ + chr(39);
+     Com1.Execute;
+     Com2.CommandText :='SPA_BloqueosDesdeBoletaDeuda ' + trim(grilla1.Cells[15,gf])
+     + ' , ' + trim(grilla1.Cells[2,gf])
+     + ' , ' + modulo2.Usuario.UsuNro;
+     Com2.Execute;
+    except
+    on E: Exception do begin
+     EnviarLog(Self.Caption, E.Message);
+     EnviarLog(Self.Caption, Com1.CommandText);
+     EnviarLog(Self.Caption, E.Message);
+     EnviarLog(Self.Caption, Com2.CommandText);
+    end;
+    end;
+   end;
+  end;
+  messagedlg('Estados Guardados Correctamente!!',mtConfirmation,[mbok],0);
+  panel11.Visible:=false;
+  label6.Visible:=false;
+  label2.Visible:=false;
+  l3.Visible:=false;
+  expte.Visible:=false;
+  CONTRIBUYENTE.Close;
+  FreeAndNil(Com1);
+  FreeAndNil(Com2);
+ end;
+ filtrar.Click;
+end;
+end;
+
+procedure TBolDeuda_Bloqueo.cancelaClick(Sender: TObject);
+begin
+  messagedlg('Ud. Ha Cancelado la Opcion de Asignar Estados a las Intimaciones seleccionadas',mtInformation,[mbok],0);
+  panel11.Visible:=false;
+  EDIT3.SetFocus;
+end;
+
+procedure TBolDeuda_Bloqueo.L3Exit(Sender: TObject);
+var fec:Tdatetime;
+begin
+  try
+   fec:=strtodate(trim(L3.Text));
+   expte.SetFocus;
+   observ:='Fecha de Bloque ' + trim(l3.Text) +  ' S/Expte: ' + trim(expte.Text) ;
+  except
+    messagedlg('La fecha es Erronea!!',mterror,[mbok],0);
+    L3.SetFocus;
+  end;
+end;
+
+procedure TBolDeuda_Bloqueo.L3KeyPress(Sender: TObject; var Key: Char);
+begin
+if key = #13 then begin
+  Key := #0;
+  expte.SetFocus;
+end;
+end;
+
+procedure TBolDeuda_Bloqueo.L4Exit(Sender: TObject);
+begin
+ if L4.ItemIndex < 0 then begin
+  messagedlg('Error!! Seleccione una opción válida',mterror,[mbok],0);
+  L4.SetFocus;
+ end
+ else begin
+  if l4.ItemIndex = 0 then begin
+   l3.Visible:=true;
+   label6.Visible:=true;
+   expte.Visible:=true;
+   label2.Visible:=true;
+   l3.SetFocus;
+  end
+  else begin
+   l3.Visible:=false;
+   label6.Visible:=false;
+   expte.Visible:=false;
+   label2.Visible:=false;
+   aceptar.SetFocus;
+  end;
+ end;
+end;
+
+procedure TBolDeuda_Bloqueo.L4KeyPress(Sender: TObject; var Key: Char);
+begin
+ if key = #13 then begin
+  Key := #0;
+  if l4.ItemIndex = 0 then begin
+   l3.Visible:=true;
+   label6.Visible:=true;
+   expte.Visible:=true;
+   label2.Visible:=true;
+   l3.SetFocus;
+  end
+  else begin
+   l3.Visible:=false;
+   label6.Visible:=false;
+   expte.Visible:=false;
+   label2.Visible:=false;
+   aceptar.SetFocus;
+  end;
+ end;
+end;
+
+procedure TBolDeuda_Bloqueo.PC1Change(Sender: TObject);
+begin
+if pc1.ActivePageIndex=1 then begin
+ confirma.Caption := 'F7 - BLOQUEAR';
+end;
+if pc1.ActivePageIndex=2 then begin
+ confirma.Caption := 'F7 - DESBLOQUEAR';
+end;
+end;
+
+procedure TBolDeuda_Bloqueo.Coloca1(nro:byte;valor:string);
+var t,b,y,p,u:integer;
+    tx:string;
+begin
+sumad:=0;
+try
+ Modulo2.ObjConexion:=TADOConnection.Create(nil);
+ Modulo2.ObjConexion.LoginPrompt:=false;
+ Modulo2.ObjConexion.ConnectionString:=modulo2.Sistema.ConectInti;
+ if nro = 0 then begin
+  DataSet3.Close;
+  DataSet3.Connection:=modulo2.ObjConexion;
+  DataSet3.CommandText:='select NroLote,FechaLote,NombreUsuario,Usuario,NroDisposicion,IdIntimacionlote,Confirmado '
+  + ' from Fn_LotesBoletoDeudaContribuyentes ('+  valor +')';
+  DataSet3.Open;
+  DataSet3.Connection:=nil;
+ end;
+ if nro = 1 then begin
+  LOSOBJETOS.Close;
+  LOSOBJETOS.Connection:=modulo2.ObjConexion;
+  LOSOBJETOS.CommandText:='SELECT dbo.IntimacionContribuyente.NroControl,dbo.IntimacionContribuyente.IdContribuyente,'
+  + 'dbo.IntimacionContribuyente.Contribuyente, dbo.IntimacionContribuyente.NroDni, dbo.IntimacionContribuyente.Barrio,'
+  + 'dbo.IntimacionContribuyente.Calle, dbo.IntimacionContribuyente.Altura, dbo.IntimacionContribuyente.Dpto,'
+  + 'dbo.IntimacionContribuyente.Mza, dbo.IntimacionContribuyente.Casa,dbo.IntimacionContribuyente.Torre,'
+  + 'dbo.IntimacionContribuyente.Domicilio, dbo.IntimacionContribuyente.ImporteDeuda, dbo.IntimacionContribuyente.Impreso,'
+  + 'dbo.IntimacionContribuyenteEstado.Activo, dbo.IntimacionContribuyenteEstado.IdTipoEstado,dbo.IntimacionLote.NroLote,'
+  + 'dbo.TiposEstados.DetalleEstado,dbo.IntimacionContribuyente.Id FROM dbo.IntimacionContribuyente '
+  + ' INNER JOIN dbo.IntimacionContribuyenteEstado ON dbo.IntimacionContribuyente.Id = dbo.IntimacionContribuyenteEstado.IdIntimacionContribuyente'
+  + ' inner join dbo.TiposEstados on dbo.TiposEstados.NroEstado = dbo.IntimacionContribuyenteEstado.IdTipoEstado'
+  + ' INNER JOIN DBO.IntimacionLote on DBO.IntimacionLote.Id = IntimacionContribuyente.IdIntimacionLote '
+  + ' WHERE (dbo.IntimacionContribuyenteEstado.Activo = 1) AND (DBO.IntimacionLote.EsBoletaDeuda = 1)'
+  + ' AND (DBO.IntimacionLote.Baja=0) and ' +  valor + ' AND (IdTipoEstado = 11) order by 1' ;
+  LOSOBJETOS.Open;
+  if LOSOBJETOS.IsEmpty then begin
+    for p:=0 to grilla2.ColCount-1 do
+     for u:=1 to grilla2.RowCount-1 do grilla2.Cells[p,u]:='';
+      grilla2.RowCount:=2;
+  end
+  else begin
+   for t:=1 to LOSOBJETOS.RecordCount do begin
+    LOSOBJETOS.RecNo:=t;
+    grilla2.RowCount:=t + 1;
+    grilla2.Cells[0,t]:=StrFill(IntToStr(t),2,'0','');
+    grilla2.Cells[1,t]:='';
+    grilla2.Cells[2,t]:=LOSOBJETOS.FieldByName('NroControl').AsString;
+    grilla2.Cells[3,t]:=LOSOBJETOS.FieldByName('Contribuyente').AsString;
+    grilla2.Cells[4,t]:=LOSOBJETOS.FieldByName('NroDni').AsString;
+    grilla2.Cells[5,t]:=LOSOBJETOS.FieldByName('Barrio').AsString;
+    grilla2.Cells[6,t]:=LOSOBJETOS.FieldByName('Calle').AsString;
+    grilla2.Cells[7,t]:=LOSOBJETOS.FieldByName('Altura').AsString;
+    grilla2.Cells[8,t]:=LOSOBJETOS.FieldByName('Dpto').AsString;
+    grilla2.Cells[9,t]:=LOSOBJETOS.FieldByName('Mza').AsString;
+    grilla2.Cells[10,t]:=LOSOBJETOS.FieldByName('Casa').AsString;
+    grilla2.Cells[11,t]:=LOSOBJETOS.FieldByName('Torre').AsString;
+    grilla2.Cells[12,t]:=LOSOBJETOS.FieldByName('Domicilio').AsString;
+    grilla2.Cells[13,t]:=LOSOBJETOS.FieldByName('ImporteDeuda').AsString;
+    grilla2.Cells[14,t]:=LOSOBJETOS.FieldByName('DetalleEstado').AsString;
+    grilla2.Cells[15,t]:=LOSOBJETOS.FieldByName('NroLote').AsString;
+    grilla2.Cells[16,t]:=LOSOBJETOS.FieldByName('Id').AsString;
+   end;
+  end;
+  LOSOBJETOS.Connection:=nil;
+ end;
+ if nro = 2 then begin
+  CONTRIBUYENTE.Close;
+  CONTRIBUYENTE.Connection:=modulo2.ObjConexion;
+  CONTRIBUYENTE.CommandText:='SELECT dbo.IntimacionContribuyente.NroControl,dbo.IntimacionContribuyente.IdContribuyente,'
+  + 'dbo.IntimacionContribuyente.Contribuyente, dbo.IntimacionContribuyente.NroDni, dbo.IntimacionContribuyente.Barrio,'
+  + 'dbo.IntimacionContribuyente.Calle, dbo.IntimacionContribuyente.Altura, dbo.IntimacionContribuyente.Dpto,'
+  + 'dbo.IntimacionContribuyente.Mza, dbo.IntimacionContribuyente.Casa,dbo.IntimacionContribuyente.Torre,'
+  + 'dbo.IntimacionContribuyente.Domicilio, dbo.IntimacionContribuyente.ImporteDeuda, dbo.IntimacionContribuyente.Impreso,'
+  + 'dbo.IntimacionContribuyenteEstado.Activo, dbo.IntimacionContribuyenteEstado.IdTipoEstado,dbo.IntimacionLote.NroLote,'
+  + 'dbo.TiposEstados.DetalleEstado,dbo.IntimacionContribuyente.Id FROM dbo.IntimacionContribuyente '
+  + ' INNER JOIN dbo.IntimacionContribuyenteEstado ON dbo.IntimacionContribuyente.Id = dbo.IntimacionContribuyenteEstado.IdIntimacionContribuyente'
+  + ' inner join dbo.TiposEstados on dbo.TiposEstados.NroEstado = dbo.IntimacionContribuyenteEstado.IdTipoEstado'
+  + ' INNER JOIN DBO.IntimacionLote on DBO.IntimacionLote.Id = IntimacionContribuyente.IdIntimacionLote '
+  + ' WHERE (dbo.IntimacionContribuyenteEstado.Activo = 1) AND (DBO.IntimacionLote.EsBoletaDeuda = 1)'
+  + ' AND (DBO.IntimacionLote.Baja=0) and ' +  valor + ' AND IdTipoEstado NOT IN (11,12) order by 1' ;
+  CONTRIBUYENTE.Open;
+  if CONTRIBUYENTE.IsEmpty then begin
+   for p:=0 to grilla1.ColCount-1 do
+    for u:=1 to grilla1.RowCount-1 do grilla1.Cells[p,u]:='';
+     grilla1.RowCount:=2;
+   end
+   else begin
+    for t:=1 to CONTRIBUYENTE.RecordCount do begin
+     CONTRIBUYENTE.RecNo:=t;
+     grilla1.RowCount:=t + 1;
+     grilla1.Cells[0,t]:=StrFill(IntToStr(t),2,'0','');
+     grilla1.Cells[1,t]:='';
+     grilla1.Cells[2,t]:=CONTRIBUYENTE.FieldByName('NroControl').AsString;
+     grilla1.Cells[3,t]:=CONTRIBUYENTE.FieldByName('Contribuyente').AsString;
+     grilla1.Cells[4,t]:=CONTRIBUYENTE.FieldByName('NroDni').AsString;
+     grilla1.Cells[5,t]:=CONTRIBUYENTE.FieldByName('Barrio').AsString;
+     grilla1.Cells[6,t]:=CONTRIBUYENTE.FieldByName('Calle').AsString;
+     grilla1.Cells[7,t]:=CONTRIBUYENTE.FieldByName('Altura').AsString;
+     grilla1.Cells[8,t]:=CONTRIBUYENTE.FieldByName('Dpto').AsString;
+     grilla1.Cells[9,t]:=CONTRIBUYENTE.FieldByName('Mza').AsString;
+     grilla1.Cells[10,t]:=CONTRIBUYENTE.FieldByName('Casa').AsString;
+     grilla1.Cells[11,t]:=CONTRIBUYENTE.FieldByName('Torre').AsString;
+     grilla1.Cells[12,t]:=CONTRIBUYENTE.FieldByName('Domicilio').AsString;
+     grilla1.Cells[13,t]:=CONTRIBUYENTE.FieldByName('ImporteDeuda').AsString;
+     grilla1.Cells[14,t]:=CONTRIBUYENTE.FieldByName('DetalleEstado').AsString;
+     grilla1.Cells[15,t]:=CONTRIBUYENTE.FieldByName('NroLote').AsString;
+     grilla1.Cells[16,t]:=CONTRIBUYENTE.FieldByName('Id').AsString;
+    end;
+    Barra1.Panels[1].Text:='Cant. Registros: ' + inttostr(CONTRIBUYENTE.RecordCount);
+   end;
+  CONTRIBUYENTE.Connection:=nil;
+  end;
+  FreeAndNil(Modulo2.ObjConexion);
+except
+  on E: Exception do begin
+    EnviarLog(Self.Caption, E.Message);
+  end
+end;
+end;
+
+procedure TBolDeuda_Bloqueo.SALEClick(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TBolDeuda_Bloqueo.SeleccionarTodos1Click(Sender: TObject);
+var b,t:integer;
+begin
+for b:=0 to grilla1.ColCount-1 do
+   for t:=1 to grilla1.RowCount-1 do  grilla1.Cells[1,t]:='X';
+   verificagrilladeuda('grilla1');
+end;
+
+
+
+end.

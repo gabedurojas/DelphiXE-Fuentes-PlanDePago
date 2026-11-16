@@ -1,0 +1,134 @@
+unit Fecha_Fa;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Mask, JvExStdCtrls, JvBehaviorLabel, JvExExtCtrls,ADODB,
+  JvExtComponent, JvPanel, Vcl.ExtCtrls, Vcl.Buttons, JvExButtons, JvBitBtn;
+
+type
+    TFECHA_FAC = class(TForm)
+    OFECRESU: TMaskEdit;
+    Button1: TButton;
+    Panel3: TPanel;
+    JvPanel2: TJvPanel;
+    JvBehaviorLabel2: TJvBehaviorLabel;
+    Label1: TLabel;
+    admin: TCheckBox;
+    SALE: TJvBitBtn;
+    procedure OFECRESUExit(Sender: TObject);
+    procedure OFECRESUKeyPress(Sender: TObject; var Key: Char);
+    procedure Button1Click(Sender: TObject);
+    procedure Panel3MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Label1Click(Sender: TObject);
+    procedure SALEClick(Sender: TObject);
+    procedure VerArea(nro:byte);
+    procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    DataSet2:TADODataSet;
+    dato: String;
+    gh:boolean;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FECHA_FAC: TFECHA_FAC;
+
+implementation
+
+uses Modulo;
+
+{$R *.dfm}
+
+procedure TFECHA_FAC.FormActivate(Sender: TObject);
+begin
+ if not(gh) then begin
+  gh:=true;
+  VerArea(1);
+  if dato <> '0' then   begin
+    OFECRESU.Enabled:=true;
+  end
+  else begin
+    OFECRESU.Enabled:=false;
+    sale.SetFocus ;
+  end;
+ end;
+end;
+
+procedure TFECHA_FAC.FormCreate(Sender: TObject);
+begin
+  gh:=false;
+end;
+
+procedure TFECHA_FAC.Label1Click(Sender: TObject);
+begin
+Close;
+end;
+
+procedure TFECHA_FAC.VerArea(nro:byte);
+var t,b:integer;
+    Cnx2:TADOConnection;
+begin
+ Cnx2:=TADOConnection.Create(nil);
+ Cnx2.LoginPrompt:=false;
+ Cnx2.ConnectionString:=Modulo2.Sistema.ConectDb;   // plan de pago
+ if nro=1 then begin
+  DataSet2.Close;
+  DataSet2.Connection:=Cnx2;
+  DataSet2.CommandText:='SELECT NroUsuario as Nrousuario FROM Fn_PlanPagoUsuariosAdmin (' + modulo2.Usuario.UsuNro + ')';
+  DataSet2.Open;
+  if not Dataset2.IsEmpty  then dato:=DataSet2.Fields[0].AsString
+   else dato:='0';
+  DataSet2.Connection:=nil;
+ end;
+end;
+
+procedure TFECHA_FAC.OFECRESUExit(Sender: TObject);
+var fec,filtro:Tdatetime;
+begin
+ try
+  fec:=strtodate(trim(OFECRESU.Text));
+  filtro:=strtodate('01/01/2020');
+  if not admin.Checked  then begin
+   if strtodate(OFECRESU.Text) < filtro then begin
+    messagedlg('La FECHA DE CORTE DE DEUDA no puede ser menor a la Fecha del 01/01/2020..',mterror,[mbok],0);
+    OFECRESU.SetFocus;
+   end;
+  end;
+ except
+  messagedlg('La fecha es Erronea!!',mterror,[mbok],0);
+  OFECRESU.SetFocus;
+ end;
+end;
+
+procedure TFECHA_FAC.OFECRESUKeyPress(Sender: TObject; var Key: Char);
+begin
+if key =#13 then begin
+  Key := #0;
+  sale.SetFocus;
+end
+end;
+
+procedure TFECHA_FAC.Panel3MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+ReleaseCapture();
+Perform( WM_SYSCOMMAND, $F012, 0 );
+end;
+
+procedure TFECHA_FAC.SALEClick(Sender: TObject);
+begin
+close;
+end;
+
+procedure TFECHA_FAC.Button1Click(Sender: TObject);
+begin
+close;
+end;
+
+end.
